@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-10-11T06:29:32.312Z",
+  "items": [
+    {
+      "slug": "aerial-day-view",
+      "group": "exterior",
+      "file": "Aerial Day View.webp",
+      "src": "/images/exterior/aerial-day-view",
+      "depth": "/images/exterior/aerial-day-view-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1148,
+      "color": "#182818",
+      "blurDataURL": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoYAAsAPu1iqU2ppaOiMAgBMB2JYwCzgYvCu3uNxVjNQND4KwQAAMnZKXsz80vfDwsFlTPtWx8LjAD0Z5WPwWt4etTIGbpftqZCA/NhnGgznU6Rj/XzEz21ErouaI2+dNkYf8ByF0jn7VpGe41Wq2mMDwr894AA"
+    },
+    {
+      "slug": "aerial-night-view",
+      "group": "exterior",
+      "file": "Aerial Night View.webp",
+      "src": "/images/exterior/aerial-night-view",
+      "depth": "/images/exterior/aerial-night-view-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 899,
+      "color": "#081818",
+      "blurDataURL": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADwAwCdASoYAAgAPu1iqU2ppaOiMAgBMB2JQBOmUABr8FEdKxy7ILaAAP7aG/0pZknyMaarQAKtuDMp9lq5gEXuB5lF8ihHkQIkb90WXdf4Yrw0jELV/Yu4Iw5wAA=="
+    },
+    {
+      "slug": "gate-view",
+      "group": "exterior",
+      "file": "GATE VIEW.webp",
+      "src": "/images/exterior/gate-view",
+      "depth": "/images/exterior/gate-view-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1440,
+      "color": "#282828",
+      "blurDataURL": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAAAwBACdASoYAA4APu1iqU2ppaQiMAgBMB2JQBOkDgBgCx8kzUqDRsbK72AA/lt/GlLP36IbFsZqeP7ofSsnALa5A0qLhc36NMba7vHsVHZtgCcE3ngVeHu2f631xan3vQ8rZ5QKciMJ9ElHcyztCILHEUIC+DWAOtLNFgtzmAMzzWznzqks6qp+NvwbkO85guT5DqAA"
+    },
+    {
+      "slug": "kids-play-day",
+      "group": "exterior",
+      "file": "Kids Play_Day.webp",
+      "src": "/images/exterior/kids-play-day",
+      "depth": "/images/exterior/kids-play-day-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1440,
+      "color": "#283818",
+      "blurDataURL": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAQBACdASoYAA4APu1iqU2ppaQiMAgBMB2JZACdEf/l2ADkjD09r7tW3AD9IiTFe1RnTXRwG8VAd4Rt5Gw5tGI9+MAMkVCSUksrnKA5SSs5JqZpw0HkCaDzitt+/jXqKishVB/ItgFLAnliN+/yXWAOw433Oniz91oeoJl1rWCvbQAA"
+    },
+    {
+      "slug": "road-elevation-view",
+      "group": "exterior",
+      "file": "Road Elevation View.webp",
+      "src": "/images/exterior/road-elevation-view",
+      "depth": "/images/exterior/road-elevation-view-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1440,
+      "color": "#3888b8",
+      "blurDataURL": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAAAQBACdASoYAA4APu1kqU2ppaOiMAgBMB2JZgCdIIjCKfOaZXw2/erZKADJFy+u/nlq4Nq1F+r3kmV2zhnijRcz4e/A1fgpKnkMjwFzifmxDaWCZ5IcO7tiyErqvAk5pWQJ605Hsit2cRUPMCISlnnL8VdxsgYt1nDu6Vw7jzLeJvgq2eT5VLdiORjrZoAA"
+    },
+    {
+      "slug": "swimming-pool-view",
+      "group": "exterior",
+      "file": "SWIMMING POOL VIEW.webp",
+      "src": "/images/exterior/swimming-pool-view",
+      "depth": "/images/exterior/swimming-pool-view-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1707,
+      "color": "#988858",
+      "blurDataURL": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAABwBACdASoYABAAPu1iqU2ppaOiMAgBMB2JaACsAYxi7a9IaPXLOVHuXWt8OAD+BAW9AUggu8w2R8i79BdGAu/SVw64+FV40Y5eIAU/EoLaXvE1K4ER/Q8/fDRJaVDQeA9GiMYuq9dAfxrR12tEagoEJXz0shpw9KMzqNPOfYGBaDjsYcE0//r7b8mYZCBBXXOZZF3sJNLO59SBS4vMG/BFnwAAAA=="
+    },
+    {
+      "slug": "club-house",
+      "group": "interior",
+      "file": "CLUB HOUSE.webp",
+      "src": "/images/interior/club-house",
+      "depth": "/images/interior/club-house-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1441,
+      "color": "#b8a8a8",
+      "blurDataURL": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JZQCdAdwLhoOLIirq7seHEAQA/o4Q+3Y9gvSPT4aQmLtcRFk4sOtWhjU5A3Yk5i7NgWOy1dgM4tkKsQVRN3evKFyTpQoJxVu00fvU6zt04VO7Ug8dpXke2sQVm111cGfECg+WXNrBm153xUImPXISIAA="
+    },
+    {
+      "slug": "gym",
+      "group": "interior",
+      "file": "GYM.webp",
+      "src": "/images/interior/gym",
+      "depth": "/images/interior/gym-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1276,
+      "color": "#282828",
+      "blurDataURL": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAADwAwCdASoYAAwAPu1iqU2ppaOiMAgBMB2JYwCsABEQg3JTfFCVaOVwAMl3ed1MzDn3d9Ou7jRh/cD3r+pDAiwvdwFv2VtzA71TOehXNd1ysVYusSivtJ19KPSXcOxsK/5t9f0but/o4GYf0qR+YWgs0xwS0vPE3QhQgUM81PRnmzLTQAA="
+    },
+    {
+      "slug": "indoor-games",
+      "group": "interior",
+      "file": "INDOOR GAMES.webp",
+      "src": "/images/interior/indoor-games",
+      "depth": "/images/interior/indoor-games-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1746,
+      "color": "#b8b8b8",
+      "blurDataURL": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAAAQBACdASoYABAAPu1iqU2ppaOiMAgBMB2JQBWABCcyY2NPT87Ag8MkOAD+kHL09RfT5lF7A9s7cng/Oi/Sur41MJe8lmeDRgbcrA5VC4yAVkRulzKfqVuORkvCyUE8ey5tB22g9nWXXnpfFoL5v8jqZNyGxuJgDMbB9eFsZpDHK/L87FWeN5dZ3QQh8Df23A3D6Uzmr/5GHIoZObKNSwjKZuCPjCHVqZVjuTBAAAA="
+    },
+    {
+      "slug": "lift-lobby",
+      "group": "interior",
+      "file": "LIFT LOBBY.webp",
+      "src": "/images/interior/lift-lobby",
+      "depth": "/images/interior/lift-lobby-depth.webp",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "width": 2560,
+      "height": 1440,
+      "color": "#b8a8a8",
+      "blurDataURL": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABQBACdASoYAA4APu1iqk4ppaQiMAgBMB2JZQCdMoC4AAs1pz1QDYDpRAO8APJfmoO945aG4RuCBkBkEfOzn7+LRhbZ36MgK1skqiemw1aBMo7HYI4bcHXT2nCjUxkCmtASg1xdO03PTqLDi+eEnwKvYf751/Rqv8rGhhSUou2rTk5VGYoYAA=="
+    }
+  ]
+}
