@@ -23,7 +23,7 @@ export function Developer() {
           <Headline lines={d.headline} id="developer-title" className="chapter__title developer__title" />
           <div className="chapter__copy">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/subham-logo-light.png" alt={`${project.developer} — ${project.developerTagline}`} className="developer__logo" data-reveal />
+            <img src="/brand/subham-logo-light.webp" width={328} height={311} loading="lazy" decoding="async" alt={`${project.developer} — ${project.developerTagline}`} className="developer__logo" data-reveal />
             <p className="chapter__body" data-reveal>
               {d.body}
             </p>

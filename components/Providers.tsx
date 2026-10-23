@@ -3,9 +3,9 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState, type ReactNode } from 'react';
 import Lenis from 'lenis';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { enqueueSetup, gsap, ScrollTrigger } from '@/lib/gsap';
 import { runtime, scheduler } from '@/lib/runtime';
-import { useIntro, useMotion, useScroll } from '@/lib/store';
+import { useMotion, useScroll } from '@/lib/store';
 import { useWebGLSupport } from '@/hooks/useWebGLSupport';
 import { useIsMobile } from '@/hooks/useMediaQuery';
 import { Cursor } from './Cursor';
@@ -49,9 +49,10 @@ export function Providers({ children }: { children: ReactNode }) {
     gsap.ticker.add(raf, false, true);
     gsap.ticker.lagSmoothing(0);
     setLenis(lenis);
-    if (useIntro.getState().phase === 'playing' || document.documentElement.classList.contains('scroll-locked')) lenis.stop();
-    ScrollTrigger.refresh();
+    if (document.documentElement.classList.contains('scroll-locked')) lenis.stop();
+    const cancelRefresh = enqueueSetup(() => ScrollTrigger.refresh());
     return () => {
+      cancelRefresh();
       gsap.ticker.remove(raf);
       lenis.destroy();
       setLenis(null);
@@ -66,27 +67,36 @@ export function Providers({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Mount the WebGL layer when idle so it never competes with first paint.
+  // Mount the WebGL layer on the first user interaction, then when idle. Shader
+  // compilation is a multi-second main-thread task on mid-range phones, so it must
+  // never run during page load; the DOM images are a complete fallback until then.
   useEffect(() => {
     if (!ready || reduced || !webgl) {
       setMountGL(false);
       return;
     }
     const w = window as Window & { requestIdleCallback?: typeof requestIdleCallback; cancelIdleCallback?: typeof cancelIdleCallback };
-    if (w.requestIdleCallback) {
-      const id = w.requestIdleCallback(() => setMountGL(true), { timeout: 1800 });
-      return () => w.cancelIdleCallback?.(id);
-    }
-    const t = setTimeout(() => setMountGL(true), 600);
-    return () => clearTimeout(t);
+    const events = ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown'] as const;
+    let idle: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const start = () => {
+      events.forEach((e) => window.removeEventListener(e, start));
+      if (w.requestIdleCallback) idle = w.requestIdleCallback(() => setMountGL(true), { timeout: 1200 });
+      else timer = setTimeout(() => setMountGL(true), 200);
+    };
+    events.forEach((e) => window.addEventListener(e, start, { passive: true }));
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, start));
+      if (idle !== undefined) w.cancelIdleCallback?.(idle);
+      clearTimeout(timer);
+    };
   }, [ready, reduced, webgl]);
 
-  // Re-measure once fonts and images have settled.
+  // Re-measure once web fonts have settled (ScrollTrigger already refreshes itself on window load).
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
-    document.fonts?.ready.then(refresh);
-    window.addEventListener('load', refresh);
-    return () => window.removeEventListener('load', refresh);
+    let cancel: (() => void) | undefined;
+    document.fonts?.ready.then(() => (cancel = enqueueSetup(() => ScrollTrigger.refresh())));
+    return () => cancel?.();
   }, []);
 
   // In-page anchors go through Lenis (or native scroll) and move focus for keyboard users.

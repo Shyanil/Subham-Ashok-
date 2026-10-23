@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { objectPosition, type MediaItem } from '@/lib/media';
 import {
   createPlaneController,
@@ -20,7 +20,8 @@ type Props = Partial<PlaneOptions> & {
   index?: number;
   /** Optional controller (from usePlaneController) to drive mix / zoom / dim from GSAP. */
   controller?: PlaneController;
-  /** LCP image: eager + preloaded, no blur placeholder. */
+  /** Above-the-fold image: eager, no blur placeholder. Not preloaded or high-priority: Chrome never
+   *  counts a full-viewport photo as LCP, so it shouldn't take bandwidth from fonts / CSS / text. */
   priority?: boolean;
   sizes?: string;
   /** Only render DOM images within ±window of the active index (large sets like the gallery). */
@@ -97,11 +98,20 @@ export function ImagePlane({
 
   useEffect(() => setIndex(id, index), [id, index, setIndex]);
 
+  // Inactive slides (step mode) are only rendered once the slot has come near the viewport.
+  const [domNear, setDomNear] = useState(false);
+
   // Visibility: `near` loads textures ahead of time, `inView` keeps the canvas rendering.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const nearObs = new IntersectionObserver(([e]) => setNear(id, e.isIntersecting), { rootMargin: '150% 0px' });
+    const nearObs = new IntersectionObserver(
+      ([e]) => {
+        setNear(id, e.isIntersecting);
+        if (e.isIntersecting) setDomNear(true);
+      },
+      { rootMargin: '150% 0px' },
+    );
     const viewObs = new IntersectionObserver(([e]) => scheduler.setInView(id, e.isIntersecting));
     nearObs.observe(el);
     viewObs.observe(el);
@@ -112,7 +122,20 @@ export function ImagePlane({
     };
   }, [id, setNear]);
 
+  // Mix layers (night view) only appear once the user scrolls, so they wait for real input
+  // (`scroll` also fires programmatically during load, so it only counts once the page has moved).
+  const [mixArmed, setMixArmed] = useState(false);
+  useEffect(() => {
+    if (opts.mode !== 'mix' || mixArmed) return;
+    const events = ['wheel', 'pointerdown', 'touchstart', 'keydown', 'scroll'] as const;
+    const arm = (e: Event) => (e.type !== 'scroll' || window.scrollY > 0) && setMixArmed(true);
+    events.forEach((e) => window.addEventListener(e, arm, { passive: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, arm));
+  }, [opts.mode, mixArmed]);
+
   const visible = (i: number) => {
+    if (opts.mode === 'mix' && i > 0 && !mixArmed) return false;
+    if (opts.mode === 'step' && i !== index && !domNear) return false;
     if (renderWindow === undefined) return true;
     const n = images.length;
     const d = Math.min(Math.abs(i - index), n - Math.abs(i - index));
@@ -137,7 +160,7 @@ export function ImagePlane({
               alt={opts.mode === 'mix' && i > 0 ? '' : img.alt}
               fill
               sizes={sizes}
-              priority={priority && i === 0}
+              loading={priority && i === 0 ? 'eager' : 'lazy'}
               placeholder={priority && i === 0 ? 'empty' : 'blur'}
               blurDataURL={img.blurDataURL}
               className="plane__img"

@@ -18,7 +18,8 @@ export function ScrubText({ text, className = '' }: { text: string; className?: 
       }
       gsap.fromTo(
         words,
-        { opacity: 0.16 },
+        // Unlit words start at the --muted level, which still clears WCAG AA on both surfaces.
+        { opacity: 0.66 },
         {
           opacity: 1,
           ease: 'none',
@@ -31,7 +32,8 @@ export function ScrubText({ text, className = '' }: { text: string; className?: 
   );
 
   return (
-    <p ref={ref} className={className} aria-label={text}>
+    <p ref={ref} className={`scrub ${className}`}>
+      <span className="sr-only">{text}</span>
       {text.split(' ').map((w, i) => (
         <span key={i} className="word" aria-hidden="true">
           {w}{' '}

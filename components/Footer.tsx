@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="container-x footer__base">
       <div className="flex items-center gap-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/ashok-heights-logo.png" alt={project.name} className="footer__logo" />
+        <img src="/brand/ashok-heights-logo.webp" alt={project.name} className="footer__logo" width={480} height={210} loading="lazy" decoding="async" />
       </div>
       <div className="footer__disclaimer">
         <p>{site.footer.disclaimer}</p>

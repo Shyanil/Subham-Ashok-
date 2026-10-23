@@ -71,7 +71,7 @@ export function Header() {
       <div className="site-header__bar">
         <a href="#top" className="brand" aria-label={`${project.name} — back to top`} onClick={() => setOpen(false)}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ashok-heights-logo.png" alt="" className="brand__logo" width={1528} height={668} />
+          <img src="/brand/ashok-heights-logo.webp" alt="" className="brand__logo" width={480} height={210} />
         </a>
 
         <nav aria-label="Main" className="hidden xl:block">

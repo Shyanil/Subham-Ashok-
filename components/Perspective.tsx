@@ -14,6 +14,7 @@ import { Headline } from './Headline';
  */
 export function Perspective() {
   const root = useRef<HTMLElement>(null);
+  const spacer = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   useGSAP(
@@ -22,7 +23,11 @@ export function Perspective() {
       if (reduced) {
         runtime.perspective.active = false;
         gsap.set('.persp__title .line-inner', { yPercent: 0, y: 0 });
-        gsap.fromTo('.persp__content', { opacity: 0 }, { opacity: 1, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 70%', once: true } });
+        gsap.fromTo(
+          '.persp__content',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 70%', once: true } },
+        );
         return;
       }
       // 1. Entrance — a timed reveal (not scrubbed) as the chapter arrives.
@@ -40,16 +45,15 @@ export function Perspective() {
       // 2. Pinned + scrubbed: title breathes, the wheel turns, content exits.
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: el, start: 'top top', end: '+=95%', pin: true, scrub: 1 },
+        scrollTrigger: { trigger: el, start: 'top top', end: '+=95%', pin: true, pinSpacer: spacer.current, scrub: 1 },
       });
       tl.fromTo('.persp__title', { scale: 1 }, { scale: 1.08, duration: 1 }, 0)
         .fromTo('.persp__wheel', { rotate: -40, scale: 0.85, opacity: 0.08 }, { rotate: 140, scale: 1.12, opacity: 0.2, duration: 1 }, 0)
         .to('.persp__content', { opacity: 0, yPercent: -8, duration: 0.15 }, 0.85);
 
       // Whole-section progress (including entry/exit) for the 3D scene.
-      const spacer = el.parentElement ?? el;
       const scene = ScrollTrigger.create({
-        trigger: spacer,
+        trigger: spacer.current ?? el,
         start: 'top bottom',
         end: 'bottom top',
         onUpdate: (st) => {
@@ -70,32 +74,43 @@ export function Perspective() {
   );
 
   return (
-    <section ref={root} id="perspective" className="persp" aria-labelledby="perspective-title">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/ashok-wheel.png" alt="" aria-hidden="true" className="persp__wheel" />
-      <div className="persp__shade" aria-hidden="true" />
-      <div className="persp__crystals" aria-hidden="true">
-        <span /><span /><span /><span /><span />
-      </div>
+    <div ref={spacer} className="pin-spacer">
+      <section ref={root} id="perspective" className="persp" aria-labelledby="perspective-title">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/ashok-wheel.webp"
+          alt=""
+          aria-hidden="true"
+          className="persp__wheel"
+          width={444}
+          height={436}
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="persp__shade" aria-hidden="true" />
+        <div className="persp__crystals" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
 
-
-      <div className="persp__content container-x">
-        <span className="persp__rule" aria-hidden="true" />
-        <p className="label persp__eyebrow text-[var(--gold)]" aria-label={site.perspective.eyebrow}>
-          {[...site.perspective.eyebrow].map((c, i) => (
-            <span key={i} className="persp__eyebrow-char" aria-hidden="true">
-              {c === ' ' ? '\u00a0' : c}
-            </span>
-          ))}
-        </p>
-        <Headline lines={site.perspective.headline} id="perspective-title" className="persp__title" />
-        <p className="persp__sub">
-          {site.perspective.sub}
-        </p>
-        <p className="label persp__cue text-[var(--muted)]">
-          {site.perspective.cue}
-        </p>
-      </div>
-    </section>
+        <div className="persp__content container-x">
+          <span className="persp__rule" aria-hidden="true" />
+          <p className="label persp__eyebrow text-[var(--gold)]">
+            <span className="sr-only">{site.perspective.eyebrow}</span>
+            {[...site.perspective.eyebrow].map((c, i) => (
+              <span key={i} className="persp__eyebrow-char" aria-hidden="true">
+                {c === ' ' ? '\u00a0' : c}
+              </span>
+            ))}
+          </p>
+          <Headline lines={site.perspective.headline} id="perspective-title" className="persp__title" />
+          <p className="persp__sub">{site.perspective.sub}</p>
+          <p className="label persp__cue text-[var(--muted)]">{site.perspective.cue}</p>
+        </div>
+      </section>
+    </div>
   );
 }
