@@ -1,26 +1,21 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, DM_Mono, Manrope } from 'next/font/google';
-import { config, project, site } from '@/content/site';
-import { Providers } from '@/components/Providers';
-import { Intro } from '@/components/Intro';
+import Script from 'next/script';
+import { Cormorant_Garamond, Manrope } from 'next/font/google';
+import { project, site } from '@/content/site';
+import { projectConfig } from '@/src/config/project';
+import { LeadProvider } from '@/components/lead/LeadProvider';
+import { ThreeDPreloader } from '@/components/ThreeDPreloader';
 import './globals.css';
 
-const serif = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400'],
-  style: ['normal', 'italic'],
-  variable: '--ff-serif',
-  display: 'swap',
-});
-const sans = Manrope({ subsets: ['latin'], weight: ['400', '500'], variable: '--ff-sans', display: 'swap' });
-const mono = DM_Mono({ subsets: ['latin'], weight: ['400'], variable: '--ff-mono', display: 'swap' });
+const serif = Cormorant_Garamond({ subsets: ['latin'], weight: 'variable', style: ['normal', 'italic'], variable: '--ff-serif', display: 'swap' });
+const sans = Manrope({ subsets: ['latin'], weight: 'variable', variable: '--ff-sans', display: 'swap' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(config.siteUrl),
+  metadataBase: new URL(projectConfig.SITE_URL),
   title: site.title,
   description: site.description,
   applicationName: project.name,
-  keywords: [project.name, project.area, project.city, 'apartments', 'residences', project.developer, 'real estate'],
+  keywords: [project.name, project.area, project.city, '2 BHK', '3 BHK', '4 BHK', 'apartments', 'flats in Guwahati', project.developer, 'real estate'],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
@@ -37,34 +32,39 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: '#461a13',
-  colorScheme: 'dark',
+  colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
 };
 
-/**
- * Runs before first paint: enables JS-only reveal styles.
- * Failsafe: if the app never hydrates, reveal styles are removed after 4s.
- */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(!d.dataset.hydrated){d.classList.remove('js');d.dataset.intro='seen'}},4000)})();`;
+const GA4 = process.env.NEXT_PUBLIC_GA4_ID;
+const PIXEL = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
-      </head>
+    <html lang="en-IN" className={`${serif.variable} ${sans.variable}`}>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <Providers>
-          <Intro />
-          <div className="page-curtain" aria-hidden="true" />
-          <div id="page">{children}</div>
-        </Providers>
-        <div className="grain" aria-hidden="true" />
-        <div className="vignette" aria-hidden="true" />
+        <LeadProvider>
+          <ThreeDPreloader />
+          {children}
+        </LeadProvider>
+
+        {GA4 && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4}`} strategy="lazyOnload" />
+            <Script id="ga4" strategy="lazyOnload">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA4}');`}
+            </Script>
+          </>
+        )}
+        {PIXEL && (
+          <Script id="meta-pixel" strategy="lazyOnload">
+            {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${PIXEL}');fbq('track','PageView');`}
+          </Script>
+        )}
       </body>
     </html>
   );

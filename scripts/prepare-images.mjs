@@ -16,7 +16,7 @@
  *   content/media.json                                  manifest: size, dominant colour, blur placeholder
  */
 import { existsSync } from 'node:fs';
-import { mkdir, readdir, writeFile, rm } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -58,7 +58,7 @@ async function listSources() {
 function outputsExist(files) {
   if (!existsSync(manifestPath)) return false;
   return files.every(({ group, slug }) =>
-    [...WIDTHS.map((w) => `${slug}-${w}.webp`), `${slug}-depth.webp`].every((f) =>
+    [...WIDTHS.map((w) => `${slug}-${w}.webp`), ...(slug === 'gate-view' ? [`${slug}-2560.webp`] : []), `${slug}-depth.webp`].every((f) =>
       existsSync(path.join(root, 'public', 'images', group, f)),
     ),
   );
@@ -99,6 +99,10 @@ async function processImage({ group, abs, slug, file }) {
       .resize({ width: Math.min(w, meta.width ?? w), withoutEnlargement: true })
       .webp({ quality: w === 640 ? 72 : 78, effort: 5 })
       .toFile(path.join(outDir, `${slug}-${w}.webp`));
+  }
+  if (slug === 'gate-view') {
+    // Preserve the supplied full-resolution render for the hero without another lossy encode.
+    await copyFile(abs, path.join(outDir, `${slug}-2560.webp`));
   }
   await depthMap(abs, path.join(outDir, `${slug}-depth.webp`), meta);
 

@@ -1,9 +1,10 @@
 /**
- * All page copy lives here. Headline strings use `_underscores_` to mark the
- * italic serif accent, e.g. "RISING IN _grandeur._". Arrays are explicit lines.
- *
- * Facts, figures and contact details are taken from the Subham Ashok Heights e-brochure.
+ * All page copy lives here. Facts, figures and contact details are taken from
+ * the Subham Ashok Heights e-brochure. Sales placeholders (price, possession,
+ * budgets) live in src/config/project.ts.
  */
+import { projectConfig } from '@/src/config/project';
+
 export const project = {
   name: 'Subham Ashok Heights',
   shortName: 'Ashok Heights',
@@ -14,73 +15,80 @@ export const project = {
   state: 'Assam',
 };
 
-/** Contact + deployment settings (kept here instead of .env). */
-export const config = {
-  /** Public URL, used for metadata, Open Graph and the sitemap. */
-  siteUrl: 'https://subhambeharbari.com',
-  /** WhatsApp number in international format, digits only (brochure marketing line). */
-  whatsappNumber: '919854041000',
-};
-
 const P = project;
 
 export const site = {
-  title: `${P.name}, ${P.area} — 2, 3 & 4 BHK residences in ${P.city}`,
-  description: `${P.name} in ${P.area}, ${P.city}: 2, 3 & 4 BHK residences and penthouses with a clubhouse, swimming pool, gym and landscaped lawns. A ${P.developer} project.`,
+  title: `${P.name}, ${P.area} — 2, 3 and 4 BHK residences in ${P.city}`,
+  description: `${P.name} in ${P.area}, ${P.city}: 2, 3 and 4 BHK residences and penthouses with a clubhouse, swimming pool, gym and landscaped lawns. A ${P.developer} project.`,
 
-  intro: {
-    eyebrow: `${P.developer} presents`,
-    wordmark: ['ASHOK', 'HEIGHTS'],
-    caption: `${P.area} · ${P.city}`,
-    skip: 'Skip intro ↗',
-    replay: 'Replay intro ↗',
-  },
-
-  /** Landing-page order: Overview → Amenities → Gallery → Floor Plans → Location → Contact → About Developer. */
   nav: [
     { label: 'Overview', href: '#overview' },
+    { label: 'Floor Plans', href: '#floor-plans' },
     { label: 'Amenities', href: '#amenities' },
     { label: 'Gallery', href: '#gallery' },
-    { label: 'Floor Plans', href: '#floor-plans' },
     { label: 'Location', href: '#location' },
-    { label: 'Contact', href: '#contact' },
-    { label: 'About Developer', href: '#developer' },
+    { label: 'Developer', href: '#developer' },
   ],
 
   hero: {
-    eyebrow: `${P.area} · ${P.city}`,
-    headline: ['RISING IN', '_grandeur._'],
-    sub: `Premium 2, 3 & 4 BHK residences and penthouses. A ${P.developer} project.`,
-    cta: 'Explore the project ↓',
-    side: 'Stability · Grandeur · Harmony',
+    presents: `${P.developer} presents`,
+    headline: `2, 3 and 4 BHK Homes in _${P.area}_, ${P.city}`,
+    sub: `Two blocks of homes and penthouses around a green lawn, a pool and a clubhouse. Carpet area 635 – 1,680 sq.ft.`,
+    location: `${P.area} · ${P.city}`,
+    imageLine: 'Rising above the greens of Beharbari',
+    primaryCta: 'Download Brochure',
+    visitCta: 'Book a Site Visit',
+    formTitle: 'Download the brochure',
+    footnote: '*Terms apply. Taxes and statutory charges extra.',
     caption: "Artist's impression",
-    reframe: P.shortName,
   },
+
+  marquee: [
+    '2, 3 and 4 BHK residences',
+    'Infinity-edge pool',
+    'Clubhouse and banquet hall',
+    'Green lawn and amphitheatre',
+    'RERA registered',
+    'Since 2007',
+    '24×7 security and power backup',
+    'Minutes from schools and hospitals',
+  ],
+
+  trust: [
+    { value: 18, suffix: '', label: 'Completed projects' },
+    { value: 6100, suffix: '+', label: 'Happy residents' },
+    { value: 34.5, suffix: ' lakh', label: 'Sq.ft built', decimals: 1 },
+    { value: 2007, suffix: '', label: 'Building since', plain: true },
+  ],
 
   overview: {
-    label: '01 / Overview',
-    location: `${P.area} · ${P.city} / ${P.state}`,
-    headline: ['ROOTED IN', '_peace._'],
-    lead: `${P.area}'s first thoughtfully designed, health-centric community.`,
-    body: `Two blocks of 2, 3 and 4 BHK homes and penthouses around a green lawn, an infinity-edge pool and a clubhouse. Amenities are spread across three zones, so every pace of life has its place.`,
-    stats: [
-      { values: [2], unit: 'blocks', label: 'Block A & Block B' },
-      { values: [2, 4], joiner: '–', unit: 'BHK', label: 'Plus penthouses' },
-      { values: [635, 1680], joiner: '–', unit: 'sq.ft', label: 'Carpet area' },
-      { values: [11], unit: 'floors', label: 'Block B, rising highest' },
+    eyebrow: `${P.area} · ${P.city}`,
+    title: 'A greener way to live in _Beharbari_',
+    body: `${P.area}'s first thoughtfully designed, health-centric community. Children play in sight of home, evenings are spent by the water, and schools, hospitals and markets are minutes away.`,
+    personas: [
+      { kicker: 'For families', title: 'Celebrate', body: 'A clubhouse and banquet hall, an amphitheatre under the sky and a grand lift lobby to welcome guests home.', tone: 'dark' },
+      { kicker: 'For children', title: 'Play', body: "A safe, landscaped play area and an open green lawn — always in view of home.", tone: 'image', image: 'kids-play-day' },
+      { kicker: 'For wellness', title: 'Unwind', body: 'An infinity-edge pool, a garden-facing gym and an open-air workout zone, steps from your door.', tone: 'terra' },
     ],
+    stats: [
+      { value: '2', unit: 'blocks', label: 'Block A and Block B' },
+      { value: '2 – 4', unit: 'BHK', label: 'Plus penthouses' },
+      { value: '635 – 1,680', unit: 'sq.ft', label: 'Carpet area' },
+      { value: '11', unit: 'floors', label: 'Block B, rising highest' },
+    ],
+    cta: 'Book a Site Visit',
   },
 
-  perspective: {
-    eyebrow: 'Through the wheel of time',
-    headline: ['Every chakra', '_aligns._'],
-    sub: 'Life moves in a sacred circle. At its centre lies balance.',
-    cue: 'Scroll to explore ↓',
+  floorPlans: {
+    eyebrow: 'Floor plans and price',
+    title: 'Homes planned for _light and air_',
+    body: 'The master plan and every unit type across Block A and Block B. Areas are in square feet. Tap “Reveal price” for the current price of any unit.',
+    specsTitle: 'Specifications',
   },
 
   amenities: {
-    label: '02 / Amenities',
-    headline: ['LUXURY AT', '_the peak._'],
+    eyebrow: 'Amenities',
+    title: 'Every day, _well spent_',
     body: 'A clubhouse for celebrations, a pool for slow evenings, and open lawns where children grow up outdoors.',
     groups: [
       {
@@ -88,10 +96,10 @@ export const site = {
         items: [
           { icon: 'pool', name: 'Swimming pool', note: 'Infinity edge with sun deck' },
           { icon: 'gym', name: 'Gymnasium', note: 'Garden-facing fitness centre' },
-          { icon: 'club', name: 'Clubhouse', note: 'Community & banquet hall' },
+          { icon: 'club', name: 'Clubhouse', note: 'Community and banquet hall' },
           { icon: 'games', name: 'Indoor games', note: 'Billiards, table tennis, chess' },
           { icon: 'kids', name: "Kids' play area", note: 'Safe, landscaped and in view' },
-          { icon: 'lawn', name: 'Green lawn', note: 'Stepping stones & planters' },
+          { icon: 'lawn', name: 'Green lawn', note: 'Stepping stones and planters' },
           { icon: 'opengym', name: 'Open gym', note: 'Workouts in fresh air' },
           { icon: 'amphi', name: 'Amphitheatre', note: 'Gatherings under the sky' },
           { icon: 'lobby', name: 'Grand lift lobby', note: 'OTIS / KONE / Schindler lifts' },
@@ -101,8 +109,8 @@ export const site = {
       {
         title: 'Everyday essentials',
         items: [
-          { icon: 'security', name: '24×7 manned security', note: 'Guarded entry & exit' },
-          { icon: 'power', name: '24×7 power backup', note: 'For common areas & homes' },
+          { icon: 'security', name: '24×7 manned security', note: 'Guarded entry and exit' },
+          { icon: 'power', name: '24×7 power backup', note: 'For common areas and homes' },
           { icon: 'cctv', name: 'CCTV surveillance', note: 'Across common areas' },
           { icon: 'rain', name: 'Rainwater harvesting', note: 'Built for the monsoon' },
           { icon: 'stp', name: 'Sewage treatment plant', note: 'On-site STP' },
@@ -112,43 +120,37 @@ export const site = {
     ],
   },
 
+  tower: {
+    eyebrow: 'Interactive 3D model',
+    title: 'Explore the homes _in 3D_',
+    body: 'Drag to rotate the model. Change the view or select an amenity to explore the community.',
+    cta: 'Download Brochure',
+    fallbackNote: 'Explore the artist impressions in the gallery below.',
+  },
+
   gallery: {
-    label: '03 / Gallery',
-    headline: ['IMAGINE', '_living here._'],
-    body: (n: number) => `${n} views of the project. Open any image in full.`,
+    eyebrow: 'Gallery',
+    title: 'A closer _look_',
     filters: [
-      { id: 'all', label: 'All images' },
+      { id: 'all', label: 'All' },
       { id: 'interiors', label: 'Interiors' },
       { id: 'outdoors', label: 'Outdoors' },
       { id: 'living', label: 'Living' },
       { id: 'top', label: 'Top views' },
     ],
-    viewFull: 'View full image ↗',
-  },
-
-  floorPlans: {
-    label: '04 / Floor Plans',
-    headline: ['YOUR SPACE.', '_Your way._'],
-    body: 'The master plan, every floor plate and every unit type across Block A and Block B. Areas are in square feet.',
-    specsTitle: 'Specifications',
   },
 
   location: {
-    label: '05 / Location',
-    headline: ['EVERYTHING', '_within reach._'],
+    eyebrow: 'Location',
+    title: 'Close to _everything that matters_',
     body: 'Sonkuchi Path, Beharbari, Lalmati. Schools, hospitals, showrooms and markets are minutes from home.',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
+    directionsLink: 'https://www.google.com/maps/dir/?api=1&destination=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
   },
 
   contact: {
-    label: '06 / Contact',
-    headline: ['A NEW DIRECTION', '_for living._'],
-    body: `Book a site visit or ask for prices and availability at ${P.name}. Our team will get back to you.`,
-    cta: 'Chat on WhatsApp',
-    whatsappMessage: `Hello! I'd like to know more about ${P.name}.`,
-    phone: '98540 41000',
-    phoneHref: 'tel:+919854041000',
-    email: 'marketing@subhamgroup.com',
+    phone: projectConfig.PHONE,
+    email: projectConfig.EMAIL,
     web: 'subhamgroup.com',
     siteAddress: ['Sonkuchi Path, Beharbari, Lalmati', 'Guwahati, Assam — 781029'],
     corporateAddress: ['Subham Velocity, 5th Floor, Hanuram Boro Path', 'GS Road, Guwahati — 781005'],
@@ -156,29 +158,36 @@ export const site = {
       { label: 'Facebook', handle: '@subhamgroup', href: 'https://www.facebook.com/subhamgroup' },
       { label: 'Instagram', handle: 'subhamgroupguwahati', href: 'https://www.instagram.com/subhamgroupguwahati' },
     ],
-    rera: 'RERAA KM 281 of 2026–2027',
-    reraHref: 'https://www.rera.assam.gov.in',
+    rera: projectConfig.RERA,
+    reraHref: projectConfig.RERA_URL,
+  },
+
+  finalCta: {
+    eyebrow: 'Enquire',
+    title: 'Book your _site visit_',
+    body: 'Share your details and our team will send the price list and brochure, and fix a site visit at a time that suits your family.',
+    perks: projectConfig.PERKS,
   },
 
   developer: {
-    label: '07 / About Developer',
-    headline: ['ROOTED IN TRUST.', '_Driven by excellence._'],
+    eyebrow: 'The legacy since 2007',
+    title: 'Time-Bound Projects and Timeless _Relationships_',
     body: `Since 2007, ${P.developer} has been a premier real estate builder and developer based out of Guwahati. Known for innovation, time-bound projects and after-sale customer service, the team works with a passion to deliver the utmost value to residential and commercial property investors and end customers — keeping the promise of its motto: time-bound projects and timeless relationships.`,
     stats: [
-      { value: '18', label: 'Completed projects' },
-      { value: '34.5 Lac', label: 'Sq.ft constructed' },
-      { value: '8.75 Lac', label: 'Sq.ft ongoing' },
-      { value: '6100+', label: 'Happy residents' },
+      { value: 18, suffix: '', label: 'Completed projects' },
+      { value: 34.5, suffix: ' Lac', label: 'Sq.ft constructed', decimals: 1 },
+      { value: 8.75, suffix: ' Lac', label: 'Sq.ft ongoing', decimals: 2 },
+      { value: 6100, suffix: '+', label: 'Happy residents' },
     ],
     note: {
-      title: "Developer's note",
+      title: "Chairman's note",
       quote:
         'Growing up, we all had the opportunity to enjoy nature at its best. Open fields, fresh air, and tons of playtime with our friends. That’s why we wanted to gift families a present that would be enjoyed by their loved ones for years to come — ample space, airy abodes, and a club where merry times become merrier.',
       name: 'Mr. Kailash Chandra Lohia',
       role: 'Chairman',
     },
     architect: {
-      name: 'Banka & Associates',
+      name: 'Banka and Associates',
       body: 'A trusted one-window architectural practice in Guwahati for 27 years, known for top-quality design, striking aesthetics and timely delivery.',
     },
     projects: [

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { config } from '@/content/site';
+import { projectConfig } from '@/src/config/project';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [{ url: config.siteUrl, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 }];
+  return [{ url: projectConfig.SITE_URL, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 }];
 }

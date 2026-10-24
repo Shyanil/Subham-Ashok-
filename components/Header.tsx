@@ -1,128 +1,79 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from '@/lib/gsap';
-import { site, project } from '@/content/site';
-import { useMotion, useScroll } from '@/lib/store';
+import { useEffect, useState } from 'react';
+import { project, site } from '@/content/site';
+import { LeadButton } from './lead/LeadButton';
+import { CloseIcon } from './icons';
 
+/** White sticky header with the brown logo plaque, anchors and brochure access. */
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [open, setOpen] = useState(false);
-  const lock = useScroll((s) => s.lock);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const toggleRef = useRef<HTMLButtonElement>(null);
-  const progressRef = useRef<HTMLSpanElement>(null);
+  const [menu, setMenu] = useState(false);
 
-  // Blur background once scrolled; tuck away while scrolling down.
   useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      setHidden(y > last && y > window.innerHeight * 0.8);
-      last = y;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (progressRef.current) progressRef.current.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Mobile menu: lock scroll, stagger links in, close on Escape, keep focus inside.
-  useEffect(() => {
-    const menu = menuRef.current;
-    if (!open || !menu) return;
-    lock(true);
-    const links = menu.querySelectorAll<HTMLElement>('a, button');
-    links[0]?.focus();
-    if (!useMotion.getState().reduced) {
-      gsap.fromTo(
-        menu.querySelectorAll('.menu-link'),
-        { yPercent: 135, y: 0 },
-        { yPercent: 0, duration: 1, ease: 'expo.out', stagger: 0.06, delay: 0.1 },
-      );
-    }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-      if (e.key === 'Tab') {
-        const first = toggleRef.current!;
-        const last = links[links.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
+    if (!menu) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false);
     document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      lock(false);
-    };
-  }, [open, lock]);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menu]);
 
   return (
-    <header className="site-header" data-scrolled={scrolled || open} data-hidden={hidden && !open}>
-      <span ref={progressRef} className="site-header__progress" aria-hidden="true" />
-      <div className="site-header__bar">
-        <a href="#top" className="brand" aria-label={`${project.name} — back to top`} onClick={() => setOpen(false)}>
+    <header className="site-header sticky top-0 z-50 h-[68px] border-b border-line/80 bg-white" data-track-section="header">
+      <div className="container-x flex h-full items-center gap-3">
+        <a
+          href="#top"
+          className="-mb-3 flex h-[calc(100%+12px)] shrink-0 items-center rounded-b-2xl bg-brand px-4 shadow-[0_10px_24px_-12px_rgb(46_17_12/0.6)]"
+          aria-label={`${project.name}, back to top`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ashok-heights-logo.webp" alt="" className="brand__logo" width={480} height={210} />
+          <img src="/brand/ashok-heights-logo.webp" alt="" width={480} height={210} className="h-10 w-auto sm:h-11" />
         </a>
 
-        <nav aria-label="Main" className="hidden xl:block">
-          <ul className="flex items-center gap-7">
-            {site.nav.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} className="label link-underline">
-                  {item.label}
+        <nav aria-label="Sections" className="ml-6 hidden xl:block">
+          <ul className="flex items-center gap-1">
+            {site.nav.map((n) => (
+              <li key={n.href}>
+                <a href={n.href} className="rounded-full px-3.5 py-2.5 text-[14.5px] font-medium text-ink/80 transition-colors hover:bg-cream hover:text-brand">
+                  {n.label}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          className="menu-toggle xl:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span />
-          <span />
-        </button>
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+          <LeadButton intent="brochure" source="header" className="btn btn--sm whitespace-nowrap !shadow-none">
+            <span className="sm:hidden">Brochure</span><span className="hidden sm:inline">Download Brochure</span>
+          </LeadButton>
+          <button
+            type="button"
+            className="grid size-11 place-items-center rounded-full text-brand hover:bg-cream xl:hidden"
+            aria-expanded={menu}
+            aria-controls="mobile-nav"
+            aria-label={menu ? 'Close menu' : 'Open menu'}
+            onClick={() => setMenu((m) => !m)}
+          >
+            {menu ? (
+              <CloseIcon />
+            ) : (
+              <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h10" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
-      <div
-        ref={menuRef}
-        id="mobile-menu"
-        className="mobile-menu xl:hidden"
-        data-open={open}
-        hidden={!open}
-      >
-        <nav aria-label="Mobile">
-          <ul className="space-y-3">
-            {site.nav.map((item, i) => (
-              <li key={item.href} className="overflow-hidden">
-                <a href={item.href} className="menu-link" onClick={() => setOpen(false)}>
-                  <span className="label mr-4 text-[var(--gold)]">{String(i + 1).padStart(2, '0')}</span>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <p className="label mt-auto text-[var(--muted)]">
-          {project.area} · {project.city}
-        </p>
-      </div>
+      <nav id="mobile-nav" aria-label="Sections" hidden={!menu} className="border-b border-line bg-white shadow-lg xl:hidden">
+        <ul className="container-x grid grid-cols-2 gap-1 py-3 sm:grid-cols-3">
+          {site.nav.map((n) => (
+            <li key={n.href}>
+              <a href={n.href} onClick={() => setMenu(false)} className="block min-h-[44px] rounded-xl px-3 py-3 font-medium text-ink hover:bg-cream">
+                {n.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

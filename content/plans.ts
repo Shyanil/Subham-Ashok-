@@ -37,15 +37,15 @@ export const units: Unit[] = [
 export type Floor = { id: string; block: 'A' | 'B'; title: string; note?: string; image: string };
 
 export const floors: Floor[] = [
-  { id: 'fa-1', block: 'A', title: '1st – 5th floor', note: '2 & 3 BHK', image: 'floor-15-l' },
+  { id: 'fa-1', block: 'A', title: '1st – 5th floor', note: '2 and 3 BHK', image: 'floor-15-l' },
   { id: 'fa-6', block: 'A', title: '6th floor', note: 'Penthouses', image: 'floor-15-r' },
-  { id: 'fb-1', block: 'B', title: '1st floor', note: 'Clubhouse, pool & gym', image: 'floor-16' },
+  { id: 'fb-1', block: 'B', title: '1st floor', note: 'Clubhouse, pool and gym', image: 'floor-16' },
   { id: 'fb-2-t1', block: 'B', title: '2nd floor', note: 'Tower 1', image: 'floor-17-l' },
   { id: 'fb-2-t2', block: 'B', title: '2nd floor', note: 'Tower 2', image: 'floor-17-r' },
-  { id: 'fb-3-t1', block: 'B', title: '3rd, 4th, 5th, 6th, 8th & 10th', note: 'Tower 1', image: 'floor-18-l' },
-  { id: 'fb-3-t2', block: 'B', title: '3rd, 4th, 5th, 6th, 8th & 10th', note: 'Tower 2', image: 'floor-18-r' },
-  { id: 'fb-7-t1', block: 'B', title: '7th & 9th floor', note: 'Tower 1', image: 'floor-19-l' },
-  { id: 'fb-7-t2', block: 'B', title: '7th & 9th floor', note: 'Tower 2', image: 'floor-19-r' },
+  { id: 'fb-3-t1', block: 'B', title: '3rd, 4th, 5th, 6th, 8th and 10th', note: 'Tower 1', image: 'floor-18-l' },
+  { id: 'fb-3-t2', block: 'B', title: '3rd, 4th, 5th, 6th, 8th and 10th', note: 'Tower 2', image: 'floor-18-r' },
+  { id: 'fb-7-t1', block: 'B', title: '7th and 9th floor', note: 'Tower 1', image: 'floor-19-l' },
+  { id: 'fb-7-t2', block: 'B', title: '7th and 9th floor', note: 'Tower 2', image: 'floor-19-r' },
   { id: 'fb-11-t1', block: 'B', title: '11th floor', note: 'Tower 1', image: 'floor-20-l' },
   { id: 'fb-11-t2', block: 'B', title: '11th floor', note: 'Tower 2 · Penthouses', image: 'floor-20-r' },
 ];
@@ -64,27 +64,26 @@ export const masterPlanLegend = [
   'Planters',
 ];
 
-export const specifications = [
-  { k: 'Structure', v: 'RCC frame with earthquake-resistant structure.' },
-  { k: 'Internal walls', v: 'Wall putty.' },
-  { k: 'External walls', v: 'High-quality waterproof paint.' },
-  { k: 'Kitchen', v: 'Wall tiles (300 × 600 mm) dado up to 2 ft above granite counter slab, stainless-steel sink, provision for exhaust fan and water purifier.' },
-  { k: 'Toilet', v: 'Anti-skid floor tiles, ceramic wall tiles up to 7 ft, provision for exhaust fan.' },
-  { k: 'Sanitary & fittings', v: 'Basins and WCs of reputed brands, CP fittings of ISI quality.' },
-  { k: 'Flooring', v: '600 × 600 mm vitrified tiles in all rooms, drawing and dining.' },
-  { k: 'Doors & windows', v: 'Timber-framed flush doors in all rooms, toilets and kitchen; aluminium windows.' },
-  { k: 'Electrical', v: 'Adequate electrical points.' },
-  { k: 'Lift', v: 'Automatic passenger lifts by OTIS / KONE / Schindler or equivalent.' },
-  { k: 'Fire', v: 'Firefighting arrangement as per fire safety norms.' },
-];
-
 export const keyDistances = [
   { group: 'Education', items: [['International School Guwahati', '1.1 km'], ['NPS International School', '3.8 km'], ['Royal Global University', '5.3 km'], ['Delhi Public School', '6.3 km']] },
   { group: 'Hospitals', items: [['Critical Care Hospital', '2.3 km'], ['Health City Hospital', '5.1 km'], ['Ayursundra Superspeciality Hospital', '6.2 km'], ['Boragaon ESIS Dispensary', '8.6 km'], ['Excel Care Hospital', '9.9 km']] },
-  { group: 'Sports & leisure', items: [['Hockey Stadium', '1.3 km'], ['Indira Gandhi Athletic Stadium', '2.1 km'], ['Sarusajai Sports Complex', '2.1 km']] },
-  { group: 'Shopping & markets', items: [['Reliance Smart Bazaar', '1.0 km'], ['Zudio', '3.0 km'], ['Unity Mall', '5.2 km']] },
+  { group: 'Sports and leisure', items: [['Hockey Stadium', '1.3 km'], ['Indira Gandhi Athletic Stadium', '2.1 km'], ['Sarusajai Sports Complex', '2.1 km']] },
+  { group: 'Shopping and markets', items: [['Reliance Smart Bazaar', '1.0 km'], ['Zudio', '3.0 km'], ['Unity Mall', '5.2 km']] },
   { group: 'Showrooms', items: [['Mercedes-Benz Axom Motors', '1.0 km'], ['Audi Guwahati', '1.0 km'], ['Royal Enfield Showroom', '1.4 km'], ['Tata Motors', '1.6 km'], ['Gargya Toyota', '4.3 km'], ['BMW Titanium Motorrad', '4.7 km']] },
   { group: 'Banks', items: [['HDFC Bank', '2.5 km'], ['SBI Bank', '2.9 km'], ['Central Bank of India', '3.2 km']] },
   { group: 'Civic', items: [['Basistha Police Station', '2.5 km'], ['Basistha Post Office', '3.0 km'], ['Dist. Transport Office, Kamrup', '4.3 km'], ['Garchuk Police Station', '6.6 km'], ['High Court', '12 km']] },
   { group: 'Temples', items: [['Tirupati Sri Balaji Temple', '5.3 km']] },
 ] as const;
+
+/** Pixel size of the extracted brochure images, so next/image can reserve space (no CLS). */
+export function planSize(image: string): { width: number; height: number } {
+  if (image === 'master-plan') return { width: 1854, height: 1600 };
+  if (image === 'floor-16') return { width: 2958, height: 1200 };
+  if (image.startsWith('unit-')) return { width: 2958, height: 2062 };
+  return { width: 1972, height: 1600 };
+}
+
+/** Configuration value for the lead form ("Looking for"). */
+export const unitConfiguration = (u: Unit) => (u.penthouse ? 'Penthouse' : u.type);
+export const unitLabel = (u: Unit) =>
+  `Block ${u.block} · ${u.type}${u.penthouse ? ' penthouse' : ''} · ${u.carpet.toLocaleString('en-IN')} sq.ft carpet`;

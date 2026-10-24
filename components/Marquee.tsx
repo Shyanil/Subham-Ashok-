@@ -1,22 +1,22 @@
-import { project } from '@/content/site';
+import { site } from '@/content/site';
+import { SparkIcon } from './icons';
 
-const WORDS = ['Stability', 'Grandeur', 'Connection', project.area, 'Calm', 'Harmony'];
-
-/** Slow editorial ticker between chapters (CSS-only, pauses with reduced motion). */
+/** Dark band with an endlessly scrolling line of gold caps (CSS only; stops under reduced motion). */
 export function Marquee() {
+  const items = site.marquee;
   const row = (hidden: boolean) => (
-    <div className="marquee__row" aria-hidden={hidden || undefined}>
-      {WORDS.map((w, i) => (
-        <span key={i} className="marquee__item">
-          <span className={i % 2 ? 'marquee__outline' : 'accent'}>{w}</span>
-          <span className="marquee__dot" aria-hidden="true">✦</span>
-        </span>
+    <ul className="flex shrink-0 items-center" aria-hidden={hidden || undefined}>
+      {items.map((t) => (
+        <li key={t} className="flex items-center gap-8 px-8 text-[12px] font-bold uppercase tracking-[0.32em] text-gold">
+          {t}
+          <SparkIcon className="size-3 text-terra" />
+        </li>
       ))}
-    </div>
+    </ul>
   );
   return (
-    <div className="marquee" role="presentation">
-      <div className="marquee__track">
+    <div className="mt-3 overflow-hidden border-y border-gold/20 bg-deep py-4 sm:mt-4" aria-label="Project highlights">
+      <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {row(false)}
         {row(true)}
       </div>

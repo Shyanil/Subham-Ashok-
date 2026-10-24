@@ -1,56 +1,35 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { objectPosition } from '@/lib/media';
-import { useLightbox, useScroll } from '@/lib/store';
+import { useEffect, useRef } from 'react';
+import type { MediaItem } from '@/lib/media';
+import { CloseIcon } from './icons';
 
-type Orientation = 'horizontal' | 'vertical';
-const pad = (n: number) => String(n).padStart(2, '0');
+type Props = { items: MediaItem[]; index: number | null; onIndex: (i: number) => void; onClose: () => void };
 
-/**
- * Full-image viewer on a native <dialog> (top-layer, page made inert) with an
- * explicit focus trap, arrow keys, and a Horizontal / Vertical framing toggle.
- * Vertical shows a portrait crop that can be dragged to pan.
- */
-export function Lightbox() {
-  const { images, index, open, close, setIndex, returnFocus } = useLightbox();
-  const lock = useScroll((s) => s.lock);
-  const dialog = useRef<HTMLDialogElement>(null);
-  const [orientation, setOrientation] = useState<Orientation>('horizontal');
-  const [pan, setPan] = useState(0.5);
-  const drag = useRef<{ x: number; pan: number } | null>(null);
-  const n = images.length;
-  const item = images[index];
+/** Full-image viewer on a native <dialog>: arrows, swipe, Esc, focus trapped to its three buttons. */
+export function Lightbox({ items, index, onIndex, onClose }: Props) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const touch = useRef<number | null>(null);
+  const n = items.length;
+  const item = index === null ? null : items[index];
 
   useEffect(() => {
-    const d = dialog.current;
+    const d = ref.current;
     if (!d) return;
-    if (open && !d.open) {
-      d.showModal();
-      lock(true);
-    } else if (!open && d.open) {
-      d.close();
-    }
-  }, [open, lock]);
+    if (item && !d.open) d.showModal();
+    else if (!item && d.open) d.close();
+  }, [item]);
 
-  useEffect(() => setPan(item?.mobileFocus[0] ?? 0.5), [item]);
-
-  const onClose = () => {
-    lock(false);
-    close();
-    returnFocus?.focus?.({ preventScroll: true });
-  };
-
-  const step = (d: number) => setIndex(((index + d) % n + n) % n);
+  const step = (dir: number) => index !== null && onIndex((index + dir + n) % n);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
     if (e.key === 'ArrowRight') step(1);
     else if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'Tab') {
-      const focusables = dialog.current!.querySelectorAll<HTMLElement>('button:not([disabled])');
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
+      const nodes = ref.current!.querySelectorAll<HTMLElement>('button');
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -63,80 +42,48 @@ export function Lightbox() {
 
   return (
     <dialog
-      ref={dialog}
+      ref={ref}
       className="lightbox"
-      aria-label={item ? `Full image: ${item.title}` : 'Full image'}
+      aria-label={item ? `Image: ${item.title}` : 'Image viewer'}
       onClose={onClose}
       onCancel={(e) => {
         e.preventDefault();
         onClose();
       }}
       onKeyDown={onKeyDown}
-      onClick={(e) => e.target === dialog.current && onClose()}
     >
-      {open && item && (
-        <div className="lightbox__inner">
-          <div className="lightbox__top">
-            <p className="label text-[var(--gold)]">
-              {pad(index + 1)} / {pad(n)}
+      {item && index !== null && (
+        <div
+          className="flex h-full flex-col text-cream"
+          onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
+          onTouchEnd={(e) => {
+            if (touch.current === null) return;
+            const dx = e.changedTouches[0].clientX - touch.current;
+            if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
+            touch.current = null;
+          }}
+        >
+          <div className="flex items-center justify-between p-3 sm:p-4">
+            <p className="tabular text-sm text-cream/80">
+              {index + 1} / {n}
             </p>
-            <div className="lightbox__toggle" role="group" aria-label="Framing">
-              {(['horizontal', 'vertical'] as const).map((o) => (
-                <button key={o} type="button" aria-pressed={orientation === o} onClick={() => setOrientation(o)} className="label">
-                  {o === 'horizontal' ? 'Horizontal' : 'Vertical'}
-                </button>
-              ))}
-            </div>
-            <button type="button" className="label link-underline" onClick={onClose} autoFocus>
-              Close ×
+            <button type="button" onClick={onClose} className="grid size-11 place-items-center rounded-full bg-cream/10 hover:bg-cream/20" aria-label="Close" autoFocus>
+              <CloseIcon />
             </button>
           </div>
-
-          <div
-            className="lightbox__stage"
-            data-orientation={orientation}
-            data-cursor={orientation === 'vertical' ? 'Drag' : undefined}
-            onPointerDown={(e) => {
-              if (orientation !== 'vertical') return;
-              drag.current = { x: e.clientX, pan };
-              (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-            }}
-            onPointerMove={(e) => {
-              const d = drag.current;
-              if (!d) return;
-              const w = (e.currentTarget as HTMLElement).clientWidth * 2;
-              setPan(Math.max(0, Math.min(1, d.pan - (e.clientX - d.x) / w)));
-            }}
-            onPointerUp={() => (drag.current = null)}
-          >
-            <div className="lightbox__frame">
-              <Image
-                key={item.slug}
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="100vw"
-                placeholder="blur"
-                blurDataURL={item.blurDataURL}
-                className="lightbox__img"
-                style={{
-                  objectFit: orientation === 'horizontal' ? 'contain' : 'cover',
-                  objectPosition: orientation === 'vertical' ? `${pan * 100}% 50%` : objectPosition([0.5, 0.5]),
-                }}
-              />
-            </div>
+          <div className="relative min-h-0 flex-1" onClick={(e) => e.target === e.currentTarget && onClose()}>
+            <Image key={item.slug} src={item.src} alt={item.alt} fill sizes="100vw" className="object-contain" placeholder="blur" blurDataURL={item.blurDataURL} />
           </div>
-
-          <div className="lightbox__bottom">
+          <div className="flex items-center justify-between gap-3 p-3 sm:p-4">
             <div>
-              <p className="lightbox__title">{item.title}</p>
-              <p className="label mt-2 text-[var(--muted)]">Artist&apos;s impression</p>
+              <p className="font-serif text-xl !text-cream">{item.title}</p>
+              <p className="text-xs text-cream/70">Artist&apos;s impression</p>
             </div>
             <div className="flex gap-2">
-              <button type="button" className="icon-btn" onClick={() => step(-1)} aria-label="Previous image">
+              <button type="button" onClick={() => step(-1)} className="grid size-11 place-items-center rounded-full bg-cream/10 text-xl hover:bg-cream/20" aria-label="Previous image">
                 ←
               </button>
-              <button type="button" className="icon-btn" onClick={() => step(1)} aria-label="Next image">
+              <button type="button" onClick={() => step(1)} className="grid size-11 place-items-center rounded-full bg-cream/10 text-xl hover:bg-cream/20" aria-label="Next image">
                 →
               </button>
             </div>
