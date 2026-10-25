@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent, type ReactNode } from 'react';
 import { leadSchema, priorityLeadSchema, type LeadInput } from '@/lib/lead';
 import { getAttribution } from '@/lib/attribution';
 import { track } from '@/lib/analytics';
@@ -20,6 +20,8 @@ type Props = {
   submitLabel?: string;
   /** Tone of the surrounding surface, so labels keep contrast. */
   tone?: 'light' | 'dark';
+  /** Floating priority form only: control rendered at the end of the field row (the close button). */
+  trailing?: ReactNode;
   onSuccess?: () => void;
 };
 
@@ -46,6 +48,7 @@ export function LeadForm({
   defaultConfiguration = '',
   submitLabel = 'Download Brochure',
   tone = 'light',
+  trailing,
   onSuccess,
 }: Props) {
   const id = useId();
@@ -177,7 +180,7 @@ export function LeadForm({
       className={`relative ${tone === 'dark' ? 'form-dark' : ''} ${floatingPriority ? 'priority-float' : ''}`}
       aria-describedby={errors.form ? `${id}-form-err` : undefined}
     >
-      <div className={row ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start' : floatingPriority ? 'grid grid-cols-[repeat(5,minmax(0,1fr))_auto] items-start gap-2' : priority ? 'grid gap-3 lg:grid-cols-5' : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`}>
+      <div className={row ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start' : floatingPriority ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3' : priority ? 'grid gap-3 lg:grid-cols-5' : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`}>
         <div className="field">
           <label htmlFor={nameId}>
             Full name <span className="text-terra" aria-hidden="true">*</span>
@@ -300,10 +303,11 @@ export function LeadForm({
         )}
 
         {(row || floatingPriority) && (
-          <div className={floatingPriority ? 'pt-[16px]' : 'lg:pt-[27px]'}>
+          <div className={floatingPriority ? 'pt-[17px]' : 'lg:pt-[27px]'}>
             <SubmitButton sending={status === 'sending'} label={submitLabel} />
           </div>
         )}
+        {floatingPriority && trailing && <div className="pt-[17px]">{trailing}</div>}
       </div>
 
       {/* Honeypot — hidden from people and assistive tech. */}
@@ -311,7 +315,7 @@ export function LeadForm({
         <input id={`${id}-website`} name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className={floatingPriority ? 'mt-2' : 'mt-3.5'}>
+      <div className={floatingPriority ? 'mt-1.5' : 'mt-3.5'}>
         <label htmlFor={consentId} className="consent">
           <input
             id={consentId}

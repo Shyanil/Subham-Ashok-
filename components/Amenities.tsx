@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { site } from '@/content/site';
-import { getImage } from '@/lib/media';
+import { getImage, objectPosition } from '@/lib/media';
 import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
 import { PauseIcon, PlayIcon, SparkIcon } from './icons';
@@ -18,6 +18,36 @@ const SLIDES = [
 ];
 const MS = 5000;
 
+/** Closest project render for each lifestyle amenity (by icon key). */
+const AMENITY_IMAGE: Record<string, string> = {
+  pool: 'swimming-pool-view',
+  gym: 'gym',
+  club: 'club-house',
+  games: 'indoor-games',
+  kids: 'kids-play-day',
+  lawn: 'aerial-day-view',
+  opengym: 'kids-play-day',
+  amphi: 'aerial-night-view',
+  lobby: 'lift-lobby',
+  parking: 'gate-view',
+};
+
+/** Pointer tilt via CSS variables (--rx/--ry/--px/--py); styles live in globals.css under .amenity-card. */
+const onTilt = (e: PointerEvent<HTMLElement>) => {
+  if (e.pointerType !== 'mouse') return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  el.style.setProperty('--rx', `${(-y * 9).toFixed(2)}deg`);
+  el.style.setProperty('--ry', `${(x * 11).toFixed(2)}deg`);
+  el.style.setProperty('--px', x.toFixed(3));
+  el.style.setProperty('--py', y.toFixed(3));
+};
+const offTilt = (e: PointerEvent<HTMLElement>) => {
+  for (const p of ['--rx', '--ry', '--px', '--py']) e.currentTarget.style.removeProperty(p);
+};
+
 /** Autoplay image showcase with swipeable amenity card carousels. */
 export function Amenities() {
   const a = site.amenities;
@@ -28,6 +58,14 @@ export function Amenities() {
   const stage = useRef<HTMLDivElement>(null);
   const rails = useRef<Record<string, HTMLUListElement | null>>({});
   const playing = !paused && visible && !reduced;
+  // Tapped card (touch has no hover, so a tap lifts and highlights it).
+  const [active, setActive] = useState<string | null>(null);
+  const tilt = (key: string) => ({
+    'aria-pressed': active === key,
+    onClick: () => setActive((k) => (k === key ? null : key)),
+    onPointerMove: onTilt,
+    onPointerLeave: offTilt,
+  });
 
   const scrollAmenities = (group: string, direction: -1 | 1) => {
     const rail = rails.current[group];
@@ -152,37 +190,89 @@ export function Amenities() {
           </div>
         </div>
 
-        {a.groups.map((g) => (
-          <div key={g.title} className="mt-14">
-            <div className="flex items-center justify-between gap-4">
-              <p className="kicker !text-muted" data-reveal>
-                {g.title} · {g.items.length}
-              </p>
-              <div className="flex gap-2" aria-label={`${g.title} carousel controls`}>
-                <button type="button" onClick={() => scrollAmenities(g.title, -1)} aria-label={`Previous ${g.title} amenities`} className="grid size-11 place-items-center rounded-full border border-line bg-white text-brand transition-colors hover:bg-cream">
-                  <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-                </button>
-                <button type="button" onClick={() => scrollAmenities(g.title, 1)} aria-label={`Next ${g.title} amenities`} className="grid size-11 place-items-center rounded-full border border-line bg-white text-brand transition-colors hover:bg-cream">
-                  <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-                </button>
-              </div>
-            </div>
-            <ul ref={(el) => { rails.current[g.title] = el; }} aria-label={`${g.title} amenities`} className="-mx-4 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0">
-              {g.items.map((it, index) => (
-                <li key={it.name} className={`flex min-h-[230px] w-[min(78vw,280px)] shrink-0 snap-start flex-col rounded-[2rem] border p-6 transition-colors sm:w-[280px] ${index === 0 ? 'border-deep bg-deep text-white' : 'border-line bg-cream/70 text-ink hover:bg-white'}`}>
-                  <div className="flex items-start justify-between">
-                    <span className={`grid size-12 place-items-center rounded-2xl ${index === 0 ? 'bg-white/10 text-gold' : 'bg-white text-terra'}`}>
-                      <AmenityIcon name={it.icon} className="size-6" />
-                    </span>
-                    <span className={`font-serif text-[26px] italic leading-none ${index === 0 ? 'text-gold' : 'text-terra/50'}`}>{String(index + 1).padStart(2, '0')}</span>
+        {a.groups.map((g, gi) => {
+          const gallery = gi === 0;
+          return (
+            <div key={g.title} className="mt-16">
+              <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
+                <div data-reveal>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-terra">
+                    {String(gi + 1).padStart(2, '0')} — {g.items.length} amenities
+                  </p>
+                  <h3 className="mt-2 font-serif text-[34px] leading-none sm:text-[44px]">
+                    {gallery ? g.title : <em className="text-terra">{g.title}</em>}
+                  </h3>
+                </div>
+                {gallery && (
+                  <div className="flex gap-2" aria-label={`${g.title} carousel controls`}>
+                    <button type="button" onClick={() => scrollAmenities(g.title, -1)} aria-label={`Previous ${g.title} amenities`} className="grid size-10 place-items-center rounded-full border border-line text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white">
+                      <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                    </button>
+                    <button type="button" onClick={() => scrollAmenities(g.title, 1)} aria-label={`Next ${g.title} amenities`} className="grid size-10 place-items-center rounded-full border border-line text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white">
+                      <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
                   </div>
-                  <p className="mt-auto pt-8 font-serif text-[29px] leading-none">{it.name}</p>
-                  <p className={`mt-2 text-[14px] leading-snug ${index === 0 ? 'text-white/75' : 'text-muted'}`}>{it.note}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                )}
+              </div>
+
+              {gallery ? (
+                <ul ref={(el) => { rails.current[g.title] = el; }} aria-label={`${g.title} amenities`} className="amenity-rail -mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-10 pt-8 [scrollbar-width:none] sm:mx-0 sm:px-1">
+                  {g.items.map((it, index) => {
+                    const img = getImage(AMENITY_IMAGE[it.icon] ?? 'aerial-day-view');
+                    const key = `${gi}-${index}`;
+                    return (
+                      <li key={it.name} className="w-[min(76vw,290px)] shrink-0 snap-center sm:w-[290px]">
+                        <button type="button" className="amenity-card group block w-full text-left" data-active={active === key} {...tilt(key)}>
+                          <span className="amenity-card__media relative block aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-tan">
+                            <Image src={img.src} alt="" fill sizes="290px" className="amenity-card__img object-cover" style={{ objectPosition: objectPosition(img.focus) }} />
+                            <span className="absolute inset-0 bg-gradient-to-t from-[#1f0b08]/70 via-transparent to-transparent" aria-hidden="true" />
+                            <span className="amenity-card__chip absolute left-4 top-4 grid size-11 place-items-center rounded-2xl bg-white/85 text-terra backdrop-blur" aria-hidden="true">
+                              <AmenityIcon name={it.icon} className="size-5" />
+                            </span>
+                            <span className="absolute right-4 top-4 font-serif text-[22px] italic leading-none text-white/90" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                            <span className="amenity-card__more absolute inset-x-4 bottom-4 text-[11px] font-bold uppercase tracking-[0.2em] text-gold">Lifestyle · Subham Ashok Heights</span>
+                          </span>
+                          <span className="amenity-card__body relative -mt-10 mx-3 block rounded-[1.25rem] border border-line bg-white px-5 pb-4 pt-4 shadow-[var(--shadow-soft)]">
+                            <span className="block font-serif text-[26px] leading-[1.05] text-ink">{it.name}</span>
+                            <span className="mt-1.5 block text-[13.5px] leading-snug text-muted">{it.note}</span>
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <ul aria-label={`${g.title} amenities`} className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
+                  {g.items.map((it, index) => {
+                    const key = `${gi}-${index}`;
+                    const feature = index === 0;
+                    // Asymmetric bento: feature tile 2×2, last tile 2 wide so no row is left with an orphan.
+                    const span = feature ? 'col-span-2 lg:row-span-2' : index === g.items.length - 1 ? 'col-span-2' : '';
+                    return (
+                      <li key={it.name} className={span}>
+                        <button
+                          type="button"
+                          className={`amenity-card amenity-tile group flex h-full w-full flex-col rounded-[1.75rem] border p-5 text-left sm:p-6 ${feature ? 'dark-card min-h-[220px] border-deep lg:min-h-[316px]' : 'min-h-[150px] border-line bg-cream/70'}`}
+                          data-active={active === key}
+                          {...tilt(key)}
+                        >
+                          <span className="flex items-start justify-between">
+                            <span className={`amenity-card__chip grid place-items-center rounded-2xl ${feature ? 'size-14 bg-white/10 text-gold' : 'size-11 bg-white text-terra shadow-[var(--shadow-soft)]'}`} aria-hidden="true">
+                              <AmenityIcon name={it.icon} className={feature ? 'size-7' : 'size-5'} />
+                            </span>
+                            <span className={`font-serif text-[20px] italic leading-none ${feature ? 'text-gold' : 'text-terra/50'}`} aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                          </span>
+                          <span className={`mt-auto block pt-6 font-serif leading-[1.05] ${feature ? 'text-[34px] text-white sm:text-[44px]' : 'text-[21px] text-ink sm:text-[24px]'}`}>{it.name}</span>
+                          <span className={`mt-1.5 block text-[13px] leading-snug ${feature ? 'text-white/75 sm:text-[15px]' : 'text-muted'}`}>{it.note}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );

@@ -50,21 +50,26 @@ export function FloatingCTA() {
 
   return (
     <div
-      className={`fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 lg:flex ${expanded ? 'w-[min(960px,calc(100vw-32px))]' : ''} ${visible ? 'opacity-100' : 'pointer-events-none opacity-0'} transition-opacity duration-300`}
+      className={`fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 lg:flex ${expanded ? 'w-[min(1240px,calc(100vw-32px))]' : ''} ${visible ? 'opacity-100' : 'pointer-events-none opacity-0'} transition-opacity duration-300`}
       data-visible={visible}
       data-track-section="floating_priority"
       aria-hidden={!visible}
       inert={!visible}
     >
       {expanded ? (
-        <div id="priority-form" role="region" aria-label="Book a Property Slot" className="max-h-[calc(100dvh-32px)] w-full overflow-y-auto rounded-xl border border-line bg-white px-3 py-2.5 shadow-[0_10px_30px_-22px_rgba(31,13,9,0.35)]">
-          <div className="mb-1.5 flex items-center justify-between gap-4">
-            <h2 className="font-serif text-[18px] leading-none text-ink">Book a Property Slot</h2>
-            <button type="button" onClick={() => { setExpanded(false); setDismissed(true); }} className="grid size-7 shrink-0 place-items-center rounded-full bg-cream text-ink hover:bg-sand" aria-label="Close property slot form">
-              <CloseIcon />
-            </button>
-          </div>
-          <LeadForm variant="floating" fields="priority" source="floating_priority" submitLabel="Book a Property Slot" />
+        <div id="priority-form" role="region" aria-label="Book a Property Slot" className="max-h-[calc(100dvh-32px)] w-full overflow-y-auto rounded-2xl border border-line bg-white px-4 pb-2.5 pt-2 shadow-[0_18px_40px_-24px_rgba(31,13,9,0.45)] xl:px-5">
+          <h2 className="mb-1 font-serif text-[16px] leading-tight text-ink">Book a Property Slot</h2>
+          <LeadForm
+            variant="floating"
+            fields="priority"
+            source="floating_priority"
+            submitLabel="Book a Property Slot"
+            trailing={
+              <button type="button" onClick={() => { setExpanded(false); setDismissed(true); }} className="grid size-9 shrink-0 place-items-center rounded-full bg-cream text-ink hover:bg-sand" aria-label="Close property slot form">
+                <CloseIcon />
+              </button>
+            }
+          />
         </div>
       ) : (
         <button type="button" className="btn h-14 px-7" aria-expanded={expanded} aria-controls="priority-form" onClick={() => { setDismissed(false); setExpanded(true); track('form_open', { intent: 'visit', source: 'floating_priority' }); }}>

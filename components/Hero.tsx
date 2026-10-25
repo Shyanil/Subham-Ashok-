@@ -4,6 +4,7 @@ import { site } from '@/content/site';
 import { getImage, objectPosition } from '@/lib/media';
 import { isSet, projectConfig } from '@/src/config/project';
 import { Accent } from './Accent';
+import { HeroDepthLayer } from './HeroDepthLayer';
 import { LeadButton } from './lead/LeadButton';
 import { ArrowUpRight, ShieldIcon } from './icons';
 
@@ -30,22 +31,20 @@ export function Hero() {
       <div className="lg:grid lg:min-h-[min(880px,calc(100svh-68px))] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)]">
         {/* Image — first on mobile, right half (edge to edge) on desktop */}
         <div className="relative lg:order-2">
-          <div className="hero-media enter-media relative h-[36svh] min-h-[280px] overflow-hidden rounded-b-[2.5rem] sm:h-[42svh] sm:min-h-[320px] lg:absolute lg:inset-0 lg:h-auto lg:rounded-b-none lg:rounded-bl-[200px]">
-            <div className="absolute inset-0">
-              <div className="absolute inset-0">
-                <Image
-                  src="/images/exterior/gate-view-2560.webp"
-                  alt={img.alt}
-                  fill
-                  preload
-                  sizes="(min-width: 1024px) 1800px, 80vh"
-                  quality={90}
-                  placeholder="blur"
-                  blurDataURL={img.blurDataURL}
-                  className="object-cover"
-                  style={{ objectPosition: objectPosition(img.focus) }}
-                />
-              </div>
+          <div className="hero-media relative isolate h-[36svh] min-h-[280px] overflow-hidden rounded-b-[2.5rem] bg-tan sm:h-[42svh] sm:min-h-[320px] lg:absolute lg:inset-0 lg:h-auto lg:rounded-b-none lg:rounded-bl-[200px]">
+            {/* No blur placeholder: swapping blur → sharp mid-animation is what flickered on reload. */}
+            <div className="enter-media absolute inset-0">
+              <Image
+                src="/images/exterior/gate-view-2560.webp"
+                alt={img.alt}
+                fill
+                preload
+                sizes="(min-width: 1024px) 1800px, 80vh"
+                quality={90}
+                className="object-cover"
+                style={{ objectPosition: objectPosition(img.focus) }}
+              />
+              <HeroDepthLayer src="/images/exterior/gate-view-2560.webp" depth="/images/exterior/gate-view-depth.webp" focus={img.focus} />
             </div>
             <div className="absolute inset-0 hidden bg-gradient-to-t from-[#1f0b08]/65 via-transparent to-[#1f0b08]/5 lg:block" aria-hidden="true" />
 

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { site } from '@/content/site';
-import { getImage } from '@/lib/media';
+import { getImage, objectPosition } from '@/lib/media';
 import { track } from '@/lib/analytics';
 import { capable3d as capable, hasWebGL } from '@/lib/capable';
 import { HOTSPOTS, VIEWS, type ViewId } from './three/towerData';
@@ -24,6 +24,13 @@ const TowerScene = dynamic(() => import('./three/TowerScene'), {
   ),
 });
 
+/** Renders shown beside the headline — the masterplan aerial first, then key spaces. */
+const VIEW_STRIP = [
+  { slug: 'aerial-day-view', label: 'Master view' },
+  { slug: 'swimming-pool-view', label: 'Pool deck' },
+  { slug: 'club-house', label: 'Clubhouse' },
+  { slug: 'lift-lobby', label: 'Lift lobby' },
+];
 
 /**
  * Large interactive 3D scene. It starts near the viewport on capable devices and pauses when
@@ -65,14 +72,40 @@ export function TowerViewer3D() {
 
   return (
     <section id="explore" aria-labelledby="explore-title" className="container-x py-12 sm:py-16 lg:py-24" data-track-section="tower_3d">
-      <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+      {/* Editorial masthead: headline left, render strip + instructions right. */}
+      <div className="mb-8 grid gap-8 border-b border-line pb-8 sm:mb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-16 lg:pb-10">
         <div>
-          <p className="kicker">{t.eyebrow}</p>
-          <h2 className="mt-3 max-w-2xl font-serif text-[42px] leading-[0.98] text-ink sm:text-[58px]">Explore the homes <em className="text-terra">in 3D.</em></h2>
+          <p className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.38em] text-terra">
+            <span className="h-px w-10 bg-terra/60" aria-hidden="true" />
+            {t.eyebrow}
+          </p>
+          <h2 className="mt-6 font-serif text-[48px] leading-[0.9] tracking-[-0.03em] !text-brand sm:text-[72px] lg:text-[84px] xl:text-[104px]">
+            Discover Your World,
+            <em className="block pl-[0.6em] font-light italic text-terra">in 3D.</em>
+          </h2>
         </div>
-        <p className="max-w-md text-[14px] leading-relaxed text-muted sm:text-right">{t.body}</p>
+
+        <div className="lg:pb-3">
+          <ul className="grid grid-cols-4 gap-2 sm:gap-3">
+            {VIEW_STRIP.map(({ slug, label }, n) => {
+              const img = getImage(slug);
+              return (
+                <li key={slug} data-reveal>
+                  <a href="#gallery" className="group block" data-tilt>
+                    <span className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-tan ring-1 ring-line sm:rounded-2xl">
+                      <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1024px) 140px, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: objectPosition(img.focus) }} />
+                      <span className="absolute left-1.5 top-1.5 font-serif text-[13px] italic text-white drop-shadow sm:left-2.5 sm:top-2 sm:text-[15px]">0{n + 1}</span>
+                    </span>
+                    <span className="mt-2 block truncate text-[10px] font-bold uppercase tracking-[0.16em] text-muted transition-colors group-hover:text-ink sm:text-[11px]">{label}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-5 max-w-md border-l-2 border-tan pl-4 text-[15px] leading-relaxed text-muted lg:ml-auto lg:border-l-0 lg:border-r-2 lg:pl-0 lg:pr-4 lg:text-right">{t.body}</p>
+        </div>
       </div>
-      <div ref={root} className="on-dark relative aspect-[4/3] min-h-[320px] overflow-hidden rounded-[1.5rem] bg-[#120605] shadow-[var(--shadow-lift)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[16/7] lg:min-h-[520px]">
+      <div ref={root} data-reveal="3d" className="on-dark relative aspect-[4/3] min-h-[320px] w-full overflow-hidden rounded-[1.5rem] bg-[#120605] shadow-[var(--shadow-lift)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[16/7] lg:min-h-[520px]">
         {started ? (
           <TowerScene night={night} view={view} spot={spot} onSpot={setSpot} paused={paused} />
         ) : (
@@ -88,7 +121,7 @@ export function TowerViewer3D() {
                 </button>
               ) : null}
               <h2 id="explore-title" className="mt-6 font-serif text-[38px] leading-[0.98] !text-white sm:text-[64px]" data-reveal>
-                Explore the homes <em className="italic text-gold">in 3D</em>
+                Discover Your World, <em className="italic text-gold">in 3D.</em>
               </h2>
               <p className="mt-5 text-[12px] font-bold uppercase tracking-[0.4em] text-white/65">
                 {gl === false ? t.fallbackNote : t.body}
@@ -103,7 +136,7 @@ export function TowerViewer3D() {
               See the towers in 3D — interactive tour
             </h2>
             <p className="pointer-events-none absolute left-5 top-5 rounded-full bg-black/40 px-3 py-1.5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/70 backdrop-blur sm:left-8 sm:top-8">
-              Drag to rotate · 3D site model
+              Drag to explore · 3D depth view
             </p>
             <div className="absolute inset-x-3 bottom-3 flex justify-center sm:bottom-6">
               <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-full bg-black/55 p-1.5 ring-1 ring-white/10 backdrop-blur-md [scrollbar-width:none]">

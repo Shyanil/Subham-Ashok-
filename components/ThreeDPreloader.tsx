@@ -10,7 +10,7 @@ export function ThreeDPreloader() {
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem(KEY)) {
+      if (document.documentElement.classList.contains('intro-seen') || sessionStorage.getItem(KEY)) {
         setVisible(false);
         return;
       }

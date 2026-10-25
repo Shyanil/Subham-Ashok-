@@ -8,13 +8,21 @@
   place-items: center;
   overflow: hidden;
   background: #2e110c;
-  animation: preloader-exit 0.65s 0.8s ease forwards;
+  animation: preloader-exit 0.7s 2.3s ease forwards;
+}
+/* Return visits: the inline script in layout.tsx tags <html> before first paint, so the overlay never flashes. */
+.intro-seen .site-preloader {
+  display: none;
+}
+/* First visit: hold the hero entrance until the preloader starts to fade. */
+:root:not(.intro-seen) {
+  --intro-delay: 2.3s;
 }
 .site-preloader__content {
   display: grid;
   justify-items: center;
   color: #fff;
-  animation: preloader-content-in 0.65s ease both;
+  animation: preloader-content-in 0.8s ease both;
 }
 .site-preloader__scene {
   position: relative;
@@ -49,7 +57,7 @@
   box-shadow: 12px 10px 0 rgb(0 0 0 / 0.18);
   transform: rotateY(-24deg) translateY(20px) scaleY(0.2);
   transform-origin: bottom center;
-  animation: preloader-rise 0.65s 0.12s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: preloader-rise 1.3s 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 .site-preloader__tower::before {
   position: absolute;
@@ -77,7 +85,7 @@
 .site-preloader__tower--a {
   left: 52px;
   --tower-h: 66px;
-  animation-delay: 0.06s;
+  animation-delay: 0.2s;
 }
 .site-preloader__tower--b {
   left: 94px;
@@ -86,7 +94,7 @@
 .site-preloader__tower--c {
   left: 138px;
   --tower-h: 80px;
-  animation-delay: 0.2s;
+  animation-delay: 0.55s;
 }
 .site-preloader__brand {
   margin-top: 22px;
@@ -639,22 +647,35 @@
     color: #ffb4a3;
   }
 
+  /* Floating booking bar: one 36px row. Label height (14px + 3px) matches the pt-[17px] on the button cells. */
   .priority-float .field label {
     margin-bottom: 3px;
+    overflow: hidden;
     font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .priority-float .input {
+    height: 36px;
     min-height: 36px;
-    padding: 6px 9px;
+    padding: 6px 10px;
+    border-radius: 10px;
     font-size: 13px;
   }
   .priority-float select.input {
-    padding-right: 32px;
-    background-position: right 12px center;
+    padding-right: 26px;
+    background-position: right 10px center;
+    text-overflow: ellipsis;
   }
   .priority-float .phone-prefix {
-    padding-inline: 10px;
+    padding-inline: 9px;
+    border-radius: 10px 0 0 10px;
     font-size: 12px;
+  }
+  .priority-float .phone-wrap .input {
+    border-radius: 0 10px 10px 0;
   }
   .priority-float .consent {
     font-size: 11px;
@@ -665,9 +686,12 @@
     height: 15px;
   }
   .priority-float .btn {
+    height: 36px;
     min-height: 36px;
-    padding: 6px 11px;
-    font-size: 10px;
+    padding: 6px 16px;
+    gap: 8px;
+    font-size: 10.5px;
+    box-shadow: none;
   }
   .priority-float .btn--block {
     white-space: nowrap;
@@ -763,7 +787,7 @@
   /* Hero entrance — pure CSS so it runs at first paint, no JS on the critical path */
   .enter {
     animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    animation-delay: calc(var(--d, 0) * 50ms + 60ms);
+    animation-delay: calc(var(--d, 0) * 50ms + 60ms + var(--intro-delay, 0s));
   }
   .enter-card {
     animation: card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -793,8 +817,12 @@
 }
 @keyframes media-in {
   from {
-    clip-path: inset(0 0 0 22% round 0 0 0 200px);
+    clip-path: inset(0 0 0 22%);
     transform: scale(1.04);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
   }
 }
 @keyframes spin-slow {
@@ -818,10 +846,13 @@
   .hero .line {
     display: block;
     animation: line-up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    animation-delay: calc(var(--d, 0) * 90ms);
+    animation-delay: calc(var(--d, 0) * 90ms + var(--intro-delay, 0s));
   }
+  /* Only the image layer animates; the glass cards sit outside it so backdrop-filter never re-composites mid-animation. */
   .hero .enter-media {
     animation: media-in 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--intro-delay, 0s);
+    will-change: clip-path, transform;
   }
   .hero .seal-ring {
     animation: spin-slow 22s linear infinite;
@@ -829,6 +860,137 @@
   .hero .seal:hover .seal-ring {
     animation-duration: 8s;
   }
+}
+
+/* ---------- Amenities: dimensional cards ----------
+   --rx/--ry/--px/--py are written by Amenities.tsx on pointer move; hover or tap (data-active) lifts the card. */
+.amenity-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --px: 0;
+  --py: 0;
+  --lift: 0px;
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
+  transform-style: preserve-3d;
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.amenity-card:hover,
+.amenity-card[data-active='true'] {
+  --lift: -10px;
+}
+.amenity-card:focus-visible {
+  outline-offset: 6px;
+  border-radius: 1.75rem;
+}
+.amenity-card__media {
+  box-shadow: 0 18px 40px -28px rgb(42 20 16 / 0.55);
+  transition: box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.amenity-card:hover .amenity-card__media,
+.amenity-card[data-active='true'] .amenity-card__media {
+  box-shadow: 0 40px 60px -30px rgb(42 20 16 / 0.6);
+}
+/* Image drifts against the tilt for parallax depth. */
+.amenity-card__img {
+  transform: scale(1.1) translate(calc(var(--px) * -14px), calc(var(--py) * -14px));
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.amenity-card:hover .amenity-card__img,
+.amenity-card[data-active='true'] .amenity-card__img {
+  transform: scale(1.16) translate(calc(var(--px) * -14px), calc(var(--py) * -14px));
+}
+/* Layers float above the card plane. */
+.amenity-card__chip {
+  transform: translateZ(0);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.amenity-card:hover .amenity-card__chip,
+.amenity-card[data-active='true'] .amenity-card__chip {
+  transform: translateZ(40px) scale(1.06);
+}
+.amenity-card__body {
+  transform: translateZ(0);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.amenity-card:hover .amenity-card__body,
+.amenity-card[data-active='true'] .amenity-card__body {
+  transform: translateZ(30px) translateY(-6px);
+}
+.amenity-card__more {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.4s,
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding-bottom: 2.5rem;
+}
+.amenity-card:hover .amenity-card__more,
+.amenity-card[data-active='true'] .amenity-card__more {
+  opacity: 1;
+  transform: none;
+}
+.amenity-tile:hover,
+.amenity-tile[data-active='true'] {
+  box-shadow: 0 30px 50px -30px rgb(42 20 16 / 0.45);
+}
+.amenity-tile:not(.dark-card):hover,
+.amenity-tile:not(.dark-card)[data-active='true'] {
+  background-color: #fff;
+}
+/* Depth-based focus: cards near the rail edges turn away (scroll-driven, where supported). */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .amenity-rail > li {
+      animation: rail-depth linear both;
+      animation-timeline: view(inline);
+    }
+  }
+}
+@keyframes rail-depth {
+  0% {
+    transform: perspective(1200px) rotateY(16deg) scale(0.9);
+    opacity: 0.55;
+  }
+  28%,
+  72% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(1200px) rotateY(-16deg) scale(0.9);
+    opacity: 0.55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .amenity-card,
+  .amenity-card * {
+    --rx: 0deg !important;
+    --ry: 0deg !important;
+  }
+}
+
+/* Floor plans: each newly selected unit / floor swings in on a vertical hinge. */
+@keyframes plan-flip {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(-28deg) translateX(-24px) translateZ(-80px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.plan-flip {
+  transform-origin: 0% 50%;
+  animation: plan-flip 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.plan-flip--late {
+  animation-delay: 0.08s;
 }
 
 /* Keep the hero text on the exact same left edge as the header logo. */

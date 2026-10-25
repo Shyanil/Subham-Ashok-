@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  experimental: {
+    agentUpgrade: 'security',
+  },
   images: {
     // Sources are the pre-generated 1920px WebP renders (scripts/prepare-images.mjs)
     // and brochure extracts; next/image resizes them and serves AVIF, then WebP.

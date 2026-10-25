@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 /**
  * Page-wide GSAP + ScrollTrigger, loaded after first paint so it never touches LCP.
- *  - [data-reveal]  fade + 24px rise, 400 ms, 40 ms stagger, only for elements still below the fold
+ *  - [data-reveal]  fade + perspective fold-up, 600 ms, 50 ms stagger, only for elements still below the fold
  *  - [data-count]   number counters (SSR renders the final value, so no-JS is correct)
  *  - .site-header   `is-scrolled` state once the page moves
  * Deliberately minimal: nothing is pinned, no parallax. With prefers-reduced-motion only the header state runs.
@@ -39,12 +39,13 @@ export function Motion() {
           .filter((el) => el.getBoundingClientRect().top > vh * 0.92);
         const flat = targets.filter((el) => el.dataset.reveal !== '3d');
         const deep = targets.filter((el) => el.dataset.reveal === '3d');
-        gsap.set(flat, { autoAlpha: 0, y: 24 });
+        // Flat reveals fold up gently in perspective, like a page turning toward the reader.
+        gsap.set(flat, { autoAlpha: 0, y: 28, rotateX: 22, transformPerspective: 900, transformOrigin: '50% 100%' });
         ScrollTrigger.batch(flat, {
           start: 'top 92%',
           once: true,
           onEnter: (batch) =>
-            gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power3.out', stagger: 0.04, overwrite: true }),
+            gsap.to(batch, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.6, ease: 'power3.out', stagger: 0.05, overwrite: true, clearProps: 'transform' }),
         });
         // 3D fold-up: big cards and images rise out of the page in perspective.
         gsap.set(deep, { autoAlpha: 0, y: 70, rotateX: 14, scale: 0.96, transformPerspective: 1200, transformOrigin: '50% 100%' });

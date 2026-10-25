@@ -42,8 +42,14 @@ const PIXEL = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="en-IN" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
       <body>
+        {/* Runs before first paint so return visits never flash the preloader (see ThreeDPreloader). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('ashok-heights-intro-seen'))document.documentElement.classList.add('intro-seen')}catch(e){}`,
+          }}
+        />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

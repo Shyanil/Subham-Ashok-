@@ -99,7 +99,7 @@ export function FloorPlans() {
               </div>
 
               <div className="grid content-start gap-4">
-                <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" data-reveal>
+                <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" data-reveal="3d" data-tilt>
                   <p className="kicker">Legend</p>
                   <ol className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5">
                     {masterPlanLegend.map((l, i) => (
@@ -116,7 +116,7 @@ export function FloorPlans() {
                     ['11', 'Floors'],
                     ['9 m', 'Road'],
                   ].map(([v, k]) => (
-                    <div key={k} className="rounded-[1.5rem] bg-brand px-4 py-5 text-center text-white">
+                    <div key={k} className="rounded-[1.5rem] bg-brand px-4 py-5 text-center text-white" data-tilt>
                       <p className="font-serif text-[36px] leading-none">{v}</p>
                       <p className="mt-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-gold">{k}</p>
                     </div>
@@ -138,6 +138,7 @@ export function FloorPlans() {
                       <button
                         type="button"
                         aria-pressed={active}
+                        data-tilt
                         onClick={() => pick(u.id)}
                         className={`flex h-full w-full flex-col rounded-[1.5rem] p-5 text-left transition-all duration-300 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
                       >
@@ -156,14 +157,15 @@ export function FloorPlans() {
               </ul>
 
               <div className="mt-2 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
-                <div className="rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)]">
+                {/* Re-keyed per selection so each unit / floor swings in on a 3D hinge (.plan-flip). */}
+                <div key={`plan-${selectedId}`} className="plan-flip rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)]">
                   {unit && <Plan image={unit.image} alt={`Unit plan, ${unitLabel(unit)}, units ${unit.units}`} />}
                   {floor && <Plan image={floor.image} alt={`Floor plan, Block ${floor.block}, ${floor.title}${floor.note ? `, ${floor.note}` : ''}`} />}
                 </div>
 
                 <div className="grid content-start gap-4">
                   {unit && (
-                    <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" aria-live="polite">
+                    <div key={`unit-${unit.id}`} className="plan-flip plan-flip--late rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" aria-live="polite">
                       <p className="kicker">
                         Block {unit.block} · {unit.baths} baths
                       </p>
