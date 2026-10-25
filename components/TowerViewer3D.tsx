@@ -7,9 +7,9 @@ import { site } from '@/content/site';
 import { getImage, objectPosition } from '@/lib/media';
 import { track } from '@/lib/analytics';
 import { capable3d as capable, hasWebGL } from '@/lib/capable';
-import { HOTSPOTS, VIEWS, type ViewId } from './three/towerData';
+import { HOTSPOTS, HOTSPOT_ZOOM, VIEWS, ZOOM_MAX, ZOOM_MIN, type ViewId } from './three/towerData';
 import { LeadButton } from './lead/LeadButton';
-import { ArrowUpRight, PlayIcon } from './icons';
+import { ArrowUpRight, CloseIcon, PlayIcon } from './icons';
 
 // Three.js + R3F live in their own chunk, fetched on demand.
 const TowerScene = dynamic(() => import('./three/TowerScene'), {
@@ -45,6 +45,7 @@ export function TowerViewer3D() {
   const [night, setNight] = useState(false);
   const [view, setView] = useState<ViewId>('aerial');
   const [spot, setSpot] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(VIEWS[0].zoom);
   const poster = getImage('aerial-night-view');
 
   useEffect(() => setGl(hasWebGL()), []);
@@ -67,7 +68,21 @@ export function TowerViewer3D() {
     setPaused(false);
     track('tour_start', { source: 'tower_3d' });
   };
+  const viewZoom = (id: ViewId) => (VIEWS.find((v) => v.id === id) ?? VIEWS[0]).zoom;
+  const selectSpot = (id: string | null) => {
+    setSpot(id);
+    setZoom(id ? HOTSPOT_ZOOM : viewZoom(view));
+  };
+  const selectView = (id: ViewId) => {
+    setSpot(null);
+    setView(id);
+    setZoom(viewZoom(id));
+  };
+  const zoomBy = (f: number) => setZoom((z) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z * f)));
+  const resetView = () => selectView('aerial');
+  const isOverview = !spot && view === 'aerial' && zoom <= viewZoom('aerial') + 0.01;
   const active = HOTSPOTS.find((h) => h.id === spot);
+  const zoomBtn = 'grid size-10 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/15 hover:text-white disabled:opacity-35 disabled:hover:bg-transparent';
   const seg = 'whitespace-nowrap rounded-full px-3.5 py-2 text-[12px] font-bold uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-white aria-pressed:bg-gold aria-pressed:text-deep';
 
   return (
@@ -107,7 +122,7 @@ export function TowerViewer3D() {
       </div>
       <div ref={root} data-reveal="3d" className="on-dark relative aspect-[4/3] min-h-[320px] w-full overflow-hidden rounded-[1.5rem] bg-[#120605] shadow-[var(--shadow-lift)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[16/7] lg:min-h-[520px]">
         {started ? (
-          <TowerScene night={night} view={view} spot={spot} onSpot={setSpot} paused={paused} />
+          <TowerScene night={night} view={view} spot={spot} zoom={zoom} onSpot={selectSpot} onZoom={setZoom} paused={paused} />
         ) : (
           <>
             <Image src={poster.src} alt="" fill sizes="100vw" className="scale-105 object-cover opacity-45 blur-[2px]" />
@@ -156,10 +171,7 @@ export function TowerViewer3D() {
                       type="button"
                       className={seg}
                       aria-pressed={view === v.id && !spot}
-                      onClick={() => {
-                        setSpot(null);
-                        setView(v.id);
-                      }}
+                      onClick={() => selectView(v.id)}
                     >
                       {v.short}
                     </button>
@@ -172,7 +184,7 @@ export function TowerViewer3D() {
                 <select
                   id="tower-amenity"
                   value={spot ?? ''}
-                  onChange={(e) => setSpot(e.target.value || null)}
+                  onChange={(e) => selectSpot(e.target.value || null)}
                   className="shrink-0 cursor-pointer rounded-full bg-transparent py-2 pl-3 pr-2 text-[12px] font-bold uppercase tracking-[0.14em] text-white [&>option]:text-ink"
                 >
                   <option value="">Amenities</option>
@@ -188,12 +200,32 @@ export function TowerViewer3D() {
               {active ? `${active.name}: ${active.note}` : ''}
             </p>
             {active && (
-              <div className="absolute right-4 top-16 max-w-[240px] rounded-2xl bg-white/95 p-4 text-ink shadow-xl sm:right-8 sm:top-8">
+              <div className="absolute right-4 top-16 max-w-[260px] rounded-2xl bg-white/95 p-4 pr-11 text-ink shadow-xl sm:right-8 sm:top-8">
+                <button type="button" onClick={() => selectSpot(null)} className="absolute right-2 top-2 grid size-8 place-items-center rounded-full text-muted hover:bg-sand hover:text-ink" aria-label="Close and zoom out">
+                  <CloseIcon className="size-4" />
+                </button>
                 <p className="text-[12px] font-black uppercase tracking-[0.2em] text-terra">Amenity</p>
                 <p className="mt-1 font-serif text-[24px] leading-none">{active.name}</p>
                 <p className="mt-1.5 text-[13px] text-muted">{active.note}</p>
+                <button type="button" onClick={resetView} className="mt-3 text-[12px] font-bold uppercase tracking-[0.14em] text-terra underline-offset-4 hover:underline">
+                  ← Back to full view
+                </button>
               </div>
             )}
+
+            {/* Zoom controls: always available, so a zoomed-in amenity view can be backed out of. */}
+            <div role="group" aria-label="Zoom" className="absolute left-3 top-1/2 flex -translate-y-1/2 flex-col gap-1 rounded-full bg-black/55 p-1 ring-1 ring-white/10 backdrop-blur-md sm:left-6">
+              <button type="button" className={zoomBtn} onClick={() => zoomBy(1.25)} disabled={zoom >= ZOOM_MAX - 0.01} aria-label="Zoom in">
+                <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M12 5v14M5 12h14" strokeLinecap="round" /></svg>
+              </button>
+              <button type="button" className={zoomBtn} onClick={() => zoomBy(1 / 1.25)} disabled={zoom <= ZOOM_MIN + 0.01} aria-label="Zoom out">
+                <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M5 12h14" strokeLinecap="round" /></svg>
+              </button>
+              <span className="mx-auto h-px w-5 bg-white/15" aria-hidden="true" />
+              <button type="button" className={zoomBtn} onClick={resetView} disabled={isOverview} aria-label="Reset to full view">
+                <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+            </div>
           </>
         )}
       </div>

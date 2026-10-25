@@ -6,8 +6,8 @@
 export type UV = [number, number];
 
 export const SCENES = {
-  day: { slug: 'aerial-day-view', src: '/images/exterior/aerial-day-view-1920.webp', depth: '/images/exterior/aerial-day-view-depth.webp' },
-  night: { slug: 'aerial-night-view', src: '/images/exterior/aerial-night-view-1920.webp', depth: '/images/exterior/aerial-night-view-depth.webp' },
+  day: { slug: 'aerial-day-view', src: '/images/exterior/aerial-day-view-2560.webp', depth: '/images/exterior/aerial-day-view-depth.webp' },
+  night: { slug: 'aerial-night-view', src: '/images/exterior/aerial-night-view-2560.webp', depth: '/images/exterior/aerial-night-view-depth.webp' },
 } as const;
 
 export type ViewId = 'aerial' | 'towers' | 'courtyard';
@@ -16,6 +16,11 @@ export const VIEWS: { id: ViewId; label: string; short: string; zoom: number; da
   { id: 'towers', label: 'Block B towers', short: 'Towers', zoom: 1.75, day: [0.47, 0.34], night: [0.55, 0.36] },
   { id: 'courtyard', label: 'Courtyard and Block A', short: 'Courtyard', zoom: 2, day: [0.54, 0.6], night: [0.43, 0.62] },
 ];
+
+/** Zoom used when an amenity is selected, and the range the +/− controls move within. */
+export const HOTSPOT_ZOOM = 1.75;
+export const ZOOM_MIN = 1;
+export const ZOOM_MAX = 2.4;
 
 export type Hotspot = { id: string; icon: string; name: string; note: string; day: UV; night: UV };
 

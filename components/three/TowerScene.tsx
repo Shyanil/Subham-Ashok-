@@ -4,13 +4,17 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import { Suspense, useEffect, useRef, type PointerEvent as ReactPointerEvent } from 'react';
 import { DepthPlane, clampCenter, type DepthState } from './DepthPlane';
-import { HOTSPOTS, SCENES, VIEWS, type UV, type ViewId } from './towerData';
+import { HOTSPOTS, SCENES, VIEWS, ZOOM_MAX, ZOOM_MIN, type UV, type ViewId } from './towerData';
 
 type Props = {
   night: boolean;
   view: ViewId;
   spot: string | null;
+  /** Target zoom (1 = the render fills the frame). */
+  zoom: number;
   onSpot: (id: string | null) => void;
+  /** Pinch / ctrl + wheel asks the parent for a new zoom. */
+  onZoom: (zoom: number) => void;
   paused?: boolean;
 };
 
@@ -69,7 +73,7 @@ function Scene({ live, onFrame }: { live: React.RefObject<Live>; onFrame: (cover
  * Depth-photo site model: the real aerial renders move in 2.5D as you drag. Day / Night
  * cross-dissolves between the two renders; views and amenities glide the frame to a point.
  */
-export default function TowerScene({ night, view, spot, onSpot, paused = false }: Props) {
+export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, paused = false }: Props) {
   const v = VIEWS[0];
   const live = useRef<Live>({
     state: { center: [v.day, v.night], zoom: 1.25, pointer: [0, 0], mix: night ? 1 : 0, strength: 0.05 },
@@ -88,9 +92,28 @@ export default function TowerScene({ night, view, spot, onSpot, paused = false }
     const h = HOTSPOTS.find((x) => x.id === spot);
     const target = VIEWS.find((x) => x.id === view) ?? VIEWS[0];
     const l = live.current;
-    l.goal = h ? { center: [h.day, h.night], zoom: 2.3, mix: night ? 1 : 0 } : { center: [target.day, target.night], zoom: target.zoom, mix: night ? 1 : 0 };
-    l.drag = [0, 0];
-  }, [view, spot, night]);
+    l.goal = { center: h ? [h.day, h.night] : [target.day, target.night], zoom, mix: night ? 1 : 0 };
+  }, [view, spot, night, zoom]);
+  useEffect(() => {
+    live.current.drag = [0, 0];
+  }, [view, spot]);
+
+  // Trackpad pinch arrives as ctrl + wheel; plain wheel keeps scrolling the page.
+  const zoomRef = useRef(zoom);
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      onZoom(Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomRef.current * Math.exp(-e.deltaY * 0.01))));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [onZoom]);
 
   // Project image UVs to screen % so the DOM markers ride on the scene.
   const onFrame = (covers: [number, number][]) => {
@@ -149,7 +172,7 @@ export default function TowerScene({ night, view, spot, onSpot, paused = false }
     >
       <Canvas
         frameloop={paused ? 'never' : 'always'}
-        dpr={[1, 1.75]}
+        dpr={[1, 2]}
         gl={{ antialias: false, powerPreference: 'default' }}
         aria-label="Interactive 3D depth view of Subham Ashok Heights"
         role="img"

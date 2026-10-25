@@ -30,6 +30,8 @@ const SOURCES = [
 const EXT = /\.(jpe?g|png|webp|avif|tiff?)$/i;
 const manifestPath = path.join(root, 'content', 'media.json');
 const ogSource = process.env.OG_IMAGE ?? 'aerial-day-view';
+/** Renders whose full-resolution original is also shipped (hero, 3D model zoom). */
+const FULL_RES = new Set(['gate-view', 'aerial-day-view', 'aerial-night-view']);
 
 const slugify = (name) =>
   name
@@ -58,7 +60,7 @@ async function listSources() {
 function outputsExist(files) {
   if (!existsSync(manifestPath)) return false;
   return files.every(({ group, slug }) =>
-    [...WIDTHS.map((w) => `${slug}-${w}.webp`), ...(slug === 'gate-view' ? [`${slug}-2560.webp`] : []), `${slug}-depth.webp`].every((f) =>
+    [...WIDTHS.map((w) => `${slug}-${w}.webp`), ...(FULL_RES.has(slug) ? [`${slug}-2560.webp`] : []), `${slug}-depth.webp`].every((f) =>
       existsSync(path.join(root, 'public', 'images', group, f)),
     ),
   );
@@ -100,8 +102,8 @@ async function processImage({ group, abs, slug, file }) {
       .webp({ quality: w === 640 ? 72 : 78, effort: 5 })
       .toFile(path.join(outDir, `${slug}-${w}.webp`));
   }
-  if (slug === 'gate-view') {
-    // Preserve the supplied full-resolution render for the hero without another lossy encode.
+  if (FULL_RES.has(slug)) {
+    // Preserve the supplied full-resolution render without another lossy encode.
     await copyFile(abs, path.join(outDir, `${slug}-2560.webp`));
   }
   await depthMap(abs, path.join(outDir, `${slug}-depth.webp`), meta);

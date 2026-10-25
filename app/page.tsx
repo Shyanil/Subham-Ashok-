@@ -15,6 +15,7 @@ import { FinalCta } from '@/components/FinalCta';
 import { Footer } from '@/components/Footer';
 import { FloatingCTA } from '@/components/FloatingCTA';
 import { StickyBar } from '@/components/StickyBar';
+import { ChatBot } from '@/components/ChatBot';
 import { Motion } from '@/components/Motion';
 
 const url = projectConfig.SITE_URL;
@@ -90,6 +91,7 @@ export default function Home() {
       <Footer />
       <FloatingCTA />
       <StickyBar />
+      <ChatBot />
       <Motion />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
