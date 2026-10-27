@@ -24,7 +24,7 @@ export function Gallery() {
   const shown = all ? items : items.slice(0, INITIAL);
 
   return (
-    <section id="gallery" aria-labelledby="gallery-title" className="section" data-track-section="gallery">
+    <section id="gallery" aria-labelledby="gallery-title" className="section bg-sand" data-track-section="gallery">
       <div className="container-x">
         <SectionHeading id="gallery-title" eyebrow={g.eyebrow} title={g.title} body={`${media.length} views of Subham Ashok Heights — striking architecture, green open spaces and thoughtful interiors.`} />
 

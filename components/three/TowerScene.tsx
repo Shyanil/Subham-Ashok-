@@ -120,19 +120,22 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
     const s = live.current.state;
     const which = s.mix > 0.5 ? 1 : 0;
     const fade = Math.abs(s.mix - 0.5) * 2;
-    const place = (el: HTMLElement | null, uv: UV) => {
+    const W = box.current?.clientWidth ?? 0;
+    const place = (el: HTMLElement | null, uv: UV, keepInside = false) => {
       if (!el) return;
       const c = clampCenter(s.center[which], covers[which] as [number, number], s.zoom);
       const x = ((uv[0] - c[0]) * s.zoom) / covers[which][0] + 0.5;
       const y = ((uv[1] - c[1]) * s.zoom) / covers[which][1] + 0.5;
       const inside = x > 0.03 && x < 0.97 && y > 0.06 && y < 0.94;
-      el.style.left = `${x * 100}%`;
+      // Labels are wide: clamp their centre so they never spill past the frame edge.
+      const half = keepInside && W ? (el.offsetWidth / 2 + 8) / W : 0;
+      el.style.left = `${(half ? Math.min(1 - half, Math.max(half, x)) : x) * 100}%`;
       el.style.top = `${y * 100}%`;
       el.style.opacity = inside ? String(fade) : '0';
       el.style.visibility = inside && fade > 0.05 ? 'visible' : 'hidden';
     };
     HOTSPOTS.forEach((h, i) => place(markers.current[i], which ? h.night : h.day));
-    LABELS.forEach((lb, i) => place(labels.current[i], which ? lb.night : lb.day));
+    LABELS.forEach((lb, i) => place(labels.current[i], which ? lb.night : lb.day, true));
   };
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -187,9 +190,9 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_45%,transparent_55%,rgba(18,6,5,.55))]" aria-hidden="true" />
 
       {LABELS.map((lb, i) => (
-        <div key={lb.title} ref={(el) => { labels.current[i] = el; }} className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full bg-white/95 px-3 py-1.5 text-center opacity-0 shadow-lg ring-1 ring-black/5 transition-opacity duration-300" aria-hidden="true">
-          <p className="font-serif text-[16px] leading-none text-ink">{lb.title}</p>
-          <p className="mt-0.5 text-[11px] font-semibold text-muted">{lb.note}</p>
+        <div key={lb.title} ref={(el) => { labels.current[i] = el; }} className="pointer-events-none absolute -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full bg-white/95 px-2.5 py-1 text-center opacity-0 sm:px-3 sm:py-1.5 shadow-lg ring-1 ring-black/5 transition-opacity duration-300" aria-hidden="true">
+          <p className="font-serif text-[14px] leading-none text-ink sm:text-[16px]">{lb.title}</p>
+          <p className="mt-0.5 text-[10px] font-semibold text-muted sm:text-[11px]">{lb.note}</p>
         </div>
       ))}
 
@@ -202,7 +205,7 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
           aria-hidden="true"
           title={h.name}
           onClick={() => onSpot(spot === h.id ? null : h.id)}
-          className={`absolute grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 text-[12px] font-bold opacity-0 shadow-[0_6px_18px_rgba(0,0,0,.35)] transition-[transform,background-color,opacity] duration-300 hover:scale-110 sm:size-9 ${
+          className={`absolute grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 text-[11px] sm:text-[12px] font-bold opacity-0 shadow-[0_6px_18px_rgba(0,0,0,.35)] transition-[transform,background-color,opacity] duration-300 hover:scale-110 sm:size-9 ${
             spot === h.id ? 'scale-110 border-white bg-brand text-white' : 'border-brand bg-white text-brand'
           }`}
         >

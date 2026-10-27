@@ -15,7 +15,7 @@ export function Marquee() {
     </ul>
   );
   return (
-    <div className="mt-3 overflow-hidden border-y border-gold/20 bg-deep py-4 sm:mt-4" aria-label="Project highlights">
+    <div className="mt-3 overflow-hidden border-y border-gold/20 bg-deep py-4 sm:mt-4 lg:mt-0" aria-label="Project highlights">
       <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {row(false)}
         {row(true)}

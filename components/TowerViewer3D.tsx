@@ -9,7 +9,7 @@ import { track } from '@/lib/analytics';
 import { capable3d as capable, hasWebGL } from '@/lib/capable';
 import { HOTSPOTS, HOTSPOT_ZOOM, VIEWS, ZOOM_MAX, ZOOM_MIN, type ViewId } from './three/towerData';
 import { LeadButton } from './lead/LeadButton';
-import { ArrowUpRight, CloseIcon, PlayIcon } from './icons';
+import { ArrowUpRight, CloseIcon, PlayIcon, SparkIcon } from './icons';
 
 // Three.js + R3F live in their own chunk, fetched on demand.
 const TowerScene = dynamic(() => import('./three/TowerScene'), {
@@ -82,21 +82,20 @@ export function TowerViewer3D() {
   const resetView = () => selectView('aerial');
   const isOverview = !spot && view === 'aerial' && zoom <= viewZoom('aerial') + 0.01;
   const active = HOTSPOTS.find((h) => h.id === spot);
-  const zoomBtn = 'grid size-10 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/15 hover:text-white disabled:opacity-35 disabled:hover:bg-transparent';
-  const seg = 'whitespace-nowrap rounded-full px-3.5 py-2 text-[12px] font-bold uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-white aria-pressed:bg-gold aria-pressed:text-deep';
+  const zoomBtn = 'grid size-9 sm:size-10 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/15 hover:text-white disabled:opacity-35 disabled:hover:bg-transparent';
+  const seg = 'whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] sm:px-3.5 sm:py-2 sm:text-[12px] sm:tracking-[0.14em] text-white/70 transition-colors hover:text-white aria-pressed:bg-gold aria-pressed:text-deep';
 
   return (
-    <section id="explore" aria-labelledby="explore-title" className="container-x py-12 sm:py-16 lg:py-24" data-track-section="tower_3d">
+    <section id="explore" aria-labelledby="explore-title" className="relative bg-sand" data-track-section="tower_3d">
+      <div className="container-x py-12 sm:py-16 lg:py-24">
       {/* Editorial masthead: headline left, render strip + instructions right. */}
       <div className="mb-8 grid gap-8 border-b border-line pb-8 sm:mb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-16 lg:pb-10">
         <div>
-          <p className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.38em] text-terra">
-            <span className="h-px w-10 bg-terra/60" aria-hidden="true" />
-            {t.eyebrow}
+          <p className="kicker">
+            <SparkIcon className="size-3" /> {t.eyebrow}
           </p>
-          <h2 className="mt-6 font-serif text-[48px] leading-[0.9] tracking-[-0.03em] !text-brand sm:text-[72px] lg:text-[84px] xl:text-[104px]">
-            Discover Your World,
-            <em className="block pl-[0.6em] font-light italic text-terra">in 3D.</em>
+          <h2 className="h2 mt-6 !text-brand">
+            Discover Your World, <em className="whitespace-nowrap italic text-terra">in 3D.</em>
           </h2>
         </div>
 
@@ -108,7 +107,7 @@ export function TowerViewer3D() {
                 <li key={slug} data-reveal>
                   <a href="#gallery" className="group block" data-tilt>
                     <span className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-tan ring-1 ring-line sm:rounded-2xl">
-                      <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1024px) 140px, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: objectPosition(img.focus) }} />
+                      <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1024px) 420px, 70vw" quality={90} className="object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: objectPosition(img.focus) }} />
                       <span className="absolute left-1.5 top-1.5 font-serif text-[13px] italic text-white drop-shadow sm:left-2.5 sm:top-2 sm:text-[15px]">0{n + 1}</span>
                     </span>
                     <span className="mt-2 block truncate text-[10px] font-bold uppercase tracking-[0.16em] text-muted transition-colors group-hover:text-ink sm:text-[11px]">{label}</span>
@@ -120,7 +119,7 @@ export function TowerViewer3D() {
           <p className="mt-5 max-w-md border-l-2 border-tan pl-4 text-[15px] leading-relaxed text-muted lg:ml-auto lg:border-l-0 lg:border-r-2 lg:pl-0 lg:pr-4 lg:text-right">{t.body}</p>
         </div>
       </div>
-      <div ref={root} data-reveal="3d" className="on-dark relative aspect-[4/3] min-h-[320px] w-full overflow-hidden rounded-[1.5rem] bg-[#120605] shadow-[var(--shadow-lift)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[16/7] lg:min-h-[520px]">
+      <div ref={root} data-reveal="3d" className="on-dark relative aspect-[4/5] min-h-[320px] w-full overflow-hidden rounded-[1.5rem] bg-[#120605] shadow-[var(--shadow-lift)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[16/7] lg:min-h-[520px]">
         {started ? (
           <TowerScene night={night} view={view} spot={spot} zoom={zoom} onSpot={selectSpot} onZoom={setZoom} paused={paused} />
         ) : (
@@ -135,8 +134,8 @@ export function TowerViewer3D() {
                   <PlayIcon className="relative ml-1 size-9" />
                 </button>
               ) : null}
-              <h2 id="explore-title" className="mt-6 font-serif text-[38px] leading-[0.98] !text-white sm:text-[64px]" data-reveal>
-                Discover Your World, <em className="italic text-gold">in 3D.</em>
+              <h2 id="explore-title" className="h2 mt-6 !text-white" data-reveal>
+                Discover Your World, <em className="whitespace-nowrap italic text-gold">in 3D.</em>
               </h2>
               <p className="mt-5 text-[12px] font-bold uppercase tracking-[0.4em] text-white/65">
                 {gl === false ? t.fallbackNote : t.body}
@@ -150,12 +149,22 @@ export function TowerViewer3D() {
             <h2 id="explore-title" className="sr-only">
               See the towers in 3D — interactive tour
             </h2>
-            <p className="pointer-events-none absolute left-5 top-5 rounded-full bg-black/40 px-3 py-1.5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/70 backdrop-blur sm:left-8 sm:top-8">
-              Drag to explore · 3D depth view
+            <p className="pointer-events-none absolute left-3 top-3 flex items-center gap-1.5 whitespace-nowrap rounded-full bg-black/45 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/80 backdrop-blur sm:left-8 sm:top-8 sm:gap-2 sm:px-3 sm:text-[12px] sm:tracking-[0.2em]">
+              <svg viewBox="0 0 24 24" className="size-3.5 sm:size-4" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              Drag to explore<span className="hidden sm:inline"> · 3D depth view</span>
             </p>
+            {/* Phones: lighting toggle sits top-right so the bottom bar stays one slim row. */}
+            <div role="group" aria-label="Lighting" className="absolute right-3 top-3 flex rounded-full bg-black/55 p-1 ring-1 ring-white/10 backdrop-blur-md sm:hidden">
+              <button type="button" className={seg} aria-pressed={!night} onClick={() => setNight(false)}>
+                Day
+              </button>
+              <button type="button" className={seg} aria-pressed={night} onClick={() => setNight(true)}>
+                Night
+              </button>
+            </div>
             <div className="absolute inset-x-3 bottom-3 flex justify-center sm:bottom-6">
-              <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-full bg-black/55 p-1.5 ring-1 ring-white/10 backdrop-blur-md [scrollbar-width:none]">
-                <div role="group" aria-label="Lighting" className="flex shrink-0">
+              <div className="flex max-w-full flex-wrap items-center justify-center gap-x-1 gap-y-0.5 rounded-[1.25rem] bg-black/55 p-1 ring-1 ring-white/10 backdrop-blur-md sm:flex-nowrap sm:rounded-full">
+                <div role="group" aria-label="Lighting" className="hidden shrink-0 sm:flex">
                   <button type="button" className={seg} aria-pressed={!night} onClick={() => setNight(false)}>
                     Day
                   </button>
@@ -163,7 +172,7 @@ export function TowerViewer3D() {
                     Night
                   </button>
                 </div>
-                <span className="mx-1 h-5 w-px shrink-0 bg-white/15" aria-hidden="true" />
+                <span className="mx-1 hidden h-5 w-px shrink-0 bg-white/15 sm:block" aria-hidden="true" />
                 <div role="group" aria-label="Camera view" className="flex shrink-0">
                   {VIEWS.map((v) => (
                     <button
@@ -177,7 +186,7 @@ export function TowerViewer3D() {
                     </button>
                   ))}
                 </div>
-                <span className="mx-1 h-5 w-px shrink-0 bg-white/15" aria-hidden="true" />
+                <span className="mx-1 hidden h-5 w-px shrink-0 bg-white/15 sm:block" aria-hidden="true" />
                 <label className="sr-only" htmlFor="tower-amenity">
                   Go to amenity
                 </label>
@@ -185,7 +194,7 @@ export function TowerViewer3D() {
                   id="tower-amenity"
                   value={spot ?? ''}
                   onChange={(e) => selectSpot(e.target.value || null)}
-                  className="shrink-0 cursor-pointer rounded-full bg-transparent py-2 pl-3 pr-2 text-[12px] font-bold uppercase tracking-[0.14em] text-white [&>option]:text-ink"
+                  className="w-full shrink-0 cursor-pointer rounded-full border-t border-white/10 bg-transparent py-1 pl-3 pr-2 text-center text-[11px] sm:w-auto sm:border-0 sm:py-2 sm:text-left sm:text-[12px] font-bold uppercase tracking-[0.14em] text-white [&>option]:text-ink"
                 >
                   <option value="">Amenities</option>
                   {HOTSPOTS.map((h, n) => (
@@ -200,7 +209,7 @@ export function TowerViewer3D() {
               {active ? `${active.name}: ${active.note}` : ''}
             </p>
             {active && (
-              <div className="absolute right-4 top-16 max-w-[260px] rounded-2xl bg-white/95 p-4 pr-11 text-ink shadow-xl sm:right-8 sm:top-8">
+              <div className="absolute inset-x-3 top-12 rounded-2xl sm:inset-x-auto sm:right-8 sm:top-8 sm:max-w-[260px] bg-white/95 p-4 pr-11 text-ink shadow-xl">
                 <button type="button" onClick={() => selectSpot(null)} className="absolute right-2 top-2 grid size-8 place-items-center rounded-full text-muted hover:bg-sand hover:text-ink" aria-label="Close and zoom out">
                   <CloseIcon className="size-4" />
                 </button>
@@ -214,7 +223,7 @@ export function TowerViewer3D() {
             )}
 
             {/* Zoom controls: always available, so a zoomed-in amenity view can be backed out of. */}
-            <div role="group" aria-label="Zoom" className="absolute left-3 top-1/2 flex -translate-y-1/2 flex-col gap-1 rounded-full bg-black/55 p-1 ring-1 ring-white/10 backdrop-blur-md sm:left-6">
+            <div role="group" aria-label="Zoom" className="absolute left-2 top-1/2 flex -translate-y-1/2 flex-col gap-0.5 rounded-full bg-black/55 p-0.5 sm:gap-1 sm:p-1 ring-1 ring-white/10 backdrop-blur-md sm:left-6">
               <button type="button" className={zoomBtn} onClick={() => zoomBy(1.25)} disabled={zoom >= ZOOM_MAX - 0.01} aria-label="Zoom in">
                 <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M12 5v14M5 12h14" strokeLinecap="round" /></svg>
               </button>
@@ -233,6 +242,7 @@ export function TowerViewer3D() {
         <LeadButton intent="brochure" source="tower_3d" className="btn">
           {t.cta} <ArrowUpRight className="arrow size-4" />
         </LeadButton>
+      </div>
       </div>
     </section>
   );

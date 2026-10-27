@@ -61,6 +61,7 @@ export function FloorPlans() {
       <div className="container-x">
         <SectionHeading
           id="floor-plans-title"
+          oneLine
           eyebrow={f.eyebrow}
           title={f.title}
           body={f.body}
@@ -72,7 +73,7 @@ export function FloorPlans() {
         />
 
         {/* Segmented tabs */}
-        <div role="tablist" aria-label="Plans" className="mb-6 inline-flex w-full gap-1 overflow-x-auto rounded-[1.5rem] bg-white p-1.5 shadow-[var(--shadow-soft)] sm:w-auto">
+        <div role="tablist" aria-label="Plans" className="mb-6 grid w-full grid-cols-3 gap-1 rounded-[1.25rem] bg-white p-1 shadow-[var(--shadow-soft)] sm:inline-flex sm:w-auto sm:rounded-[1.5rem] sm:p-1.5">
           {TABS.map((t, i) => (
             <button
               key={t.id}
@@ -84,10 +85,10 @@ export function FloorPlans() {
               tabIndex={tab === t.id ? 0 : -1}
               onKeyDown={(e) => onTabKey(e, i)}
               onClick={() => setTab(t.id)}
-              className="flex min-h-[52px] flex-1 flex-col items-start justify-center rounded-[1.1rem] px-5 text-left transition-colors hover:bg-cream aria-selected:bg-brand aria-selected:text-white sm:flex-none"
+              className="flex min-h-[52px] min-w-0 flex-col items-center justify-center rounded-[1rem] px-2 py-2 text-center transition-colors hover:bg-cream aria-selected:bg-brand aria-selected:text-white sm:flex-none sm:items-start sm:rounded-[1.1rem] sm:px-5 sm:text-left"
             >
-              <span className="text-[14.5px] font-semibold">{t.label}</span>
-              <span className="text-[12px] opacity-70">{t.note}</span>
+              <span className="whitespace-nowrap text-[13.5px] font-semibold leading-tight sm:text-[14.5px]">{t.label}</span>
+              <span className="mt-0.5 whitespace-nowrap text-[11px] leading-tight opacity-70 sm:text-[12px]">{t.note}</span>
             </button>
           ))}
         </div>
@@ -98,7 +99,7 @@ export function FloorPlans() {
                 <Plan image="master-plan" alt="Master plan of Subham Ashok Heights showing Block A, Block B, green lawn, kids' play area, amphitheatre and driveways" />
               </div>
 
-              <div className="grid content-start gap-4">
+              <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-4">
                 <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" data-reveal="3d" data-tilt>
                   <p className="kicker">Legend</p>
                   <ol className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5">
@@ -129,26 +130,26 @@ export function FloorPlans() {
             </div>
           {tab !== 'master' && (
             <>
-              {/* Unit configurator: horizontal snap rail */}
-              <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:mx-0 sm:px-0" aria-label={`Block ${tab} unit types`}>
+              {/* Unit configurator: compact 2-up grid on phones, horizontal snap rail from sm up */}
+              <ul className="grid grid-cols-2 gap-2 pb-2 [&>li:last-child:nth-child(odd)]:col-span-2 sm:flex sm:snap-x sm:snap-mandatory sm:gap-3 sm:overflow-x-auto sm:pb-4 sm:[scrollbar-width:thin]" aria-label={`Block ${tab} unit types`}>
                 {blockUnits.map((u) => {
                   const active = u.id === selectedId;
                   return (
-                    <li key={u.id} className="w-[230px] shrink-0 snap-start">
+                    <li key={u.id} className="min-w-0 sm:w-[230px] sm:shrink-0 sm:snap-start">
                       <button
                         type="button"
                         aria-pressed={active}
                         data-tilt
                         onClick={() => pick(u.id)}
-                        className={`flex h-full w-full flex-col rounded-[1.5rem] p-5 text-left transition-all duration-300 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
+                        className={`flex h-full w-full flex-col rounded-2xl p-3.5 text-left transition-all duration-300 sm:rounded-[1.5rem] sm:p-5 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
                       >
-                        <span className={`text-[12px] font-bold uppercase tracking-[0.14em] ${active ? 'text-gold' : 'text-terra'}`}>
+                        <span className={`truncate text-[10px] font-bold uppercase tracking-[0.1em] sm:text-[12px] sm:tracking-[0.14em] ${active ? 'text-gold' : 'text-terra'}`}>
                           {u.penthouse ? 'Penthouse' : `Unit ${u.units.split(', ')[0]}${u.units.includes(',') ? ' series' : ''}`}
                         </span>
-                        <span className="mt-2 font-serif text-[34px] leading-none">{u.type}</span>
-                        <span className={`mt-4 text-[13px] ${active ? 'text-white/70' : 'text-muted'}`}>Carpet area</span>
-                        <span className="font-serif text-[26px] leading-none tabular">
-                          {fmt(u.carpet)} <span className="font-sans text-[13px]">sq.ft</span>
+                        <span className="mt-1.5 font-serif text-[26px] leading-none sm:mt-2 sm:text-[34px]">{u.type}</span>
+                        <span className={`mt-2.5 text-[11px] sm:mt-4 sm:text-[13px] ${active ? 'text-white/70' : 'text-muted'}`}>Carpet area</span>
+                        <span className="mt-0.5 font-serif text-[19px] leading-none tabular sm:mt-0 sm:text-[26px]">
+                          {fmt(u.carpet)} <span className="font-sans text-[11px] sm:text-[13px]">sq.ft</span>
                         </span>
                       </button>
                     </li>
@@ -156,20 +157,20 @@ export function FloorPlans() {
                 })}
               </ul>
 
-              <div className="mt-2 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+              <div className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-3 sm:mt-2 sm:gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                 {/* Re-keyed per selection so each unit / floor swings in on a 3D hinge (.plan-flip). */}
-                <div key={`plan-${selectedId}`} className="plan-flip rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)]">
+                <div key={`plan-${selectedId}`} className="plan-flip rounded-[1.75rem] bg-white p-2 sm:rounded-[2rem] sm:p-3 shadow-[var(--shadow-soft)]">
                   {unit && <Plan image={unit.image} alt={`Unit plan, ${unitLabel(unit)}, units ${unit.units}`} />}
                   {floor && <Plan image={floor.image} alt={`Floor plan, Block ${floor.block}, ${floor.title}${floor.note ? `, ${floor.note}` : ''}`} />}
                 </div>
 
-                <div className="grid content-start gap-4">
+                <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-4">
                   {unit && (
-                    <div key={`unit-${unit.id}`} className="plan-flip plan-flip--late rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" aria-live="polite">
+                    <div key={`unit-${unit.id}`} className="plan-flip plan-flip--late rounded-[1.75rem] bg-white p-5 sm:rounded-[2rem] sm:p-6 shadow-[var(--shadow-soft)]" aria-live="polite">
                       <p className="kicker">
                         Block {unit.block} · {unit.baths} baths
                       </p>
-                      <p className="mt-3 font-serif text-[44px] leading-none text-ink">
+                      <p className="mt-3 font-serif text-[38px] leading-none text-ink sm:text-[44px]">
                         <Accent text={`${unit.type}${unit.penthouse ? ' _penthouse_' : ''}`} />
                       </p>
                       <dl className="mt-5 grid grid-cols-2 gap-2">
@@ -180,8 +181,8 @@ export function FloorPlans() {
                           ['Super built-up', unit.sbua],
                           ...(unit.terrace ? [['Terrace', unit.terrace] as [string, number]] : []),
                         ].map(([k, v]) => (
-                          <div key={k as string} className="rounded-2xl bg-cream px-4 py-3">
-                            <dt className="text-[12px] font-bold uppercase tracking-[0.12em] text-muted">{k}</dt>
+                          <div key={k as string} className="min-w-0 rounded-2xl bg-cream px-3.5 py-3 sm:px-4">
+                            <dt className="whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.08em] text-muted sm:text-[12px] sm:tracking-[0.12em]">{k}</dt>
                             <dd className="mt-0.5 font-semibold tabular text-ink">{fmt(v as number)} sq.ft</dd>
                           </div>
                         ))}
@@ -192,11 +193,11 @@ export function FloorPlans() {
                       </button>
                     </div>
                   )}
-                  <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]">
+                  <div className="rounded-[1.75rem] bg-white p-5 shadow-[var(--shadow-soft)] sm:rounded-[2rem] sm:p-6">
                     <p className="kicker !text-muted">Typical floor plates</p>
-                    <div className="-mx-6 mt-3 flex gap-2 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+                    <div className="mt-3 flex flex-wrap gap-2">
                       {blockFloors.map((x) => (
-                        <button key={x.id} type="button" className="chip shrink-0 whitespace-nowrap !text-[13px]" aria-pressed={x.id === selectedId} onClick={() => pick(x.id)}>
+                        <button key={x.id} type="button" className="chip max-w-full !text-[13px]" aria-pressed={x.id === selectedId} onClick={() => pick(x.id)}>
                           {x.title}
                           {x.note ? ` · ${x.note}` : ''}
                         </button>
@@ -227,19 +228,19 @@ function Architecture() {
     <div className="on-dark relative mt-16 overflow-hidden rounded-[2rem] sm:rounded-[3rem]" data-reveal="3d">
       <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1280px) 1340px, 100vw" className="object-cover" placeholder="blur" blurDataURL={img.blurDataURL} />
       <div className="absolute inset-0 bg-gradient-to-r from-[#1f0b08]/95 via-[#1f0b08]/70 to-[#1f0b08]/10" aria-hidden="true" />
-      <div className="relative flex flex-col gap-8 p-8 sm:p-14 lg:flex-row lg:items-end lg:justify-between">
+      <div className="relative flex flex-col gap-8 p-6 sm:p-14 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-lg">
           <span className="block h-0.5 w-12 bg-gold" aria-hidden="true" />
-          <h3 className="mt-6 text-[48px] leading-[0.95] !text-white sm:text-[60px]">
-            <Accent text="Built to _last_" />
+          <h3 className="h2 mt-6 !text-white">
+            <Accent text="Built to _Last_" />
           </h3>
           <p className="mt-5 text-[16px] leading-relaxed text-white/80">
             Earthquake-resistant RCC towers with branded lifts, vitrified flooring and a clean, well-lit façade — designed by Banka and Associates, Guwahati.
           </p>
         </div>
-        <ul className="flex flex-wrap gap-3">
+        <ul className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
           {tiles.map(([k, v]) => (
-            <li key={k} className="min-w-[130px] rounded-[1.5rem] bg-white/10 px-5 py-4 text-center ring-1 ring-white/15 backdrop-blur-md">
+            <li key={k} className="min-w-0 rounded-[1.5rem] bg-white/10 px-4 py-4 last:col-span-2 sm:min-w-[130px] sm:px-5 text-center ring-1 ring-white/15 backdrop-blur-md">
               <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/70">{k}</p>
               <p className="mt-1 font-serif text-[24px] leading-none text-white">{v}</p>
             </li>

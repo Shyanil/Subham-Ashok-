@@ -23,7 +23,7 @@ export function Location() {
   return (
     <section id="location" aria-labelledby="location-title" className="section" data-track-section="location">
       <div className="container-x">
-        <SectionHeading id="location-title" eyebrow={l.eyebrow} title={l.title} body={l.body} />
+        <SectionHeading id="location-title" eyebrow={l.eyebrow} title={l.title} body={l.body} oneLine />
 
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {keyDistances.map((g) => (
@@ -53,7 +53,7 @@ export function Location() {
         <div className="dark-card on-dark grid gap-10 rounded-[2rem] p-7 sm:rounded-[3rem] sm:p-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:p-16" data-reveal="3d">
           <div>
             <p className="kicker !text-gold">Strategically positioned</p>
-            <h3 className="mt-5 text-[52px] uppercase leading-[0.9] !text-white sm:text-[72px]">
+            <h3 className="h2 mt-5 uppercase !text-white">
               <Accent text="Project _Location_" />
             </h3>
             <p className="mt-8 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] text-gold">
@@ -68,11 +68,11 @@ export function Location() {
               <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/65">Home types</p>
               <p className="mt-2 font-serif text-[26px] italic text-gold">2 BHK · 3 BHK · 4 BHK · Penthouses</p>
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={l.directionsLink} target="_blank" rel="noopener noreferrer" className="btn">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={l.directionsLink} target="_blank" rel="noopener noreferrer" className="btn whitespace-nowrap">
                 Get Directions <ArrowUpRight className="arrow size-4" />
               </a>
-              <a href={l.mapLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost">
+              <a href={l.mapLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost whitespace-nowrap">
                 Open in Google Maps
               </a>
             </div>

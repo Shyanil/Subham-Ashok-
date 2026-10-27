@@ -12,7 +12,7 @@ export function FinalCta() {
       <div className="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
         <div className="lg:pt-8">
           <p className="kicker !text-gold"><SparkIcon className="size-3" /> {f.eyebrow}</p>
-          <h2 id="enquire-title" className="mt-5 max-w-[11ch] text-[54px] leading-[0.94] !text-white sm:text-[70px]"><Accent text={f.title} /></h2>
+          <h2 id="enquire-title" className="h2 mt-5 !text-white sm:whitespace-nowrap"><Accent text={f.title} /></h2>
           <p className="mt-6 max-w-md text-[16px] leading-relaxed text-white/75">{f.body}</p>
           <ul className="mt-8 grid gap-2 sm:grid-cols-2">
             {f.perks.map((p) => (
@@ -29,9 +29,9 @@ export function FinalCta() {
 
         <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-lift)] sm:rounded-[2.5rem] sm:p-10 lg:p-12">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-terra">Private enquiry</p>
-          <h3 className="mt-2 text-[34px] leading-none text-ink sm:text-[40px]">Let us help you find your home</h3>
+          <h3 className="mt-2 text-[34px] leading-none text-ink sm:text-[40px]">Let Us Help You Find Your Home</h3>
           <div className="mt-7">
-            <LeadForm variant="inline" fields="full" source="final_form" submitLabel="Confirm Enquiry" />
+            <LeadForm variant="inline" fields="priority" source="final_form" submitLabel="Confirm Enquiry" />
           </div>
           <p className="mt-6 flex items-center justify-center gap-2 border-t border-line pt-5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
             <ShieldIcon className="size-4 text-leaf" /> Secure · RERA verified project

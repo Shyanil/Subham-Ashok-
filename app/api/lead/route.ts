@@ -26,6 +26,9 @@ function rateLimited(ip: string) {
   return recent.length > MAX_PER_WINDOW;
 }
 
+/** Forms that require email and pincode (must match `fields="priority"` in the UI). */
+const PRIORITY_SOURCES = new Set(['floating_priority', 'final_form']);
+
 const json = (body: unknown, status = 200) => Response.json(body, { status });
 
 async function postWithTimeout(url: string, init: RequestInit, ms = 8000) {
@@ -54,7 +57,7 @@ export async function POST(request: NextRequest) {
   const source = typeof body === 'object' && body !== null && 'meta' in body && typeof body.meta === 'object' && body.meta !== null && 'source' in body.meta
     ? body.meta.source
     : undefined;
-  const parsed = (source === 'floating_priority' ? priorityLeadRequestSchema : leadRequestSchema).safeParse(body);
+  const parsed = (typeof source === 'string' && PRIORITY_SOURCES.has(source) ? priorityLeadRequestSchema : leadRequestSchema).safeParse(body);
   if (!parsed.success) {
     const fieldErrors: Record<string, string> = {};
     for (const issue of parsed.error.issues) {

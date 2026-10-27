@@ -95,7 +95,7 @@ export function Amenities() {
             <p className="kicker">
               <SparkIcon className="size-3" /> {a.eyebrow}
             </p>
-            <h2 id="amenities-title" className="h2 mt-5 max-w-[11ch]">
+            <h2 id="amenities-title" className="h2 mt-5 lg:whitespace-nowrap">
               <Accent text={a.title} />
             </h2>
           </div>
@@ -130,7 +130,10 @@ export function Amenities() {
                   src={img.src}
                   alt={img.alt}
                   fill
-                  sizes="(min-width: 1280px) 1200px, 100vw"
+                  // The 16:9 renders are cropped into a 4:5 stage on phones (≈2.3× wider than the
+                  // viewport) and zoomed 1.1×, so request a source wide enough to stay sharp.
+                  sizes="(min-width: 1280px) 1200px, (min-width: 640px) 100vw, 260vw"
+                  quality={90}
                   className={`object-cover transition-transform duration-[6000ms] ease-out ${n === i ? 'scale-100' : 'scale-110'}`}
                   loading={n < 2 ? 'eager' : 'lazy'}
                   placeholder="blur"
@@ -224,7 +227,7 @@ export function Amenities() {
                       <li key={it.name} className="w-[min(76vw,290px)] shrink-0 snap-center sm:w-[290px]">
                         <button type="button" className="amenity-card group block w-full text-left" data-active={active === key} {...tilt(key)}>
                           <span className="amenity-card__media relative block aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-tan">
-                            <Image src={img.src} alt="" fill sizes="290px" className="amenity-card__img object-cover" style={{ objectPosition: objectPosition(img.focus) }} />
+                            <Image src={img.src} alt="" fill sizes="(min-width: 640px) 760px, 200vw" quality={90} className="amenity-card__img object-cover" style={{ objectPosition: objectPosition(img.focus) }} />
                             <span className="absolute inset-0 bg-gradient-to-t from-[#1f0b08]/70 via-transparent to-transparent" aria-hidden="true" />
                             <span className="amenity-card__chip absolute left-4 top-4 grid size-11 place-items-center rounded-2xl bg-white/85 text-terra backdrop-blur" aria-hidden="true">
                               <AmenityIcon name={it.icon} className="size-5" />

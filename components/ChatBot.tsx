@@ -44,6 +44,15 @@ export function ChatBot() {
 
   // The greeting label above the launcher slides in shortly after load, until dismissed.
   const [dismissed, setDismissed] = useState(false);
+  // Keep the launcher out of the hero on every screen; it appears once the hero scrolls away.
+  const [pastHero, setPastHero] = useState(false);
+  useEffect(() => {
+    const hero = document.getElementById('top');
+    if (!hero) return setPastHero(true);
+    const observer = new IntersectionObserver(([entry]) => setPastHero(!entry.isIntersecting));
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const t = window.setTimeout(() => setTeaser(true), TEASER_DELAY_MS);
     return () => window.clearTimeout(t);
@@ -230,7 +239,7 @@ export function ChatBot() {
       )}
 
       {!open && (
-        <div className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-3 z-[45] flex flex-col items-end gap-2.5 lg:bottom-28 lg:right-6">
+        <div data-chat-launcher className={`fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-3 z-[45] ${pastHero ? 'flex' : 'hidden'} flex-col items-end gap-2.5 lg:bottom-28 lg:right-6`}>
           {teaser && !dismissed && (
             <div className="relative animate-[chat-pop_.35s_ease-out_both]">
               <button

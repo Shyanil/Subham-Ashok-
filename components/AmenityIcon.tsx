@@ -24,10 +24,13 @@ const paths: Record<string, ReactNode> = {
       <path d="M3 9h1M20 9h1M3 15h1M20 15h1" />
     </>
   ),
+  // Playground slide: a child at the top of the ladder, then the slide sweeping down.
   kids: (
     <>
-      <path d="M4 21 8 4h8l4 17M6 13h12" />
-      <path d="M12 4v6M10.5 10h3l-.5 3h-2z" />
+      <circle cx="7" cy="4.5" r="1.6" />
+      <path d="M5 21V8.5M9 21V8.5M5 8.5h4M5 12.5h4M5 16.5h4" />
+      <path d="M9 8.5c4.5 0 5 4 7 7.5 1 1.8 2.3 3 5 3.2" />
+      <path d="M2.5 21h19" />
     </>
   ),
   lawn: (

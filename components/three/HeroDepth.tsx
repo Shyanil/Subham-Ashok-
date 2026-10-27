@@ -39,7 +39,8 @@ function Scene({ src, depth, focus, onReady }: Omit<Props, 'paused'>) {
     const scroll = Math.min(1, window.scrollY / Math.max(1, window.innerHeight));
     const goal: [number, number] = moved.current ? [mouse.current[0], mouse.current[1] * 0.6 + scroll * 0.8] : [0, scroll * 0.8];
     s.pointer = [s.pointer[0] + (goal[0] - s.pointer[0]) * k, s.pointer[1] + (goal[1] - s.pointer[1]) * k];
-    const zoomGoal = moved.current || scroll > 0 ? 1.07 : 1;
+    // Kept tiny: the hero render's roofline sits right at the top edge.
+    const zoomGoal = moved.current || scroll > 0 ? 1.02 : 1;
     s.zoom += (zoomGoal - s.zoom) * k * 0.6;
     // A few frames in, the texture is on screen at the right framing — fade the canvas in.
     if (++frames.current === 4) onReady();

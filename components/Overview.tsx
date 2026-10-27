@@ -57,23 +57,23 @@ export function Overview() {
       <div className="container-x mt-16 grid gap-4 md:grid-cols-3">
         {o.personas.map((p, i) => {
           const img = p.image ? getImage(p.image) : null;
-          const base = 'group relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-[2.5rem] p-8 text-left transition-transform duration-500 hover:-translate-y-2';
+          const base = 'group relative flex flex-col overflow-hidden rounded-[2rem] p-6 text-left sm:p-7 transition-transform duration-500 hover:-translate-y-2';
           const tone = p.tone === 'dark' ? 'dark-card' : p.tone === 'terra' ? 'bg-gradient-to-br from-[#5e3626] to-[#8a5a42] text-white' : 'bg-deep text-white';
           return (
             <article key={p.title} className={`${base} ${tone}`} data-reveal="3d" data-tilt>
               {img && (
                 <>
                   <Image src={img.src} alt={img.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={img.blurDataURL} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black/45" aria-hidden="true" />
                 </>
               )}
-              <span className="absolute left-8 top-8 grid size-12 place-items-center rounded-2xl bg-white/12 text-gold ring-1 ring-white/15 backdrop-blur">
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/12 text-gold ring-1 ring-white/15 backdrop-blur">
                 <AmenityIcon name={PERSONA_ICON[i]} className="size-6" />
               </span>
-              <div className="relative">
+              <div className="relative mt-5">
                 <p className="text-[12px] font-black uppercase tracking-[0.24em] text-white/80">{p.kicker}</p>
-                <h3 className="mt-2 text-[44px] italic leading-none !text-white">{p.title}</h3>
-                <p className="mt-3 text-[16px] leading-relaxed text-white/85">{p.body}</p>
+                <h3 className="mt-1.5 text-[40px] italic leading-none !text-white">{p.title}</h3>
+                <p className="mt-2 text-[16px] leading-relaxed text-white/85">{p.body}</p>
               </div>
             </article>
           );

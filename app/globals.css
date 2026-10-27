@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+/* ── First-visit intro (see ThreeDPreloader). Exit starts at 2.3s = --intro-delay. ── */
+@property --pct {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
 .site-preloader {
   position: fixed;
   inset: 0;
@@ -7,108 +13,131 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #2e110c;
-  animation: preloader-exit 0.7s 2.3s ease forwards;
+  /* The two curtains (::before / ::after) carry the colour so they can split apart. */
+  animation: preloader-exit 0.01s 3.05s linear forwards;
+}
+.site-preloader::before,
+.site-preloader::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  content: '';
+  background: radial-gradient(120% 90% at 50% 100%, #4a1c14, #2e110c 55%, #1f0b08);
+  animation: preloader-curtain-up 0.75s 2.3s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+.site-preloader::before {
+  top: 0;
+}
+.site-preloader::after {
+  bottom: 0;
+  background: radial-gradient(120% 90% at 50% 0%, #4a1c14, #2e110c 55%, #1f0b08);
+  animation-name: preloader-curtain-down;
 }
 /* Return visits: the inline script in layout.tsx tags <html> before first paint, so the overlay never flashes. */
 .intro-seen .site-preloader {
   display: none;
 }
-/* First visit: hold the hero entrance until the preloader starts to fade. */
+/* First visit: hold the hero entrance until the curtains open. */
 :root:not(.intro-seen) {
   --intro-delay: 2.3s;
 }
+.site-preloader__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgb(220 192 160 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(220 192 160 / 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 45%, #000 0, transparent 60%);
+  animation: preloader-fade 0.9s ease both, preloader-out 0.35s 2.2s ease forwards;
+}
 .site-preloader__content {
+  position: relative;
+  z-index: 2;
   display: grid;
   justify-items: center;
   color: #fff;
-  animation: preloader-content-in 0.8s ease both;
-}
-.site-preloader__scene {
-  position: relative;
-  width: 220px;
-  height: 148px;
-  perspective: 700px;
-  transform-style: preserve-3d;
-}
-.site-preloader__ground {
-  position: absolute;
-  left: 50%;
-  bottom: 4px;
-  width: 174px;
-  height: 70px;
-  border: 1px solid rgb(220 192 160 / 0.32);
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgb(220 192 160 / 0.16), transparent 68%);
-  transform: translateX(-50%) rotateX(66deg);
+  animation: preloader-out 0.35s 2.2s ease forwards;
 }
 .site-preloader__tower {
-  --tower-h: 78px;
-  position: absolute;
-  bottom: 26px;
-  width: 36px;
-  height: var(--tower-h);
-  border: 1px solid rgb(255 255 255 / 0.25);
-  background-color: #c8a47f;
-  background-image:
-    repeating-linear-gradient(90deg, transparent 0 7px, rgb(57 29 20 / 0.74) 7px 9px, transparent 9px 13px),
-    repeating-linear-gradient(0deg, transparent 0 8px, rgb(57 29 20 / 0.74) 8px 10px, transparent 10px 14px),
-    linear-gradient(90deg, #dfc4a4, #a77a5a);
-  box-shadow: 12px 10px 0 rgb(0 0 0 / 0.18);
-  transform: rotateY(-24deg) translateY(20px) scaleY(0.2);
-  transform-origin: bottom center;
-  animation: preloader-rise 1.3s 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  width: 150px;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgb(220 192 160 / 0.25));
 }
-.site-preloader__tower::before {
-  position: absolute;
-  top: -9px;
-  left: -1px;
-  width: 100%;
-  height: 9px;
-  content: '';
-  background: #dcc0a0;
-  transform: skewY(-22deg);
-  transform-origin: bottom left;
+.site-preloader__lines path {
+  stroke: #dcc0a0;
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: preloader-draw 0.9s calc(var(--d, 0) * 1s) cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
-.site-preloader__tower::after {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 12px;
-  height: 100%;
-  content: '';
-  background-color: #80583f;
-  background-image: repeating-linear-gradient(0deg, transparent 0 8px, rgb(38 20 15 / 0.72) 8px 10px, transparent 10px 14px);
-  transform: skewY(-22deg);
-  transform-origin: left top;
+.site-preloader__window {
+  fill: #f6c870;
+  opacity: 0;
+  animation: preloader-light 0.35s calc(0.75s + var(--f) * 0.07s) ease forwards;
 }
-.site-preloader__tower--a {
-  left: 52px;
-  --tower-h: 66px;
-  animation-delay: 0.2s;
-}
-.site-preloader__tower--b {
-  left: 94px;
-  --tower-h: 104px;
-}
-.site-preloader__tower--c {
-  left: 138px;
-  --tower-h: 80px;
-  animation-delay: 0.55s;
-}
-.site-preloader__brand {
-  margin-top: 22px;
-  font-family: var(--ff-serif), Georgia, serif;
-  font-size: 24px;
-  letter-spacing: 0.02em;
+.site-preloader__logo {
+  position: relative;
+  width: 210px;
+  height: auto;
+  margin-top: 26px;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(100deg, #000 40%, rgb(0 0 0 / 0.55) 50%, #000 60%);
+  mask-image: linear-gradient(100deg, #000 40%, rgb(0 0 0 / 0.55) 50%, #000 60%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  animation:
+    preloader-rise-in 0.8s 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+    preloader-shimmer 1.2s 1.3s ease-in-out forwards;
 }
 .site-preloader__caption {
-  margin-top: 4px;
+  margin-top: 10px;
   color: #dcc0a0;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.6em;
   text-transform: uppercase;
+  opacity: 0;
+  animation: preloader-track 0.9s 1.25s ease forwards;
+}
+.site-preloader__progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  color: rgb(220 192 160 / 0.8);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+}
+.site-preloader__bar {
+  position: relative;
+  width: 140px;
+  height: 1px;
+  overflow: hidden;
+  background: rgb(220 192 160 / 0.2);
+}
+.site-preloader__bar::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: #dcc0a0;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: preloader-bar 2.1s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+.site-preloader__count {
+  width: 3.2ch;
+  text-align: right;
+  counter-reset: pct var(--pct);
+  animation: preloader-count 2.1s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+.site-preloader__count::after {
+  content: counter(pct) '%';
 }
 .scene-loader {
   display: flex;
@@ -132,18 +161,53 @@
 @keyframes preloader-rise {
   to { transform: rotateY(-24deg) translateY(0) scaleY(1); }
 }
-@keyframes preloader-content-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes preloader-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes preloader-light {
+  60% { opacity: 1; }
+  to { opacity: 0.85; }
+}
+@keyframes preloader-fade {
+  from { opacity: 0; }
+}
+@keyframes preloader-rise-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes preloader-shimmer {
+  from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+  to { -webkit-mask-position: 0 0; mask-position: 0 0; }
+}
+@keyframes preloader-track {
+  from { opacity: 0; letter-spacing: 1.1em; }
+  to { opacity: 1; letter-spacing: 0.6em; }
+}
+@keyframes preloader-bar {
+  to { transform: scaleX(1); }
+}
+@keyframes preloader-count {
+  to { --pct: 100; }
+}
+@keyframes preloader-out {
+  to { opacity: 0; transform: scale(0.97); }
+}
+@keyframes preloader-curtain-up {
+  to { transform: translateY(-100%); }
+}
+@keyframes preloader-curtain-down {
+  to { transform: translateY(100%); }
 }
 @keyframes preloader-exit {
-  to { opacity: 0; visibility: hidden; pointer-events: none; }
+  to { visibility: hidden; pointer-events: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-preloader { animation-duration: 0.01ms; animation-delay: 0ms; }
-  .site-preloader__tower,
-  .site-preloader__content,
-  .scene-loader i { animation-duration: 0.01ms; animation-delay: 0ms; }
+  .site-preloader,
+  .site-preloader *,
+  .site-preloader::before,
+  .site-preloader::after,
+  .site-preloader__bar::after,
+  .scene-loader i { animation-duration: 0.01ms !important; animation-delay: 0ms !important; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -279,6 +343,13 @@
     letter-spacing: -0.035em;
     text-wrap: balance;
   }
+  /* Phones: fill each line before wrapping, so headings don't leave a gap on the right. */
+  @media (max-width: 639px) {
+    h1,
+    h2 {
+      text-wrap: wrap;
+    }
+  }
   button:not(:disabled),
   [role='button'],
   summary,
@@ -385,9 +456,17 @@
     font-size: clamp(44px, 6vw + 8px, 104px);
     line-height: 0.92;
   }
+  /* One display size for every section heading (and the hero title). */
   .h2 {
-    font-size: clamp(40px, 4.6vw + 10px, 88px);
-    line-height: 0.95;
+    font-size: clamp(40px, 1.6vw + 26px, 56px);
+    line-height: 1.02;
+  }
+  /* Phones: every section heading matches the hero title size. */
+  @media (max-width: 639px) {
+    .h2 {
+      font-size: clamp(28px, 10.1vw, 46px);
+      line-height: 1.05;
+    }
   }
   .accent {
     font-style: italic;
@@ -1021,4 +1100,27 @@
   .hero .hero-copy {
     padding-inline: clamp(48px, 3vw, 72px);
   }
+}
+
+/* Hero mobile brochure button: a slow light sweep to draw the eye. */
+.cta-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.22) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: cta-shine 3.6s ease-in-out 3s infinite;
+  pointer-events: none;
+}
+@keyframes cta-shine {
+  0%, 55% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-shine::after { animation: none; }
+}
+
+/* Desktop side panel open: the chat launcher steps aside so it never sits on the form. */
+[data-side-panel='open'] [data-chat-launcher] {
+  display: none;
 }

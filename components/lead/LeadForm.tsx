@@ -147,7 +147,7 @@ export function LeadForm({
         </div>
         <p className={`font-serif text-[36px] leading-none ${tone === 'dark' ? 'text-white' : 'text-ink'}`}>Thank you, {values.name.trim().split(' ')[0]}!</p>
         <p className={`mx-auto mt-2 max-w-sm text-[15px] ${tone === 'dark' ? 'text-white/75' : 'text-muted'}`}>
-          {priority ? 'Our team will call you shortly to confirm your property slot.' : 'Our team will call you shortly with the price list and to fix your site visit.'}
+          {floatingPriority ? 'Our team will call you shortly to confirm your property slot.' : 'Our team will call you shortly with the price list and to fix your site visit.'}
         </p>
         <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
           <a href={BROCHURE_URL} download className={`btn ${tone === 'dark' ? 'btn--ghost' : 'btn--outline'}`}>
@@ -180,10 +180,10 @@ export function LeadForm({
       className={`relative ${tone === 'dark' ? 'form-dark' : ''} ${floatingPriority ? 'priority-float' : ''}`}
       aria-describedby={errors.form ? `${id}-form-err` : undefined}
     >
-      <div className={row ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start' : floatingPriority ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3' : priority ? 'grid gap-3 lg:grid-cols-5' : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`}>
+      <div className={row ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start' : floatingPriority ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3' : priority ? `grid gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}` : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`}>
         <div className="field">
           <label htmlFor={nameId}>
-            Full name <span className="text-terra" aria-hidden="true">*</span>
+            Name <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <input
             id={nameId}
@@ -203,7 +203,7 @@ export function LeadForm({
 
         <div className="field">
           <label htmlFor={phoneId}>
-            Mobile number <span className="text-terra" aria-hidden="true">*</span>
+            Phone <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <div className="phone-wrap">
             <span className="phone-prefix" aria-hidden="true">
@@ -244,7 +244,7 @@ export function LeadForm({
 
         <div className="field">
           <label htmlFor={cfgId}>
-            Looking for <span className="text-terra" aria-hidden="true">*</span>
+            Home type <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <select
             id={cfgId}
@@ -270,7 +270,7 @@ export function LeadForm({
         </div>
 
         {priority && (
-          <div className="field">
+          <div className={`field ${variant === 'inline' ? 'sm:col-span-2' : ''}`}>
             <label htmlFor={pincodeId}>Pincode <span className="text-terra" aria-hidden="true">*</span></label>
             <input id={pincodeId} name="pincode" type="text" inputMode="numeric" autoComplete="postal-code" maxLength={6} className="input tabular" placeholder="6-digit pincode" value={values.pincode} onChange={(e) => set('pincode', e.target.value.replace(/\D/g, ''))} onBlur={() => blur('pincode')} aria-invalid={!!errors.pincode} aria-describedby={described('pincode')} required />
             {err('pincode')}
@@ -339,17 +339,17 @@ export function LeadForm({
       )}
 
       {!row && !floatingPriority && (
-        <div className={priority ? 'mt-5 flex justify-end' : 'mt-5'}>
-          <SubmitButton sending={status === 'sending'} label={submitLabel} compact={priority} />
+        <div className="mt-5">
+          <SubmitButton sending={status === 'sending'} label={submitLabel} />
         </div>
       )}
     </form>
   );
 }
 
-function SubmitButton({ sending, label, compact = false }: { sending: boolean; label: string; compact?: boolean }) {
+function SubmitButton({ sending, label }: { sending: boolean; label: string }) {
   return (
-    <button type="submit" className={`btn ${compact ? 'min-w-[220px]' : 'btn--block'}`} disabled={sending} aria-busy={sending}>
+    <button type="submit" className="btn btn--block" disabled={sending} aria-busy={sending}>
       {sending ? (
         <>
           <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" /> Sending…

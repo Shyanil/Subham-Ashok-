@@ -40,7 +40,6 @@ export const site = {
     visitCta: 'Book a Site Visit',
     formTitle: 'Download the brochure',
     footnote: '*Terms apply. Taxes and statutory charges extra.',
-    caption: "Artist's impression",
   },
 
   marquee: [
@@ -63,7 +62,7 @@ export const site = {
 
   overview: {
     eyebrow: `${P.area} · ${P.city}`,
-    title: 'A greener way to live in _Beharbari_',
+    title: 'A Greener Way to Live in _Beharbari_',
     body: `${P.area}'s first thoughtfully designed, health-centric community. Children play in sight of home, evenings are spent by the water, and schools, hospitals and markets are minutes away.`,
     personas: [
       { kicker: 'For families', title: 'Celebrate', body: 'A clubhouse and banquet hall, an amphitheatre under the sky and a grand lift lobby to welcome guests home.', tone: 'dark' },
@@ -81,14 +80,14 @@ export const site = {
 
   floorPlans: {
     eyebrow: 'Floor plans and price',
-    title: 'Homes planned for _light and air_',
+    title: 'Homes Planned for _Light and Air_',
     body: 'The master plan and every unit type across Block A and Block B. Areas are in square feet. Tap “Reveal price” for the current price of any unit.',
     specsTitle: 'Specifications',
   },
 
   amenities: {
     eyebrow: 'Amenities',
-    title: 'Every day, _well spent_',
+    title: 'Every Day, _Well Spent_',
     body: 'A clubhouse for celebrations, a pool for slow evenings, and open lawns where children grow up outdoors.',
     groups: [
       {
@@ -107,7 +106,7 @@ export const site = {
         ],
       },
       {
-        title: 'Everyday essentials',
+        title: 'Everyday Essentials',
         items: [
           { icon: 'security', name: '24×7 manned security', note: 'Guarded entry and exit' },
           { icon: 'power', name: '24×7 power backup', note: 'For common areas and homes' },
@@ -122,7 +121,7 @@ export const site = {
 
   tower: {
     eyebrow: 'Interactive 3D model',
-    title: 'Explore the homes _in 3D_',
+    title: 'Explore the Homes _in 3D_',
     body: 'Drag to rotate the model. Change the view or select an amenity to explore the community.',
     cta: 'Download Brochure',
     fallbackNote: 'Explore the artist impressions in the gallery below.',
@@ -130,7 +129,7 @@ export const site = {
 
   gallery: {
     eyebrow: 'Gallery',
-    title: 'A closer _look_',
+    title: 'A Closer _Look_',
     filters: [
       { id: 'all', label: 'All' },
       { id: 'interiors', label: 'Interiors' },
@@ -142,7 +141,7 @@ export const site = {
 
   location: {
     eyebrow: 'Location',
-    title: 'Close to _everything that matters_',
+    title: 'Close to _Everything That Matters_',
     body: 'Sonkuchi Path, Beharbari, Lalmati. Schools, hospitals, showrooms and markets are minutes from home.',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
     directionsLink: 'https://www.google.com/maps/dir/?api=1&destination=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
@@ -164,7 +163,7 @@ export const site = {
 
   finalCta: {
     eyebrow: 'Enquire',
-    title: 'Book your _site visit_',
+    title: 'Book Your _Site Visit_',
     body: 'Share your details and our team will send the price list and brochure, and fix a site visit at a time that suits your family.',
     perks: projectConfig.PERKS,
   },
@@ -180,7 +179,7 @@ export const site = {
       { value: 6100, suffix: '+', label: 'Happy residents' },
     ],
     note: {
-      title: "Chairman's note",
+      title: "Chairman's Note",
       quote:
         'Growing up, we all had the opportunity to enjoy nature at its best. Open fields, fresh air, and tons of playtime with our friends. That’s why we wanted to gift families a present that would be enjoyed by their loved ones for years to come — ample space, airy abodes, and a club where merry times become merrier.',
       name: 'Mr. Kailash Chandra Lohia',

@@ -11,10 +11,11 @@ type Props = {
   kind?: 'buttons' | 'form';
 };
 
-/** Conversion band between sections: a white pill-card with a serif line and the three actions. */
+/** Conversion band between sections: a white pill-card with a serif line and a single brochure action. */
 export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
   return (
-    <aside className="container-x py-4" aria-label={title.replace(/_/g, '')} data-track-section={source}>
+    <aside className="bg-sand pb-12 sm:pb-16" aria-label={title.replace(/_/g, '')} data-track-section={source}>
+      <div className="container-x">
       <div className="relative overflow-hidden rounded-[2rem] border border-line bg-white px-6 py-7 shadow-[var(--shadow-soft)] sm:rounded-[2.5rem] md:px-10 md:py-9" data-reveal="3d">
         <span className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-terra/[0.07]" aria-hidden="true" />
         <div className={`relative flex flex-col gap-5 ${kind === 'buttons' ? 'lg:flex-row lg:items-center lg:justify-between' : ''}`}>
@@ -39,16 +40,14 @@ export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
               </div>
             </>
           ) : (
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <LeadButton intent="visit" source={source} className="btn">
-                Book a Site Visit <ArrowUpRight className="arrow size-4" />
-              </LeadButton>
-              <LeadButton intent="brochure" source={source} className="btn btn--outline">
-                Download Brochure
+            <div className="flex">
+              <LeadButton intent="brochure" source={source} className="btn w-full sm:w-auto">
+                Download Brochure <ArrowUpRight className="arrow size-4" />
               </LeadButton>
             </div>
           )}
         </div>
+      </div>
       </div>
     </aside>
   );

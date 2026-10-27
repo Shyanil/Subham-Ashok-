@@ -83,7 +83,7 @@ export default function Home() {
         <FloorPlans />
         <Amenities />
         <Gallery />
-        <CtaBand source="cta_after_gallery" title="Like what you see? _Download the brochure_" body="Floor plans and project details, ready to download." />
+        <CtaBand source="cta_after_gallery" title="Like What You See? _Download the Brochure_" body="Floor plans and project details, ready to download." />
         <Location />
         <Developer />
         <FinalCta />

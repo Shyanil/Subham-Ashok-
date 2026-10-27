@@ -30,8 +30,11 @@ const SOURCES = [
 const EXT = /\.(jpe?g|png|webp|avif|tiff?)$/i;
 const manifestPath = path.join(root, 'content', 'media.json');
 const ogSource = process.env.OG_IMAGE ?? 'aerial-day-view';
-/** Renders whose full-resolution original is also shipped (hero, 3D model zoom). */
-const FULL_RES = new Set(['gate-view', 'aerial-day-view', 'aerial-night-view']);
+/** Renders whose full-resolution original is also shipped (hero, 3D model zoom, amenity showcase). */
+const FULL_RES = new Set([
+  'gate-view', 'aerial-day-view', 'aerial-night-view',
+  'swimming-pool-view', 'kids-play-day', 'club-house', 'gym', 'indoor-games', 'lift-lobby',
+]);
 
 const slugify = (name) =>
   name
@@ -116,7 +119,7 @@ async function processImage({ group, abs, slug, file }) {
     file,
     src: `/images/${group}/${slug}`,
     depth: `/images/${group}/${slug}-depth.webp`,
-    widths: WIDTHS,
+    widths: FULL_RES.has(slug) ? [...WIDTHS, 2560] : WIDTHS,
     width: meta.width,
     height: meta.height,
     color: hex(dominant),

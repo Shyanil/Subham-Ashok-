@@ -5,9 +5,10 @@ import { project, site } from '@/content/site';
 import { LeadButton } from './lead/LeadButton';
 import { CloseIcon } from './icons';
 
-/** White sticky header with the brown logo plaque, anchors and brochure access. */
+/** White sticky header with the brown logo plaque, section anchors and a desktop site-visit button. */
 export function Header() {
   const [menu, setMenu] = useState(false);
+  const active = useActiveSection();
 
   useEffect(() => {
     if (!menu) return;
@@ -18,7 +19,7 @@ export function Header() {
 
   return (
     <header className="site-header sticky top-0 z-50 h-[68px] border-b border-line/80 bg-white" data-track-section="header">
-      <div className="container-x flex h-full items-center gap-3">
+      <div className="container-x relative flex h-full items-center gap-3">
         <a
           href="#top"
           className="-mb-3 flex h-[calc(100%+12px)] shrink-0 items-center rounded-b-2xl bg-brand px-4 shadow-[0_10px_24px_-12px_rgb(46_17_12/0.6)]"
@@ -28,12 +29,17 @@ export function Header() {
           <img src="/brand/ashok-heights-logo.webp" alt="" width={480} height={210} className="h-10 w-auto sm:h-11" />
         </a>
 
-        <nav aria-label="Sections" className="ml-6 hidden xl:block">
+        <nav aria-label="Sections" className="absolute left-1/2 hidden -translate-x-1/2 xl:block">
           <ul className="flex items-center gap-1">
             {site.nav.map((n) => (
               <li key={n.href}>
-                <a href={n.href} className="rounded-full px-3.5 py-2.5 text-[14.5px] font-medium text-ink/80 transition-colors hover:bg-cream hover:text-brand">
+                <a
+                  href={n.href}
+                  aria-current={active === n.href ? 'location' : undefined}
+                  className="relative rounded-full px-3.5 py-2.5 text-[14.5px] font-medium text-ink/80 transition-colors hover:bg-cream hover:text-brand aria-[current]:bg-cream aria-[current]:font-semibold aria-[current]:text-brand"
+                >
                   {n.label}
+                  {active === n.href && <span className="absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-terra" aria-hidden="true" />}
                 </a>
               </li>
             ))}
@@ -41,8 +47,8 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <LeadButton intent="brochure" source="header" className="btn btn--sm whitespace-nowrap !shadow-none">
-            <span className="sm:hidden">Brochure</span><span className="hidden sm:inline">Download Brochure</span>
+          <LeadButton intent="visit" source="header" className="btn btn--sm hidden whitespace-nowrap !shadow-none lg:inline-flex">
+            Schedule a Site Visit
           </LeadButton>
           <button
             type="button"
@@ -67,7 +73,7 @@ export function Header() {
         <ul className="container-x grid grid-cols-2 gap-1 py-3 sm:grid-cols-3">
           {site.nav.map((n) => (
             <li key={n.href}>
-              <a href={n.href} onClick={() => setMenu(false)} className="block min-h-[44px] rounded-xl px-3 py-3 font-medium text-ink hover:bg-cream">
+              <a href={n.href} onClick={() => setMenu(false)} aria-current={active === n.href ? 'location' : undefined} className="block min-h-[44px] rounded-xl px-3 py-3 font-medium text-ink hover:bg-cream aria-[current]:bg-cream aria-[current]:text-brand">
                 {n.label}
               </a>
             </li>
@@ -76,4 +82,27 @@ export function Header() {
       </nav>
     </header>
   );
+}
+
+/** Scroll-spy: the nav href (e.g. "#amenities") whose section crosses the middle band of the viewport. */
+function useActiveSection() {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const sections = site.nav.map((n) => document.querySelector<HTMLElement>(n.href)).filter((el): el is HTMLElement => !!el);
+    if (!sections.length) return;
+    const inView = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) inView.add(`#${e.target.id}`);
+          else inView.delete(`#${e.target.id}`);
+        }
+        setActive(site.nav.find((n) => inView.has(n.href))?.href ?? null);
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  return active;
 }
