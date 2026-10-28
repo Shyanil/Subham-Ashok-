@@ -14,16 +14,15 @@ type Props = {
 /** Conversion band between sections: a white pill-card with a serif line and a single brochure action. */
 export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
   return (
-    <aside className="bg-sand pb-12 sm:pb-16" aria-label={title.replace(/_/g, '')} data-track-section={source}>
+    <aside className="relative isolate clear-both bg-sand py-12 sm:py-16" aria-label={title.replace(/_/g, '')} data-track-section={source}>
       <div className="container-x">
-      <div className="relative overflow-hidden rounded-[2rem] border border-line bg-white px-6 py-7 shadow-[var(--shadow-soft)] sm:rounded-[2.5rem] md:px-10 md:py-9" data-reveal="3d">
-        <span className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-terra/[0.07]" aria-hidden="true" />
-        <div className={`relative flex flex-col gap-5 ${kind === 'buttons' ? 'lg:flex-row lg:items-center lg:justify-between' : ''}`}>
-          <div>
-            <p className="font-serif text-[32px] leading-[1.02] text-ink md:text-[40px]">
+      <div className="relative overflow-hidden rounded-[2rem] border border-line bg-white px-6 py-7 shadow-[var(--shadow-soft)] md:px-9 md:py-8">
+        <div className={`relative grid gap-6 ${kind === 'buttons' ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12' : ''}`}>
+          <div className="min-w-0 border-l-2 border-terra/30 pl-5 sm:pl-6">
+            <p className="max-w-[740px] font-serif text-[28px] leading-[1.2] text-ink sm:text-[32px] xl:text-[34px]">
               <Accent text={title} />
             </p>
-            {body && <p className="mt-2 text-[16px] text-muted">{body}</p>}
+            {body && <p className="mt-3 text-[14px] leading-relaxed text-muted">{body}</p>}
           </div>
           {kind === 'form' ? (
             <>
@@ -40,8 +39,8 @@ export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
               </div>
             </>
           ) : (
-            <div className="flex">
-              <LeadButton intent="brochure" source={source} className="btn w-full sm:w-auto">
+            <div className="flex shrink-0 lg:justify-end">
+              <LeadButton intent="brochure" source={source} className="btn w-full whitespace-nowrap sm:w-auto lg:min-h-[54px] lg:px-7">
                 Download Brochure <ArrowUpRight className="arrow size-4" />
               </LeadButton>
             </div>

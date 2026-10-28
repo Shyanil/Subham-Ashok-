@@ -36,10 +36,9 @@ export function Header() {
                 <a
                   href={n.href}
                   aria-current={active === n.href ? 'location' : undefined}
-                  className="relative rounded-full px-3.5 py-2.5 text-[14.5px] font-medium text-ink/80 transition-colors hover:bg-cream hover:text-brand aria-[current]:bg-cream aria-[current]:font-semibold aria-[current]:text-brand"
+                  className="relative inline-flex border-b-2 border-transparent px-3 py-2.5 text-[14px] font-medium text-ink/70 transition-colors hover:text-brand aria-[current]:border-terra aria-[current]:text-brand"
                 >
                   {n.label}
-                  {active === n.href && <span className="absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-terra" aria-hidden="true" />}
                 </a>
               </li>
             ))}
@@ -73,7 +72,7 @@ export function Header() {
         <ul className="container-x grid grid-cols-2 gap-1 py-3 sm:grid-cols-3">
           {site.nav.map((n) => (
             <li key={n.href}>
-              <a href={n.href} onClick={() => setMenu(false)} aria-current={active === n.href ? 'location' : undefined} className="block min-h-[44px] rounded-xl px-3 py-3 font-medium text-ink hover:bg-cream aria-[current]:bg-cream aria-[current]:text-brand">
+              <a href={n.href} onClick={() => setMenu(false)} aria-current={active === n.href ? 'location' : undefined} className="block min-h-[44px] border-l-2 border-transparent px-3 py-3 font-medium text-ink hover:text-brand aria-[current]:border-terra aria-[current]:text-brand">
                 {n.label}
               </a>
             </li>

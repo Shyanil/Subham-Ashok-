@@ -7,8 +7,8 @@ import { Overview } from '@/components/Overview';
 import { TowerViewer3D } from '@/components/TowerViewer3D';
 import { CtaBand } from '@/components/CtaBand';
 import { FloorPlans } from '@/components/FloorPlans';
-import { Amenities } from '@/components/Amenities';
 import { Gallery } from '@/components/Gallery';
+import { Amenities } from '@/components/Amenities';
 import { Location } from '@/components/Location';
 import { Developer } from '@/components/Developer';
 import { FinalCta } from '@/components/FinalCta';
@@ -70,7 +70,7 @@ const jsonLd = {
   ],
 };
 
-/** Lead-first order: Hero → Marquee → Overview → 3D model → Plans → Amenities → Gallery → Location → Developer → Enquire. */
+/** Lead-first order: Hero → Marquee → Overview → 3D model → Plans → Gallery → Amenities → Location → Enquire → Developer. */
 export default function Home() {
   return (
     <>
@@ -81,12 +81,12 @@ export default function Home() {
         <Overview />
         <TowerViewer3D />
         <FloorPlans />
-        <Amenities />
         <Gallery />
+        <Amenities />
         <CtaBand source="cta_after_gallery" title="Like What You See? _Download the Brochure_" body="Floor plans and project details, ready to download." />
         <Location />
-        <Developer />
         <FinalCta />
+        <Developer />
       </main>
       <Footer />
       <FloatingCTA />

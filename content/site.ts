@@ -24,16 +24,17 @@ export const site = {
   nav: [
     { label: 'Overview', href: '#overview' },
     { label: 'Floor Plans', href: '#floor-plans' },
-    { label: 'Amenities', href: '#amenities' },
     { label: 'Gallery', href: '#gallery' },
+    { label: 'Amenities', href: '#amenities' },
     { label: 'Location', href: '#location' },
     { label: 'Developer', href: '#developer' },
+    { label: 'Enquire', href: '#enquire' },
   ],
 
   hero: {
     presents: `${P.developer} presents`,
     headline: `2, 3 and 4 BHK Homes in _${P.area}_, ${P.city}`,
-    sub: `Two blocks of homes and penthouses around a green lawn, a pool and a clubhouse. Carpet area 635 – 1,680 sq.ft.`,
+    sub: `Discover Subham Ashok Heights — residences and penthouses in Beharbari, where open greens, leisurely evenings and everyday connections bring life closer to what matters.`,
     location: `${P.area} · ${P.city}`,
     imageLine: 'Rising above the greens of Beharbari',
     primaryCta: 'Download Brochure',
@@ -122,7 +123,7 @@ export const site = {
   tower: {
     eyebrow: 'Interactive 3D model',
     title: 'Explore the Homes _in 3D_',
-    body: 'Drag to rotate the model. Change the view or select an amenity to explore the community.',
+    body: 'Switch between day and night. Use + and − to zoom, drag to look around, and discover amenities up close.',
     cta: 'Download Brochure',
     fallbackNote: 'Explore the artist impressions in the gallery below.',
   },

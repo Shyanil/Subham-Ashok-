@@ -77,7 +77,7 @@ export function FloatingCTA() {
         aria-expanded={open}
         aria-controls="priority-form"
         aria-label="Book a Property Slot"
-        className={`group fixed right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-3 rounded-l-2xl border border-r-0 border-gold/25 bg-gradient-to-b from-brand to-deep py-4 pl-2.5 pr-2 text-white shadow-[0_16px_36px_-14px_rgb(46_17_12/0.65)] transition-all duration-500 hover:pr-3.5 ${visible && !open ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-full opacity-0'}`}
+        className={`group fixed left-0 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-3 rounded-r-2xl border border-l-0 border-gold/25 bg-gradient-to-b from-brand to-deep py-4 pl-2 pr-2.5 text-white shadow-[0_16px_36px_-14px_rgb(46_17_12/0.65)] transition-all duration-500 hover:pl-3.5 ${visible && !open ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-full opacity-0'}`}
       >
         <span className="grid size-8 place-items-center rounded-full bg-gold/15 text-gold ring-1 ring-gold/30" aria-hidden="true">
           <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
@@ -86,8 +86,8 @@ export function FloatingCTA() {
           </svg>
         </span>
         <span className="text-[11px] font-semibold uppercase tracking-[0.22em] [writing-mode:vertical-rl]">Book a Slot</span>
-        <svg viewBox="0 0 24 24" className="size-4 text-gold transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="m15 18-6-6 6-6" />
+        <svg viewBox="0 0 24 24" className="size-4 text-gold transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m9 18 6-6-6-6" />
         </svg>
       </button>
 
@@ -95,7 +95,7 @@ export function FloatingCTA() {
       <aside
         id="priority-form"
         aria-label="Book a Property Slot"
-        className={`fixed right-4 top-[84px] z-40 flex max-h-[calc(100dvh-100px)] w-[360px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_30px_70px_-24px_rgb(31_13_9/0.55)] ring-1 ring-line transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${visible && open ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-[calc(100%+24px)] opacity-0'}`}
+        className={`fixed left-4 top-[84px] z-40 flex max-h-[calc(100dvh-100px)] w-[360px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_30px_70px_-24px_rgb(31_13_9/0.55)] ring-1 ring-line transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${visible && open ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-[calc(100%+24px)] opacity-0'}`}
       >
         <header className="relative bg-deep px-6 pb-5 pt-5 text-white">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gold">Priority booking</p>

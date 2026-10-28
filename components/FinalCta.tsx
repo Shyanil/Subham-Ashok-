@@ -2,14 +2,16 @@ import { site } from '@/content/site';
 import { Accent } from './Accent';
 import { LeadForm } from './lead/LeadForm';
 import { CheckIcon, PinIcon, ShieldIcon, SparkIcon } from './icons';
+import { BrandChakra } from './BrandChakra';
 
 /** Full-width enquiry section with a clear form surface. */
 export function FinalCta() {
   const f = site.finalCta;
 
   return (
-    <section id="enquire" aria-labelledby="enquire-title" className="section on-dark bg-deep" data-track-section="final_cta">
-      <div className="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
+    <section id="enquire" aria-labelledby="enquire-title" className="section on-dark relative isolate overflow-hidden bg-deep" data-track-section="final_cta">
+      <BrandChakra subtle className="-bottom-12 -left-20 size-[160px] -rotate-12 sm:-bottom-24 sm:-left-40 sm:size-[420px]" />
+      <div className="container-x relative z-10 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
         <div className="lg:pt-8">
           <p className="kicker !text-gold"><SparkIcon className="size-3" /> {f.eyebrow}</p>
           <h2 id="enquire-title" className="h2 mt-5 !text-white sm:whitespace-nowrap"><Accent text={f.title} /></h2>

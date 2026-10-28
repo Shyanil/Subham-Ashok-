@@ -3,9 +3,10 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { site } from '@/content/site';
-import { floors, masterPlanLegend, planSize, unitConfiguration, unitLabel, units, type Unit } from '@/content/plans';
-import { getImage } from '@/lib/media';
+import { floors, planSize, unitConfiguration, unitLabel, units, type Unit } from '@/content/plans';
+
 import { Accent } from './Accent';
+import { InteractiveMasterPlan } from './InteractiveMasterPlan';
 import { SectionHeading } from './SectionHeading';
 import { LeadButton } from './lead/LeadButton';
 import { useLead } from './lead/LeadProvider';
@@ -73,7 +74,7 @@ export function FloorPlans() {
         />
 
         {/* Segmented tabs */}
-        <div role="tablist" aria-label="Plans" className="mb-6 grid w-full grid-cols-3 gap-1 rounded-[1.25rem] bg-white p-1 shadow-[var(--shadow-soft)] sm:inline-flex sm:w-auto sm:rounded-[1.5rem] sm:p-1.5">
+        <div role="tablist" aria-label="Plans" className="mb-5 grid w-full grid-cols-3 gap-2 border-b border-line sm:inline-flex sm:w-auto sm:gap-5">
           {TABS.map((t, i) => (
             <button
               key={t.id}
@@ -85,7 +86,7 @@ export function FloorPlans() {
               tabIndex={tab === t.id ? 0 : -1}
               onKeyDown={(e) => onTabKey(e, i)}
               onClick={() => setTab(t.id)}
-              className="flex min-h-[52px] min-w-0 flex-col items-center justify-center rounded-[1rem] px-2 py-2 text-center transition-colors hover:bg-cream aria-selected:bg-brand aria-selected:text-white sm:flex-none sm:items-start sm:rounded-[1.1rem] sm:px-5 sm:text-left"
+              className="flex min-h-[58px] min-w-0 flex-col items-center justify-center border-b-2 border-transparent px-2 pb-3 pt-2 text-center text-muted transition-colors hover:text-brand aria-selected:border-brand aria-selected:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra sm:min-w-[130px] sm:flex-none sm:items-start sm:px-1 sm:text-left"
             >
               <span className="whitespace-nowrap text-[13.5px] font-semibold leading-tight sm:text-[14.5px]">{t.label}</span>
               <span className="mt-0.5 whitespace-nowrap text-[11px] leading-tight opacity-70 sm:text-[12px]">{t.note}</span>
@@ -94,40 +95,9 @@ export function FloorPlans() {
         </div>
 
         <div id="plans-panel" role="tabpanel" aria-labelledby={`plans-tab-${tab}`}>
-          <div className={`grid gap-4 lg:grid-cols-[1.5fr_1fr] ${tab === 'master' ? '' : 'hidden'}`}>
-              <div className="relative overflow-hidden rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)]" data-reveal="3d">
-                <Plan image="master-plan" alt="Master plan of Subham Ashok Heights showing Block A, Block B, green lawn, kids' play area, amphitheatre and driveways" />
-              </div>
-
-              <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-4">
-                <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]" data-reveal="3d" data-tilt>
-                  <p className="kicker">Legend</p>
-                  <ol className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5">
-                    {masterPlanLegend.map((l, i) => (
-                      <li key={l} className="flex items-center gap-2.5 text-[14.5px] text-ink/90">
-                        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand text-[12px] font-bold text-white">{i + 1}</span>
-                        {l}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-                <div className="grid grid-cols-3 gap-3" data-reveal>
-                  {[
-                    ['2', 'Blocks'],
-                    ['11', 'Floors'],
-                    ['9 m', 'Road'],
-                  ].map(([v, k]) => (
-                    <div key={k} className="rounded-[1.5rem] bg-brand px-4 py-5 text-center text-white" data-tilt>
-                      <p className="font-serif text-[36px] leading-none">{v}</p>
-                      <p className="mt-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-gold">{k}</p>
-                    </div>
-                  ))}
-                </div>
-                <LeadButton intent="visit" source="master_plan" className="btn btn--block">
-                  Book a Site Visit <ArrowUpRight className="arrow size-4" />
-                </LeadButton>
-              </div>
-            </div>
+          <div hidden={tab !== 'master'}>
+            <InteractiveMasterPlan />
+          </div>
           {tab !== 'master' && (
             <>
               {/* Unit configurator: compact 2-up grid on phones, horizontal snap rail from sm up */}
@@ -210,43 +180,8 @@ export function FloorPlans() {
           )}
         </div>
 
-        <Architecture />
+
       </div>
     </section>
-  );
-}
-
-/** Dark image card with glass stat tiles. */
-function Architecture() {
-  const img = getImage('road-elevation-view');
-  const tiles = [
-    ['Structure', '2 Blocks'],
-    ['Block B', '11 Floors'],
-    ['Architect', 'Banka and Assoc.'],
-  ];
-  return (
-    <div className="on-dark relative mt-16 overflow-hidden rounded-[2rem] sm:rounded-[3rem]" data-reveal="3d">
-      <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1280px) 1340px, 100vw" className="object-cover" placeholder="blur" blurDataURL={img.blurDataURL} />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1f0b08]/95 via-[#1f0b08]/70 to-[#1f0b08]/10" aria-hidden="true" />
-      <div className="relative flex flex-col gap-8 p-6 sm:p-14 lg:flex-row lg:items-end lg:justify-between">
-        <div className="max-w-lg">
-          <span className="block h-0.5 w-12 bg-gold" aria-hidden="true" />
-          <h3 className="h2 mt-6 !text-white">
-            <Accent text="Built to _Last_" />
-          </h3>
-          <p className="mt-5 text-[16px] leading-relaxed text-white/80">
-            Earthquake-resistant RCC towers with branded lifts, vitrified flooring and a clean, well-lit façade — designed by Banka and Associates, Guwahati.
-          </p>
-        </div>
-        <ul className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
-          {tiles.map(([k, v]) => (
-            <li key={k} className="min-w-0 rounded-[1.5rem] bg-white/10 px-4 py-4 last:col-span-2 sm:min-w-[130px] sm:px-5 text-center ring-1 ring-white/15 backdrop-blur-md">
-              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/70">{k}</p>
-              <p className="mt-1 font-serif text-[24px] leading-none text-white">{v}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
   );
 }

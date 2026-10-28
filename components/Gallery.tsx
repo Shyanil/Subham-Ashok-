@@ -7,6 +7,7 @@ import { media, isNight, objectPosition, type MediaItem } from '@/lib/media';
 import { SectionHeading } from './SectionHeading';
 import { Lightbox } from './Lightbox';
 import { ArrowUpRight } from './icons';
+import { BrandChakra } from './BrandChakra';
 
 // Daylight first; the night renders live at the end of the gallery.
 const ordered = [...media].sort((a, b) => Number(isNight(a)) - Number(isNight(b)));
@@ -24,8 +25,9 @@ export function Gallery() {
   const shown = all ? items : items.slice(0, INITIAL);
 
   return (
-    <section id="gallery" aria-labelledby="gallery-title" className="section bg-sand" data-track-section="gallery">
-      <div className="container-x">
+    <section id="gallery" aria-labelledby="gallery-title" className="section relative isolate overflow-hidden bg-sand" data-track-section="gallery">
+      <BrandChakra subtle className="-right-24 top-5 size-[140px] rotate-12 sm:-right-32 sm:top-8 sm:size-[300px]" />
+      <div className="container-x relative z-10">
         <SectionHeading id="gallery-title" eyebrow={g.eyebrow} title={g.title} body={`${media.length} views of Subham Ashok Heights — striking architecture, green open spaces and thoughtful interiors.`} />
 
         <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter images">

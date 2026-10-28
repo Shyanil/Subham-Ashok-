@@ -64,6 +64,37 @@ export const masterPlanLegend = [
   'Planters',
 ];
 
+/**
+ * Centres of the numbered locations in the supplied 1323 × 1189 landscape plan.
+ * Keep the brochure's verified legend numbering: some numbers in the supplied
+ * illustration differ, so the interactive markers use the project legend.
+ * Repeated locations deliberately share one legend selection.
+ */
+export const masterPlanHotspots = [
+  { id: 'entry-west', number: 1, x: 12.93, y: 37.43 },
+  { id: 'entry-east', number: 1, x: 11.94, y: 56.94 },
+  { id: 'security-west', number: 2, x: 12.70, y: 41.38 },
+  { id: 'security-east', number: 2, x: 12.32, y: 51.81 },
+  { id: 'driveway-west', number: 3, x: 78.23, y: 14.63 },
+  { id: 'driveway-north', number: 3, x: 91.53, y: 57.78 },
+  { id: 'driveway-east', number: 3, x: 84.73, y: 88.73 },
+  { id: 'driveway-central', number: 3, x: 54.12, y: 58.37 },
+  { id: 'driveway-ramp', number: 3, x: 24.11, y: 35.83 },
+  { id: 'dropoff-block-b-west', number: 4, x: 73.55, y: 29.44 },
+  { id: 'dropoff-block-b-east', number: 4, x: 70.60, y: 75.69 },
+  { id: 'dropoff-block-a', number: 4, x: 39.53, y: 58.37 },
+  { id: 'green-lawn', number: 5, x: 58.05, y: 39.19 },
+  { id: 'kids-play', number: 6, x: 66.36, y: 35.57 },
+  { id: 'open-gym', number: 7, x: 64.32, y: 52.99 },
+  { id: 'amphitheatre', number: 8, x: 56.61, y: 48.44 },
+  { id: 'parking-west', number: 9, x: 78.30, y: 7.91 },
+  { id: 'parking-east', number: 9, x: 88.89, y: 95.29 },
+  { id: 'stepping-stones', number: 10, x: 66.67, y: 42.98 },
+  { id: 'planters-north', number: 11, x: 97.43, y: 52.40 },
+  { id: 'planters-west', number: 11, x: 66.82, y: 5.80 },
+  { id: 'planters-central', number: 11, x: 61.15, y: 63.08 },
+] as const;
+
 export const keyDistances = [
   { group: 'Education', items: [['International School Guwahati', '1.1 km'], ['NPS International School', '3.8 km'], ['Royal Global University', '5.3 km'], ['Delhi Public School', '6.3 km']] },
   { group: 'Hospitals', items: [['Critical Care Hospital', '2.3 km'], ['Health City Hospital', '5.1 km'], ['Ayursundra Superspeciality Hospital', '6.2 km'], ['Boragaon ESIS Dispensary', '8.6 km'], ['Excel Care Hospital', '9.9 km']] },

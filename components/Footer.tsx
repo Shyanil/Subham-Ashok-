@@ -1,5 +1,4 @@
 import { project, site } from '@/content/site';
-import { MailIcon } from './icons';
 
 /** Centred footer: logos, address columns, RERA, disclaimer. */
 export function Footer() {
@@ -42,17 +41,6 @@ export function Footer() {
               rera.assam.gov.in
             </a>
           </div>
-        </div>
-
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] font-semibold text-ink/80">
-          <a href={`mailto:${c.email}`} className="inline-flex items-center gap-2 hover:text-terra">
-            <MailIcon className="size-4" /> {c.email}
-          </a>
-          {c.social.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-terra">
-              {s.label}
-            </a>
-          ))}
         </div>
 
         <p className="mx-auto mt-10 max-w-3xl text-[12px] leading-relaxed text-muted">{site.footer.disclaimer}</p>

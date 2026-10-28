@@ -5,6 +5,7 @@ import { Accent } from './Accent';
 import { LeadButton } from './lead/LeadButton';
 import { AmenityIcon } from './AmenityIcon';
 import { ArrowUpRight, PinIcon } from './icons';
+import { BrandChakra } from './BrandChakra';
 
 const PERSONA_ICON = ['club', 'kids', 'pool'];
 
@@ -12,46 +13,40 @@ export function Overview() {
   const o = site.overview;
   return (
     <section id="overview" aria-labelledby="overview-title" className="section relative overflow-hidden" data-track-section="overview">
-      {/* decorative rings */}
-      <div className="pointer-events-none absolute -left-24 top-16 hidden size-[340px] rounded-full border-[36px] border-terra/[0.06] xl:block" aria-hidden="true" />
-      <div className="pointer-events-none absolute -right-24 top-16 hidden size-[340px] rounded-full border-2 border-dashed border-terra/15 xl:block" aria-hidden="true" />
-
-      <div className="container-x relative text-center">
+      <BrandChakra className="pointer-events-none absolute -left-24 top-5 size-[160px] -rotate-12 sm:-left-28 sm:top-12 sm:size-[380px]" />
+      <BrandChakra className="pointer-events-none absolute -right-24 top-[22rem] size-[160px] rotate-12 sm:-right-28 sm:top-40 sm:size-[400px]" />
+      <div className="container-x relative">
+        <div className="mx-auto max-w-4xl text-center">
         <p className="kicker" data-reveal>
           <PinIcon className="size-3.5" /> {o.eyebrow}
         </p>
-        <h2 id="overview-title" className="h2 mx-auto mt-5 max-w-4xl" data-reveal>
+        <h2 id="overview-title" className="h2 mx-auto mt-5 max-w-3xl !text-[36px] sm:!text-[48px] xl:!text-[58px]" data-reveal>
           <Accent text={o.title} />
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-muted" data-reveal>
+        <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-muted sm:text-[17px]" data-reveal>
           {o.body}
         </p>
 
-        <ul className="mx-auto mt-10 grid max-w-[1200px] grid-cols-2 gap-3 lg:grid-cols-4" data-reveal-group>
-          {o.stats.map((s, i) => {
-            const dark = i % 2 === 1;
-            return (
+        </div>
+        <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-y-8 border-y border-line py-8 sm:mt-12 lg:grid-cols-4 lg:py-10" data-reveal-group>
+          {o.stats.map((s) => (
               <li
                 key={s.label}
                 data-reveal
-                data-tilt
-                className={`flex min-w-0 flex-col justify-center rounded-[1.5rem] px-4 py-5 shadow-[var(--shadow-soft)] sm:px-6 ${dark ? 'bg-deep text-white' : 'bg-white'}`}
+                className="min-w-0 px-3 text-center even:border-l even:border-line lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-line"
               >
-                <p className={`font-serif text-[30px] italic leading-none ${dark ? 'text-white' : 'text-terra'}`}>
+                <p className="font-serif text-[28px] italic leading-none text-terra sm:text-[36px]">
                   {s.value} <span className="text-[18px]">{s.unit}</span>
                 </p>
-                <p className={`mt-2 text-[12px] font-bold uppercase tracking-[0.2em] ${dark ? 'text-white/65' : 'text-muted'}`}>{s.label}</p>
+                <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-muted sm:text-[11px]">{s.label}</p>
               </li>
-            );
-          })}
+          ))}
         </ul>
-
-        <div className="mt-10" data-reveal>
+        <div className="mt-7 text-center" data-reveal>
           <LeadButton intent="visit" source="overview" className="btn">
             {o.cta} <ArrowUpRight className="arrow size-4" />
           </LeadButton>
         </div>
-        <div className="mx-auto mt-16 h-px w-40 bg-line" aria-hidden="true" />
       </div>
 
       <div className="container-x mt-16 grid gap-4 md:grid-cols-3">
@@ -72,7 +67,6 @@ export function Overview() {
               </span>
               <div className="relative mt-5">
                 <p className="text-[12px] font-black uppercase tracking-[0.24em] text-white/80">{p.kicker}</p>
-                <h3 className="mt-1.5 text-[40px] italic leading-none !text-white">{p.title}</h3>
                 <p className="mt-2 text-[16px] leading-relaxed text-white/85">{p.body}</p>
               </div>
             </article>

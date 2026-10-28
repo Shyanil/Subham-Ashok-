@@ -4,9 +4,10 @@ import { site } from '@/content/site';
 import { getImage, objectPosition } from '@/lib/media';
 import { isSet, projectConfig } from '@/src/config/project';
 import { Accent } from './Accent';
+import { AmenityIcon } from './AmenityIcon';
 import { HeroDepthLayer } from './HeroDepthLayer';
 import { LeadButton } from './lead/LeadButton';
-import { ArrowUpRight, ShieldIcon, SparkIcon } from './icons';
+import { ArrowUpRight, SparkIcon } from './icons';
 
 /** The desktop panel is taller than the 16:9 render, so it crops sideways: keep the whole tower and gate in frame. */
 const HERO_FOCUS: [number, number] = [0.59, 0.5];
@@ -23,10 +24,10 @@ export function Hero() {
   const img = getImage('ashok-heights-at-golden-hour');
   const mobileImg = getImage('road-elevation-view');
   const priced = isSet(projectConfig.STARTING_PRICE);
-  const stats = [
-    { v: '2', k: 'Blocks' },
-    { v: '11', k: 'Floors' },
-    { v: '635–1,680', k: 'Sq.ft' },
+  const highlights = [
+    { icon: 'lawn', label: 'Landscaped lawns' },
+    { icon: 'pool', label: 'Infinity-edge pool' },
+    { icon: 'club', label: 'Clubhouse' },
   ];
   const sealText = priced ? `Starting ₹${projectConfig.STARTING_PRICE}* · Price list · ` : 'Reveal price · Launch offer · Price list · ';
 
@@ -65,10 +66,6 @@ export function Hero() {
               <HeroDepthLayer src={img.src} depth="/images/exterior/ashok-heights-at-golden-hour-depth.webp" focus={HERO_FOCUS} />
             </div>
             <div className="absolute inset-0 hidden bg-gradient-to-t from-[#1f0b08]/65 via-transparent to-[#1f0b08]/5 lg:block" aria-hidden="true" />
-
-            <p className="glass enter absolute right-4 top-4 hidden items-center gap-2 rounded-full px-4 py-2 text-[12px] font-bold uppercase tracking-[0.14em] text-ink lg:inline-flex lg:right-6 lg:top-6" style={d(6)}>
-              <ShieldIcon className="size-4 text-leaf" /> RERA registered
-            </p>
 
             <div className="absolute bottom-10 right-10 hidden lg:block">
               <p className="enter mb-1 text-right font-serif text-[30px] italic leading-tight text-white" style={d(7)}>
@@ -110,8 +107,8 @@ export function Hero() {
           </p>
 
           <h1 id="hero-title" className="hero-title h2 mt-5 tracking-[-0.01em]">
-            <span className="line-mask"><span className="line" style={d(1)}>2, 3 &amp; 4 BHK Homes</span></span>
-            <span className="line-mask"><span className="line" style={d(2)}><Accent text="Made for _Better Living_" /></span></span>
+            <span className="line-mask"><span className="line" style={d(1)}>Come Home to</span></span>
+            <span className="line-mask"><span className="line" style={d(2)}><Accent text="a _Greener Everyday_" /></span></span>
           </h1>
 
           <p className="enter mt-4 max-w-[31rem] text-[15.5px] lg:mt-7 lg:text-[17px] leading-relaxed text-muted" style={d(4)}>
@@ -143,25 +140,24 @@ export function Hero() {
             </LeadButton>
           </div>
 
-          <div className="enter mt-10 hidden items-center gap-4 border-t border-line pt-6 lg:flex" style={d(6)}>
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-cream text-leaf" aria-hidden="true">
-              <ShieldIcon className="size-5" />
-            </span>
-            <p className="text-[13px] leading-snug text-muted">
-              <span className="block font-semibold text-ink">{projectConfig.RERA}</span>
-              18 projects delivered by Subham Group since 2007
-            </p>
-          </div>
-
-          {/* Desktop: key numbers close the text column, under the RERA line. */}
-          <dl className="enter mt-7 hidden w-full max-w-[min(31rem,calc(100%-48px))] grid-cols-3 divide-x divide-line rounded-[1.25rem] border border-line bg-cream/70 py-3.5 lg:grid 2xl:rounded-[1.5rem] 2xl:py-4" style={d(7)}>
-            {stats.map((s) => (
-              <div key={s.k} className="min-w-0 px-2 text-center 2xl:px-5">
-                <dd className="whitespace-nowrap font-serif text-[24px] leading-none text-ink 2xl:text-[30px]">{s.v}</dd>
-                <dt className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-terra 2xl:text-[12px]">{s.k}</dt>
+          <div className="enter mt-9 w-full max-w-[31rem] lg:mt-12" style={d(7)}>
+            <div className="flex items-center gap-5">
+              <span className="h-16 w-0.5 shrink-0 bg-terra/50" aria-hidden="true" />
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-terra">Find your space</p>
+                <p className="mt-2 font-serif text-[32px] leading-none text-ink sm:text-[38px]">2, 3 &amp; 4 <span className="text-[20px] italic sm:text-[24px]">BHK Homes</span></p>
+                <p className="mt-2 text-[12px] text-muted">With penthouse options for a different perspective.</p>
               </div>
-            ))}
-          </dl>
+            </div>
+            <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
+              {highlights.map((item) => (
+                <li key={item.icon} className="flex items-center gap-2 text-leaf">
+                  <AmenityIcon name={item.icon} className="size-4 shrink-0" />
+                  <span className="text-[11px] text-muted">{item.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

@@ -39,7 +39,7 @@ function Scene({ live, onFrame }: { live: React.RefObject<Live>; onFrame: (cover
   const [dayMap, dayDepth, nightMap, nightDepth] = useTexture([SCENES.day.src, SCENES.day.depth, SCENES.night.src, SCENES.night.depth]);
   const state = useRef<DepthState>(live.current.state);
 
-  useFrame(({ clock }, dt) => {
+  useFrame((_, dt) => {
     const l = live.current;
     const s = l.state;
     const k = ease(dt, 3);
@@ -48,11 +48,8 @@ function Scene({ live, onFrame }: { live: React.RefObject<Live>; onFrame: (cover
     }
     s.zoom += (l.goal.zoom - s.zoom) * k;
     s.mix += (l.goal.mix - s.mix) * ease(dt, 2.4);
-    // Drag sets the "orbit"; idle adds a slow drift so the scene always feels alive.
-    const idle = performance.now() - l.lastInput > 2500;
-    const t = clock.elapsedTime;
-    const drift: [number, number] = idle ? [Math.sin(t * 0.35) * 0.45, Math.cos(t * 0.27) * 0.25] : [0, 0];
-    const target: [number, number] = [l.drag[0] + l.hover[0] * 0.25 + drift[0], l.drag[1] + l.hover[1] * 0.25 + drift[1]];
+    // Move only when the visitor drags; idle and pointer hover stay still.
+    const target: [number, number] = [l.drag[0], l.drag[1]];
     const kp = ease(dt, l.dragging ? 10 : 2.2);
     s.pointer = [s.pointer[0] + (target[0] - s.pointer[0]) * kp, s.pointer[1] + (target[1] - s.pointer[1]) * kp];
   });
@@ -76,7 +73,7 @@ function Scene({ live, onFrame }: { live: React.RefObject<Live>; onFrame: (cover
 export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, paused = false }: Props) {
   const v = VIEWS[0];
   const live = useRef<Live>({
-    state: { center: [v.day, v.night], zoom: 1.25, pointer: [0, 0], mix: night ? 1 : 0, strength: 0.05 },
+    state: { center: [v.day, v.night], zoom, pointer: [0, 0], mix: night ? 1 : 0, strength: 0.05 },
     goal: { center: [v.day, v.night], zoom: v.zoom, mix: night ? 1 : 0 },
     drag: [0, 0],
     hover: [0, 0],
@@ -134,7 +131,14 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
       el.style.opacity = inside ? String(fade) : '0';
       el.style.visibility = inside && fade > 0.05 ? 'visible' : 'hidden';
     };
-    HOTSPOTS.forEach((h, i) => place(markers.current[i], which ? h.night : h.day));
+    HOTSPOTS.forEach((h, i) => {
+      const marker = markers.current[i];
+      place(marker, which ? h.night : h.day);
+      if (marker && s.zoom < 1.3) {
+        marker.style.opacity = '0';
+        marker.style.visibility = 'hidden';
+      }
+    });
     LABELS.forEach((lb, i) => place(labels.current[i], which ? lb.night : lb.day, true));
   };
 
