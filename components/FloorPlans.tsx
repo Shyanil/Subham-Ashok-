@@ -7,6 +7,7 @@ import { floors, planSize, unitConfiguration, unitLabel, units, type Unit } from
 
 import { Accent } from './Accent';
 import { InteractiveMasterPlan } from './InteractiveMasterPlan';
+import { Lightbox } from './Lightbox';
 import { SectionHeading } from './SectionHeading';
 import { LeadButton } from './lead/LeadButton';
 import { useLead } from './lead/LeadProvider';
@@ -22,15 +23,19 @@ const TABS: { id: Tab; label: string; note: string }[] = [
 const fmt = (n?: number) => (n ? n.toLocaleString('en-IN') : '—');
 
 function Plan({ image, alt }: { image: string; alt: string }) {
+  const [open, setOpen] = useState(false);
   const src = `/brochure/${image}.webp`;
   const { width, height } = planSize(image);
   return (
-    <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open full size: ${alt}`} className="group relative block overflow-hidden rounded-[1.5rem] bg-[#f1e8e2]">
+    <>
+    <button type="button" onClick={() => setOpen(true)} aria-label={`Open full size: ${alt}`} aria-haspopup="dialog" className="group relative block w-full overflow-hidden rounded-[1.5rem] bg-[#f1e8e2]">
       <Image key={src} src={src} alt={alt} width={width} height={height} sizes="(min-width: 1024px) 760px, 100vw" className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.02]" />
       <span className="glass absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-bold uppercase tracking-[0.12em] text-ink">
         Full size <ArrowUpRight className="size-3.5" />
       </span>
-    </a>
+    </button>
+    <Lightbox items={[{ slug: image, src, alt, title: alt }]} index={open ? 0 : null} onIndex={() => {}} onClose={() => setOpen(false)} />
+    </>
   );
 }
 
@@ -74,7 +79,7 @@ export function FloorPlans() {
         />
 
         {/* Segmented tabs */}
-        <div role="tablist" aria-label="Plans" className="mb-5 grid w-full grid-cols-3 gap-2 border-b border-line sm:inline-flex sm:w-auto sm:gap-5">
+        <div role="tablist" aria-label="Plans" className="mb-5 grid w-full grid-cols-3 gap-2 border-b border-line sm:mx-auto sm:mb-7 sm:flex sm:w-fit sm:justify-center sm:gap-5">
           {TABS.map((t, i) => (
             <button
               key={t.id}
@@ -86,7 +91,7 @@ export function FloorPlans() {
               tabIndex={tab === t.id ? 0 : -1}
               onKeyDown={(e) => onTabKey(e, i)}
               onClick={() => setTab(t.id)}
-              className="flex min-h-[58px] min-w-0 flex-col items-center justify-center border-b-2 border-transparent px-2 pb-3 pt-2 text-center text-muted transition-colors hover:text-brand aria-selected:border-brand aria-selected:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra sm:min-w-[130px] sm:flex-none sm:items-start sm:px-1 sm:text-left"
+              className="flex min-h-[58px] min-w-0 flex-col items-center justify-center border-b-2 border-transparent px-2 pb-3 pt-2 text-center text-muted transition-colors hover:text-brand aria-selected:border-brand aria-selected:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra sm:min-w-[130px] sm:flex-none sm:px-3"
             >
               <span className="whitespace-nowrap text-[13.5px] font-semibold leading-tight sm:text-[14.5px]">{t.label}</span>
               <span className="mt-0.5 whitespace-nowrap text-[11px] leading-tight opacity-70 sm:text-[12px]">{t.note}</span>
@@ -105,20 +110,20 @@ export function FloorPlans() {
                 {blockUnits.map((u) => {
                   const active = u.id === selectedId;
                   return (
-                    <li key={u.id} className="min-w-0 sm:w-[230px] sm:shrink-0 sm:snap-start">
+                    <li key={u.id} className="min-w-0 sm:w-[180px] sm:shrink-0 sm:snap-start">
                       <button
                         type="button"
                         aria-pressed={active}
                         data-tilt
                         onClick={() => pick(u.id)}
-                        className={`flex h-full w-full flex-col rounded-2xl p-3.5 text-left transition-all duration-300 sm:rounded-[1.5rem] sm:p-5 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
+                        className={`flex h-full w-full flex-col rounded-xl p-3 text-left transition-all duration-300 sm:rounded-2xl sm:p-3.5 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
                       >
-                        <span className={`truncate text-[10px] font-bold uppercase tracking-[0.1em] sm:text-[12px] sm:tracking-[0.14em] ${active ? 'text-gold' : 'text-terra'}`}>
+                        <span className={`truncate text-[10px] font-bold uppercase tracking-[0.08em] sm:text-[11px] ${active ? 'text-gold' : 'text-terra'}`}>
                           {u.penthouse ? 'Penthouse' : `Unit ${u.units.split(', ')[0]}${u.units.includes(',') ? ' series' : ''}`}
                         </span>
-                        <span className="mt-1.5 font-serif text-[26px] leading-none sm:mt-2 sm:text-[34px]">{u.type}</span>
-                        <span className={`mt-2.5 text-[11px] sm:mt-4 sm:text-[13px] ${active ? 'text-white/70' : 'text-muted'}`}>Carpet area</span>
-                        <span className="mt-0.5 font-serif text-[19px] leading-none tabular sm:mt-0 sm:text-[26px]">
+                        <span className="mt-1.5 font-serif text-[24px] leading-none sm:text-[28px]">{u.type}</span>
+                        <span className={`mt-2 text-[11px] sm:text-[12px] ${active ? 'text-white/70' : 'text-muted'}`}>Carpet area</span>
+                        <span className="mt-0.5 font-serif text-[18px] leading-none tabular sm:text-[22px]">
                           {fmt(u.carpet)} <span className="font-sans text-[11px] sm:text-[13px]">sq.ft</span>
                         </span>
                       </button>

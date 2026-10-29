@@ -14,7 +14,7 @@ type Props = {
 /** Conversion band between sections: a white pill-card with a serif line and a single brochure action. */
 export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
   return (
-    <aside className="relative isolate clear-both bg-sand py-12 sm:py-16" aria-label={title.replace(/_/g, '')} data-track-section={source}>
+    <aside className="section relative isolate clear-both bg-sand" aria-label={title.replace(/_/g, '')} data-track-section={source}>
       <div className="container-x">
       <div className="relative overflow-hidden rounded-[2rem] border border-line bg-white px-6 py-7 shadow-[var(--shadow-soft)] md:px-9 md:py-8">
         <div className={`relative grid gap-6 ${kind === 'buttons' ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12' : ''}`}>

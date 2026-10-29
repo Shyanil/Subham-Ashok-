@@ -3,15 +3,29 @@
 import { useEffect, useRef, useState } from 'react';
 import { keyDistances } from '@/content/plans';
 
-const CATEGORIES = keyDistances.filter((category) => category.group !== 'Showrooms');
+const CATEGORIES = [
+  ...keyDistances.filter((category) => ['Education', 'Hospitals', 'Shopping and markets', 'Banks'].includes(category.group)),
+  {
+    group: 'Transport',
+    // Approximate driving routes calculated with OSRM / OpenStreetMap on 2026-10-29.
+    // Origin: 91.7719754,26.1071153 (the site map pin). Destination coordinates
+    // from Photon: airport 91.5830728,26.1113723; GHY 91.7507423,26.1821371;
+    // KYQ 91.6920689,26.1572797; ISBT 91.7218831,26.1163561.
+    // https://router.project-osrm.org/route/v1/driving/{origin};{destination}?overview=false
+    items: [
+      ['Lokpriya Gopinath Bordoloi International Airport', '30.5 km'],
+      ['Guwahati Railway Station', '12 km'],
+      ['Kamakhya Junction Railway Station', '14.9 km'],
+      ['ISBT Betkuchi', '5.8 km'],
+    ],
+  },
+];
 const LABELS: Record<string, string> = {
-  Education: 'Schools & university',
+  Education: 'Schools and university',
   Hospitals: 'Hospitals',
-  'Sports and leisure': 'Sports & leisure',
-  'Shopping and markets': 'Shopping & markets',
+  'Shopping and markets': 'Shopping and markets',
   Banks: 'Banks',
-  Civic: 'Civic services',
-  Temples: 'Places of worship',
+  Transport: 'Transport',
 };
 
 export function NeighbourhoodCarousel() {
@@ -85,7 +99,7 @@ export function NeighbourhoodCarousel() {
         <div id="nearby-category-panel" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${CATEGORIES.length}: ${category.group}`} aria-live={playing ? 'off' : 'polite'} className="min-w-0 px-5 py-6 sm:px-7 sm:py-7 min-h-[540px] sm:min-h-[390px]">
           <div className="flex items-center justify-between gap-3 border-b border-line pb-5">
             <p className="font-serif text-[26px] italic leading-tight text-terra sm:text-[30px]">{LABELS[category.group]}</p>
-            <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.15em] text-muted">Distance</span>
+            <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.15em] text-muted">{category.group === 'Transport' ? 'Approx. distance' : 'Distance'}</span>
           </div>
           <ul className="mt-2 grid gap-x-7 sm:grid-cols-2">
             {category.items.map(([name, distance]) => (
@@ -95,6 +109,7 @@ export function NeighbourhoodCarousel() {
               </li>
             ))}
           </ul>
+          {category.group === 'Transport' && <p className="mt-4 text-[12px] leading-relaxed text-muted">Approximate road distances from the site. Distance varies by route and entry point.</p>}
         </div>
       </div>
     </div>

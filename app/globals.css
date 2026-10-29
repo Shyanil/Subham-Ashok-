@@ -408,7 +408,17 @@
     }
   }
   .section {
-    padding-block: clamp(64px, 7vw, 112px);
+    padding-block: 32px;
+  }
+  @media (min-width: 640px) {
+    .section {
+      padding-block: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-block: 48px;
+    }
   }
   /* full-bleed bands (dark cards) use the same outer edge as .container-x */
   .bleed {
@@ -658,6 +668,13 @@
       border-color 0.2s,
       background-color 0.2s,
       box-shadow 0.2s;
+  }
+  .enquiry-card .input {
+    min-height: 46px;
+    padding-block: 10px;
+  }
+  .enquiry-card form > .grid {
+    gap: 12px;
   }
   .input::placeholder {
     color: #9a8a83;

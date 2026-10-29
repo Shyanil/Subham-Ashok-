@@ -7,7 +7,7 @@ import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
 import { HeroDepthLayer } from './HeroDepthLayer';
 import { LeadButton } from './lead/LeadButton';
-import { ArrowUpRight, SparkIcon } from './icons';
+import { ArrowUpRight, PinIcon, SparkIcon } from './icons';
 
 /** The desktop panel is taller than the 16:9 render, so it crops sideways: keep the whole tower and gate in frame. */
 const HERO_FOCUS: [number, number] = [0.59, 0.5];
@@ -98,15 +98,11 @@ export function Hero() {
 
         {/* Text */}
         <div className="hero-copy relative flex flex-col pb-10 pt-8 sm:pt-10 lg:order-1 lg:justify-start lg:pb-16 lg:pt-12">
-          <p className="kicker enter w-fit" style={d(0)}>
-            <SparkIcon className="size-3" />
-            <span>
-              <span className="hidden 2xl:inline">{h.presents} · </span>
-              {h.location}
-            </span>
+          <p className="enter mb-5 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-terra sm:text-[14px]" style={d(0)}>
+            <SparkIcon className="size-3 shrink-0" />
+            <span>Subham Group presents</span>
           </p>
-
-          <h1 id="hero-title" className="hero-title h2 mt-5 tracking-[-0.01em]">
+          <h1 id="hero-title" className="hero-title h2 tracking-[-0.01em]">
             <span className="line-mask"><span className="line" style={d(1)}>Come Home to</span></span>
             <span className="line-mask"><span className="line" style={d(2)}><Accent text="a _Greener Everyday_" /></span></span>
           </h1>
@@ -115,12 +111,12 @@ export function Hero() {
             {h.sub}
           </p>
 
-          <div className="enter mt-7 flex flex-col lg:mt-9 gap-3 sm:flex-row lg:items-start lg:flex-col xl:flex-row" style={d(5)}>
+          <div className="enter mt-7 flex flex-wrap items-center gap-x-5 gap-y-4 lg:mt-9" style={d(5)}>
             {/* Mobile/tablet: a richer brochure card-button; desktop keeps the classic pill. */}
             <LeadButton
               intent="brochure"
               source="hero"
-              className="cta-shine group relative flex items-center gap-3.5 overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-brand to-deep p-2.5 pr-3 text-left text-white shadow-[0_18px_36px_-16px_rgb(46_17_12/0.75)] ring-1 ring-gold/30 active:scale-[0.98] lg:hidden"
+              className="cta-shine group relative flex w-full items-center gap-3.5 overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-brand to-deep p-2.5 pr-3 text-left text-white shadow-[0_18px_36px_-16px_rgb(46_17_12/0.75)] ring-1 ring-gold/30 active:scale-[0.98] sm:w-auto lg:hidden"
             >
               <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-gold text-deep" aria-hidden="true">
                 <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -138,22 +134,26 @@ export function Hero() {
             <LeadButton intent="brochure" source="hero" className="btn hidden w-fit lg:inline-flex">
               {h.primaryCta} <ArrowUpRight className="arrow size-4" />
             </LeadButton>
+            <p className="flex items-center gap-2.5 py-2 text-[17px] font-medium leading-snug text-brand">
+              <PinIcon className="size-5 shrink-0 text-terra" />
+              <span className="border-b border-gold/70 pb-1">Beharbari <span className="px-1 text-terra" aria-hidden="true">·</span> Guwahati</span>
+            </p>
           </div>
 
           <div className="enter mt-9 w-full max-w-[31rem] lg:mt-12" style={d(7)}>
             <div className="flex items-center gap-5">
               <span className="h-16 w-0.5 shrink-0 bg-terra/50" aria-hidden="true" />
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-terra">Find your space</p>
-                <p className="mt-2 font-serif text-[32px] leading-none text-ink sm:text-[38px]">2, 3 &amp; 4 <span className="text-[20px] italic sm:text-[24px]">BHK Homes</span></p>
-                <p className="mt-2 text-[12px] text-muted">With penthouse options for a different perspective.</p>
+                <p className="text-[13px] font-bold uppercase tracking-[0.18em] text-terra sm:text-[14px]">Find your space</p>
+                <p className="mt-2 font-serif text-[38px] leading-tight text-ink sm:text-[44px]">2, 3 and 4 <span className="text-[25px] italic sm:text-[30px]">BHK Homes</span></p>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted sm:text-[16px]">With penthouse options for a different perspective.</p>
               </div>
             </div>
             <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
               {highlights.map((item) => (
                 <li key={item.icon} className="flex items-center gap-2 text-leaf">
-                  <AmenityIcon name={item.icon} className="size-4 shrink-0" />
-                  <span className="text-[11px] text-muted">{item.label}</span>
+                  <AmenityIcon name={item.icon} className="size-5 shrink-0" />
+                  <span className="text-[14px] text-muted">{item.label}</span>
                 </li>
               ))}
             </ul>

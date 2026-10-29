@@ -22,13 +22,14 @@ export const site = {
   description: `${P.name} in ${P.area}, ${P.city}: 2, 3 and 4 BHK residences and penthouses with a clubhouse, swimming pool, gym and landscaped lawns. A ${P.developer} project.`,
 
   nav: [
-    { label: 'Overview', href: '#overview' },
-    { label: 'Floor Plans', href: '#floor-plans' },
-    { label: 'Gallery', href: '#gallery' },
     { label: 'Amenities', href: '#amenities' },
+    { label: 'Gallery', href: '#gallery' },
+    { label: 'Walkthrough', href: '#explore' },
+    { label: 'Master Plan', href: '#floor-plans' },
+    { label: 'Specifications', href: '#specifications' },
     { label: 'Location', href: '#location' },
-    { label: 'Developer', href: '#developer' },
-    { label: 'Enquire', href: '#enquire' },
+    { label: 'Contact', href: '#enquire' },
+    { label: 'About Developer', href: '#developer' },
   ],
 
   hero: {
@@ -213,10 +214,6 @@ export const site = {
           'Subham Buildwell, Zoo Road',
           'Subham Garden, Kalapahar',
         ],
-      },
-      {
-        title: 'Commercial',
-        items: ['Subham Velocity, G.S. Road', 'Subham Red Stone, Downtown', 'Bijay Crescent, Pibco', 'Subham Square, Lokhra'],
       },
     ],
   },

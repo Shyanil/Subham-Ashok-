@@ -244,7 +244,7 @@ export function LeadForm({
 
         <div className="field">
           <label htmlFor={cfgId}>
-            Home type <span className="text-terra" aria-hidden="true">*</span>
+            Configuration <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <select
             id={cfgId}
@@ -258,7 +258,7 @@ export function LeadForm({
             required
           >
             <option value="" disabled>
-              Select home type
+              Select configuration
             </option>
             {projectConfig.CONFIGURATIONS.map((c) => (
               <option key={c} value={c}>

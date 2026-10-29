@@ -18,7 +18,7 @@ type Props = {
 export function SectionHeading({ id, eyebrow, title, body, align = 'left', tone = 'light', action, oneLine = false }: Props) {
   const center = align === 'center';
   return (
-    <div className={`mb-12 flex flex-col gap-6 ${center ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between'} ${tone === 'dark' ? 'on-dark' : ''}`}>
+    <div className={`mb-8 flex flex-col gap-6 sm:mb-10 ${center ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between'} ${tone === 'dark' ? 'on-dark' : ''}`}>
       <div data-reveal>
         <p className={`kicker ${tone === 'dark' ? '!text-gold' : ''}`}>
           <SparkIcon className="size-3" /> {eyebrow}

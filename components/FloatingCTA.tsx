@@ -8,7 +8,7 @@ import { useLead } from './lead/LeadProvider';
 import { CheckIcon, CloseIcon } from './icons';
 
 /**
- * Desktop priority form as a right-hand side panel. It slides in once the visitor scrolls past
+ * Desktop priority form as a full-height left side panel below the header. It slides in once the visitor scrolls past
  * the hero (and steps aside while the main enquiry form is on screen). Closing it leaves a slim
  * vertical tab on the edge to bring it back.
  */
@@ -41,7 +41,7 @@ export function FloatingCTA() {
     else if (!dismissed && !submitted) setOpen(true);
   }, [visible, dismissed, submitted]);
 
-  // Lets the chat launcher step aside while the panel covers the right edge.
+  // Share the open state with other floating controls.
   useEffect(() => {
     const root = document.documentElement;
     if (open) root.dataset.sidePanel = 'open';
@@ -95,11 +95,11 @@ export function FloatingCTA() {
       <aside
         id="priority-form"
         aria-label="Book a Property Slot"
-        className={`fixed left-4 top-[84px] z-40 flex max-h-[calc(100dvh-100px)] w-[360px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_30px_70px_-24px_rgb(31_13_9/0.55)] ring-1 ring-line transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${visible && open ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-[calc(100%+24px)] opacity-0'}`}
+        className={`fixed bottom-0 left-0 top-[68px] z-40 flex w-[400px] flex-col overflow-hidden border-r border-line bg-white shadow-[16px_0_48px_-16px_rgb(31_13_9/0.25)] transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] xl:w-[420px] ${visible && open ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-full opacity-0'}`}
       >
-        <header className="relative bg-deep px-6 pb-5 pt-5 text-white">
+        <header className="relative shrink-0 bg-deep px-7 pb-6 pt-7 text-white">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gold">Priority booking</p>
-          <h2 className="mt-1.5 font-serif text-[28px] leading-none !text-white">Book a Property Slot</h2>
+          <h2 className="mt-2 pr-7 font-serif text-[30px] leading-tight !text-white">Book a Property Slot</h2>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
             {projectConfig.PERKS.slice(0, 2).map((p) => (
               <li key={p} className="flex items-center gap-1.5 text-[12px] text-white/75">
@@ -111,7 +111,7 @@ export function FloatingCTA() {
             <CloseIcon className="size-4" />
           </button>
         </header>
-        <div className="overflow-y-auto px-6 pb-6 pt-5">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-7 pb-8 pt-6">
           <LeadForm variant="modal" fields="priority" source="floating_priority" submitLabel="Book a Property Slot" />
         </div>
       </aside>

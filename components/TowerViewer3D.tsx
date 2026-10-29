@@ -78,15 +78,15 @@ export function TowerViewer3D() {
   const seg = 'whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] sm:px-3.5 sm:py-2 sm:text-[12px] sm:tracking-[0.14em] text-white/70 transition-colors hover:text-white aria-pressed:bg-gold aria-pressed:text-deep';
 
   return (
-    <section id="explore" aria-labelledby="explore-title" className="relative bg-sand" data-track-section="tower_3d">
-      <div className="container-x py-12 sm:py-16 lg:py-24">
+    <section id="explore" aria-labelledby="explore-title" className="section relative bg-sand" data-track-section="tower_3d">
+      <div className="container-x">
       {/* Section headline and interaction instructions. */}
-      <div className="mb-8 grid gap-8 border-b border-line pb-8 sm:mb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-16 lg:pb-10">
+      <div className="mb-5 grid gap-5 border-b border-line pb-5 sm:mb-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-16 lg:pb-6">
         <div>
           <p className="kicker">
             <SparkIcon className="size-3" /> {t.eyebrow}
           </p>
-          <h2 id="explore-title" className="h2 mt-6 !text-brand">
+          <h2 id="explore-title" className="h2 mt-3 !text-brand">
             Discover Your World, <em className="whitespace-nowrap italic text-terra">in 3D.</em>
           </h2>
         </div>

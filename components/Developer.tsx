@@ -32,9 +32,9 @@ export function Developer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 content-start gap-2 lg:self-center">
             {d.stats.map((s, i) => (
-              <div key={s.label} className={`flex min-h-[175px] flex-col justify-between rounded-[2rem] p-5 sm:p-6 ${i === 0 ? 'bg-brand text-white' : 'bg-white text-ink'}`}>
+              <div key={s.label} className={`flex min-h-[140px] flex-col gap-3 rounded-2xl p-4 ${i === 0 ? 'bg-brand text-white' : 'bg-white text-ink'}`}>
                 <span className={`text-[11px] font-bold uppercase tracking-[0.16em] ${i === 0 ? 'text-white/65' : 'text-terra'}`}>0{i + 1}</span>
                 <div>
                   <p className="font-serif text-[38px] italic leading-none sm:text-[45px]"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals} /></p>
@@ -51,7 +51,7 @@ export function Developer() {
               <p className="kicker">Since 2007</p>
               <h3 className="h2 mt-3">The Subham Portfolio</h3>
             </div>
-            <p className="max-w-sm text-[14px] text-muted">Explore our ongoing, completed, and commercial projects.</p>
+            <p className="max-w-sm text-[14px] text-muted">Explore our ongoing and completed projects.</p>
           </div>
           <div className="mt-7 grid gap-3">
             {d.projects.map((g) => (

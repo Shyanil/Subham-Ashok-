@@ -29,14 +29,14 @@ export function Header() {
           <img src="/brand/ashok-heights-logo.webp" alt="" width={480} height={210} className="h-10 w-auto sm:h-11" />
         </a>
 
-        <nav aria-label="Sections" className="absolute left-1/2 hidden -translate-x-1/2 xl:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label="Sections" className="mx-auto hidden min-w-0 xl:block">
+          <ul className="flex items-center gap-3 2xl:gap-5">
             {site.nav.map((n) => (
               <li key={n.href}>
                 <a
                   href={n.href}
                   aria-current={active === n.href ? 'location' : undefined}
-                  className="relative inline-flex border-b-2 border-transparent px-3 py-2.5 text-[14px] font-medium text-ink/70 transition-colors hover:text-brand aria-[current]:border-terra aria-[current]:text-brand"
+                  className="relative inline-flex whitespace-nowrap border-b-2 border-transparent px-1.5 py-2.5 text-[14px] font-medium text-ink/70 transition-colors hover:text-brand aria-[current]:border-terra aria-[current]:text-brand"
                 >
                   {n.label}
                 </a>
@@ -69,7 +69,7 @@ export function Header() {
       </div>
 
       <nav id="mobile-nav" aria-label="Sections" hidden={!menu} className="border-b border-line bg-white shadow-lg xl:hidden">
-        <ul className="container-x grid grid-cols-2 gap-1 py-3 sm:grid-cols-3">
+        <ul className="container-x grid grid-cols-2 gap-x-3 gap-y-2 py-3 sm:grid-cols-3">
           {site.nav.map((n) => (
             <li key={n.href}>
               <a href={n.href} onClick={() => setMenu(false)} aria-current={active === n.href ? 'location' : undefined} className="block min-h-[44px] border-l-2 border-transparent px-3 py-3 font-medium text-ink hover:text-brand aria-[current]:border-terra aria-[current]:text-brand">

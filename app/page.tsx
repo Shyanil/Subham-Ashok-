@@ -9,6 +9,7 @@ import { CtaBand } from '@/components/CtaBand';
 import { FloorPlans } from '@/components/FloorPlans';
 import { Gallery } from '@/components/Gallery';
 import { Amenities } from '@/components/Amenities';
+import { Specifications } from '@/components/Specifications';
 import { Location } from '@/components/Location';
 import { Developer } from '@/components/Developer';
 import { FinalCta } from '@/components/FinalCta';
@@ -70,7 +71,7 @@ const jsonLd = {
   ],
 };
 
-/** Lead-first order: Hero → Marquee → Overview → 3D model → Plans → Gallery → Amenities → Location → Enquire → Developer. */
+/** Page sections follow the header navigation after the project introduction. */
 export default function Home() {
   return (
     <>
@@ -79,11 +80,12 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Overview />
+        <Amenities />
+        <Gallery />
+        <CtaBand source="cta_after_gallery" title="Like What You See? _Download the Brochure_" body="Floor plans and project details, ready to download." />
         <TowerViewer3D />
         <FloorPlans />
-        <Gallery />
-        <Amenities />
-        <CtaBand source="cta_after_gallery" title="Like What You See? _Download the Brochure_" body="Floor plans and project details, ready to download." />
+        <Specifications />
         <Location />
         <FinalCta />
         <Developer />

@@ -29,13 +29,13 @@ export function FinalCta() {
           </p>
         </div>
 
-        <div className="rounded-[2rem] bg-white p-6 shadow-[var(--shadow-lift)] sm:rounded-[2.5rem] sm:p-10 lg:p-12">
+        <div className="enquiry-card w-full max-w-[580px] justify-self-center rounded-[1.5rem] bg-white p-5 shadow-[var(--shadow-lift)] sm:p-6 lg:justify-self-end lg:p-7">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-terra">Private enquiry</p>
-          <h3 className="mt-2 text-[34px] leading-none text-ink sm:text-[40px]">Let Us Help You Find Your Home</h3>
-          <div className="mt-7">
+          <h3 className="mt-2 text-[28px] leading-tight text-ink sm:text-[32px]">Let Us Help You Find Your Home</h3>
+          <div className="mt-5">
             <LeadForm variant="inline" fields="priority" source="final_form" submitLabel="Confirm Enquiry" />
           </div>
-          <p className="mt-6 flex items-center justify-center gap-2 border-t border-line pt-5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
+          <p className="mt-4 flex items-center justify-center gap-2 border-t border-line pt-3 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
             <ShieldIcon className="size-4 text-leaf" /> Secure · RERA verified project
           </p>
         </div>

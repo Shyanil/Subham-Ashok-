@@ -1,25 +1,43 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { masterPlanHotspots, masterPlanLegend } from '@/content/plans';
 import { LeadButton } from './lead/LeadButton';
 import { ArrowUpRight } from './icons';
+import { Lightbox } from './Lightbox';
 
 const SOURCE = { width: 1323, height: 1189 };
 
 /** One shared selection connects every printed location to its brochure legend. */
 export function InteractiveMasterPlan() {
   const [selected, setSelected] = useState<number | null>(null);
-  const [enlarged, setEnlarged] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [open, setOpen] = useState(false);
+  const pendingCenter = useRef<{ x: number; y: number } | null>(null);
   const [rotated, setRotated] = useState(true);
   const viewport = useRef<HTMLDivElement>(null);
   const displayWidth = rotated ? SOURCE.width : SOURCE.height;
   const displayHeight = rotated ? SOURCE.height : SOURCE.width;
   const position = (point: { x: number; y: number }) => rotated ? point : { x: point.y, y: 100 - point.x };
+  const changeZoom = (next: number) => {
+    const el = viewport.current;
+    if (el) pendingCenter.current = {
+      x: (el.scrollLeft + el.clientWidth / 2) / el.scrollWidth,
+      y: (el.scrollTop + el.clientHeight / 2) / el.scrollHeight,
+    };
+    setZoom(Math.min(3, Math.max(1, next)));
+  };
+  useLayoutEffect(() => {
+    const el = viewport.current;
+    const center = pendingCenter.current;
+    if (el && center) el.scrollTo({ left: el.scrollWidth * center.x - el.clientWidth / 2, top: el.scrollHeight * center.y - el.clientHeight / 2, behavior: 'instant' });
+    pendingCenter.current = null;
+  }, [zoom]);
   const rotate = () => {
     setRotated((value) => !value);
-    setEnlarged(false);
+    setZoom(1);
+    pendingCenter.current = null;
     viewport.current?.scrollTo({ left: 0, top: 0, behavior: 'instant' });
   };
 
@@ -27,7 +45,7 @@ export function InteractiveMasterPlan() {
     setSelected(number);
     // When enlarged, legend selections reveal the corresponding location inside
     // the scrollable image, without moving the page or stealing keyboard focus.
-    if (reveal && enlarged && viewport.current) {
+    if (reveal && zoom > 1 && viewport.current) {
       const point = position(masterPlanHotspots.find((h) => h.number === number)!);
       const el = viewport.current;
       el.scrollTo({
@@ -39,7 +57,7 @@ export function InteractiveMasterPlan() {
   };
 
   return (
-    <div className="grid gap-6 rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)] sm:p-5 lg:p-6">
+    <div className="grid gap-6 rounded-[2rem] bg-white p-3 shadow-[var(--shadow-soft)] sm:p-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:p-6">
       <div className="min-w-0 overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-3 pt-1">
           <p id="master-plan-help" className="text-[10px] font-bold uppercase tracking-[0.16em] text-terra">Explore the master plan</p>
@@ -48,17 +66,19 @@ export function InteractiveMasterPlan() {
               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20 7V3m0 4h-4M20 7a9 9 0 1 0 1 8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               Rotate
             </button>
-            <button type="button" onClick={() => setEnlarged((value) => !value)} aria-pressed={enlarged} aria-controls="master-plan-viewport" className="min-h-10 rounded-full px-2 text-[12px] font-bold text-terra hover:bg-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
-              {enlarged ? 'Fit plan' : 'Zoom in'}
-            </button>
-            <a href="/brochure/master-plan-refined.webp" target="_blank" rel="noopener noreferrer" aria-label="Open full-size master plan in a new tab" className="inline-flex min-h-10 items-center gap-1 text-[12px] font-bold text-terra hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+            <div role="group" aria-label="Master plan zoom" className="flex items-center rounded-full border border-line">
+              <button type="button" onClick={() => changeZoom(zoom - 0.5)} disabled={zoom === 1} aria-label="Zoom out" aria-controls="master-plan-viewport" className="grid size-10 place-items-center rounded-full text-xl text-terra hover:bg-cream disabled:opacity-30">−</button>
+              <button type="button" onClick={() => changeZoom(1)} aria-label="Fit master plan" className="min-h-10 min-w-12 text-[12px] font-semibold text-brand">{Math.round(zoom * 100)}%</button>
+              <button type="button" onClick={() => changeZoom(zoom + 0.5)} disabled={zoom === 3} aria-label="Zoom in" aria-controls="master-plan-viewport" className="grid size-10 place-items-center rounded-full text-xl text-terra hover:bg-cream disabled:opacity-30">+</button>
+            </div>
+            <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-label="Open full-size master plan" className="inline-flex min-h-10 items-center gap-1 text-[12px] font-bold text-terra hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
               Full size <ArrowUpRight className="size-3.5" />
-            </a>
+            </button>
           </div>
         </div>
         <div className="rounded-[1.5rem] bg-white">
         <div id="master-plan-viewport" ref={viewport} className="mx-auto overflow-auto overscroll-contain rounded-[1.5rem]" style={{ aspectRatio: `${displayWidth} / ${displayHeight}`, maxWidth: `${560 * displayWidth / displayHeight}px` }}>
-          <div id="master-plan-image" className="relative overflow-hidden" style={{ width: enlarged ? '250%' : '100%', aspectRatio: `${displayWidth} / ${displayHeight}`, containerType: 'inline-size' }}>
+          <div id="master-plan-image" className="relative overflow-hidden" style={{ width: `${zoom * 100}%`, aspectRatio: `${displayWidth} / ${displayHeight}`, containerType: 'inline-size' }}>
             <Image src="/brochure/master-plan-refined.webp" alt="Landscape master plan of Subham Ashok Heights showing Block A, Block B, green lawn, kids' play area, amphitheatre and driveways" width={1323} height={1189} sizes="(min-width: 768px) 640px, 100vw" quality={90} className="absolute left-1/2 top-1/2 max-w-none" style={{ width: rotated ? '100%' : `${SOURCE.width / SOURCE.height * 100}%`, height: rotated ? '100%' : `${SOURCE.height / SOURCE.width * 100}%`, transform: `translate(-50%, -50%) rotate(${rotated ? 0 : -90}deg)` }} />
             {masterPlanHotspots.map((point) => {
               const active = selected === point.number;
@@ -80,9 +100,9 @@ export function InteractiveMasterPlan() {
       </div>
 
       <div className="grid min-w-0 content-start gap-5">
-        <div className="border-t border-line px-1 pt-5">
+        <div className="border-t border-line px-1 pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-2">
           <p className="kicker">Legend</p>
-          <ol className="mt-4 grid grid-cols-2 gap-x-2 gap-y-1.5 sm:grid-cols-3 sm:gap-x-3 lg:grid-cols-4">
+          <ol className="mt-4 grid grid-cols-2 gap-x-2 gap-y-1.5 sm:grid-cols-3 sm:gap-x-3 lg:grid-cols-1 xl:grid-cols-2">
             {masterPlanLegend.map((label, i) => {
               const number = i + 1;
               const active = selected === number;
@@ -101,6 +121,7 @@ export function InteractiveMasterPlan() {
           Book a Site Visit <ArrowUpRight className="arrow size-4" />
         </LeadButton>
       </div>
+      <Lightbox items={[{ slug: 'master-plan', src: '/brochure/master-plan-refined.webp', alt: 'Subham Ashok Heights master plan', title: 'Master plan' }]} index={open ? 0 : null} onIndex={() => {}} onClose={() => setOpen(false)} />
     </div>
   );
 }
