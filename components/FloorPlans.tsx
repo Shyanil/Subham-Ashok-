@@ -8,10 +8,10 @@ import { floors, planSize, unitConfiguration, unitLabel, units, type Unit } from
 import { Accent } from './Accent';
 import { InteractiveMasterPlan } from './InteractiveMasterPlan';
 import { Lightbox } from './Lightbox';
-import { SectionHeading } from './SectionHeading';
+
 import { LeadButton } from './lead/LeadButton';
 import { useLead } from './lead/LeadProvider';
-import { ArrowUpRight } from './icons';
+import { ArrowUpRight, SparkIcon } from './icons';
 
 type Tab = 'master' | 'A' | 'B';
 const TABS: { id: Tab; label: string; note: string }[] = [
@@ -53,7 +53,15 @@ export function FloorPlans() {
   const floor = blockFloors.find((x) => x.id === selectedId);
   const pick = (id: string) => tab !== 'master' && setSel((s) => ({ ...s, [tab]: id }));
 
-  const reveal = (u: Unit) => openLead({ intent: 'reveal', source: 'floor_plans', unit: unitLabel(u), configuration: unitConfiguration(u) });
+  const reveal = (u: Unit) =>
+    openLead({
+      intent: 'reveal',
+      source: 'floor_plans',
+      unit: unitLabel(u),
+      configuration: unitConfiguration(u),
+      title: 'Reveal Price',
+      submitLabel: 'Reveal Price',
+    });
 
   const onTabKey = (e: React.KeyboardEvent, i: number) => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -63,20 +71,36 @@ export function FloorPlans() {
   };
 
   return (
-    <section id="floor-plans" aria-labelledby="floor-plans-title" className="section bg-cream" data-track-section="floor_plans">
+    <section id="floor-plans" aria-labelledby="floor-plans-title" className="section relative overflow-hidden bg-cream" data-track-section="floor_plans">
+
       <div className="container-x">
-        <SectionHeading
-          id="floor-plans-title"
-          oneLine
-          eyebrow={f.eyebrow}
-          title={f.title}
-          body={f.body}
-          action={
-            <LeadButton intent="brochure" source="floor_plans" className="btn btn--outline btn--sm">
-              Download Brochure <ArrowUpRight className="arrow size-4" />
-            </LeadButton>
-          }
-        />
+        {/* Section Heading: Left title and Right description aligned at top, with compact gap to tabs */}
+        <div className="mb-3 flex flex-col gap-5 sm:mb-4 md:flex-row md:items-start md:justify-between">
+          <div data-reveal className="max-w-xl">
+            <p className="kicker">
+              <SparkIcon className="size-3" /> {f.eyebrow}
+            </p>
+            <h2 id="floor-plans-title" className="h2 mt-4 lg:whitespace-nowrap">
+              <Accent text={f.title} />
+            </h2>
+          </div>
+          <div className="flex flex-col items-start md:max-w-md lg:max-w-lg md:pt-7" data-reveal>
+            <p className="side-note text-[16px] leading-relaxed text-muted">
+              {f.body}
+            </p>
+            <div className="mt-3">
+              <LeadButton
+                intent="brochure"
+                source="floor_plans"
+                title="Download The Brochure"
+                submitLabel="Download The Brochure"
+                className="btn btn--outline btn--sm"
+              >
+                Download Brochure <ArrowUpRight className="arrow size-4" />
+              </LeadButton>
+            </div>
+          </div>
+        </div>
 
         {/* Segmented tabs */}
         <div role="tablist" aria-label="Plans" className="mb-5 grid w-full grid-cols-3 gap-2 border-b border-line sm:mx-auto sm:mb-7 sm:flex sm:w-fit sm:justify-center sm:gap-5">

@@ -19,7 +19,7 @@ export function Header() {
 
   return (
     <header className="site-header sticky top-0 z-50 h-[68px] border-b border-line/80 bg-white" data-track-section="header">
-      <div className="container-x relative flex h-full items-center gap-3">
+      <div className="container-x relative flex h-full items-center justify-between gap-4">
         <a
           href="#top"
           className="-mb-3 flex h-[calc(100%+12px)] shrink-0 items-center rounded-b-2xl bg-brand px-4 shadow-[0_10px_24px_-12px_rgb(46_17_12/0.6)]"
@@ -29,42 +29,51 @@ export function Header() {
           <img src="/brand/ashok-heights-logo.webp" alt="" width={480} height={210} className="h-10 w-auto sm:h-11" />
         </a>
 
-        <nav aria-label="Sections" className="mx-auto hidden min-w-0 xl:block">
-          <ul className="flex items-center gap-3 2xl:gap-5">
-            {site.nav.map((n) => (
-              <li key={n.href}>
-                <a
-                  href={n.href}
-                  aria-current={active === n.href ? 'location' : undefined}
-                  className="relative inline-flex whitespace-nowrap border-b-2 border-transparent px-1.5 py-2.5 text-[14px] font-medium text-ink/70 transition-colors hover:text-brand aria-[current]:border-terra aria-[current]:text-brand"
-                >
-                  {n.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {/* Right side: Desktop nav + CTA positioned close together */}
+        <div className="ml-auto flex items-center gap-4 xl:gap-6">
+          <nav aria-label="Sections" className="hidden min-w-0 xl:block">
+            <ul className="flex items-center gap-1.5 xl:gap-2.5 2xl:gap-4">
+              {site.nav.map((n) => (
+                <li key={n.href}>
+                  <a
+                    href={n.href}
+                    aria-current={active === n.href ? 'location' : undefined}
+                    className="relative inline-flex whitespace-nowrap border-b-2 border-transparent px-1.5 py-2.5 text-[14px] font-medium text-ink/70 transition-colors hover:text-brand aria-[current]:border-terra aria-[current]:text-brand"
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <LeadButton intent="visit" source="header" className="btn btn--sm hidden whitespace-nowrap !shadow-none lg:inline-flex">
-            Schedule a Site Visit
-          </LeadButton>
-          <button
-            type="button"
-            className="grid size-11 place-items-center rounded-full text-brand hover:bg-cream xl:hidden"
-            aria-expanded={menu}
-            aria-controls="mobile-nav"
-            aria-label={menu ? 'Close menu' : 'Open menu'}
-            onClick={() => setMenu((m) => !m)}
-          >
-            {menu ? (
-              <CloseIcon />
-            ) : (
-              <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden="true">
-                <path d="M4 7h16M4 12h16M4 17h10" />
-              </svg>
-            )}
-          </button>
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <LeadButton
+              intent="visit"
+              source="header"
+              title="Schedule A Site Visit"
+              submitLabel="Schedule A Site Visit"
+              className="btn btn--sm hidden whitespace-nowrap !shadow-none lg:inline-flex"
+            >
+              Schedule a Site Visit
+            </LeadButton>
+            <button
+              type="button"
+              className="grid size-11 place-items-center rounded-full text-brand hover:bg-cream xl:hidden"
+              aria-expanded={menu}
+              aria-controls="mobile-nav"
+              aria-label={menu ? 'Close menu' : 'Open menu'}
+              onClick={() => setMenu((m) => !m)}
+            >
+              {menu ? (
+                <CloseIcon />
+              ) : (
+                <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden="true">
+                  <path d="M4 7h16M4 12h16M4 17h10" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

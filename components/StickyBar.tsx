@@ -26,7 +26,7 @@ export function StickyBar() {
       <button
         type="button"
         aria-haspopup="dialog"
-        onClick={() => openLead({ intent: 'price', source: 'sticky_enquire' })}
+        onClick={() => openLead({ intent: 'price', source: 'sticky_enquire', title: 'Enquire Now', submitLabel: 'Enquire Now' })}
         className={`${item} bg-terra text-white`}
       >
         <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">

@@ -15,6 +15,10 @@ export type LeadRequestOptions = {
   unit?: string;
   /** Preselect the "Looking for" field. */
   configuration?: string;
+  /** Custom heading / CTA text to display on the modal */
+  title?: string;
+  /** Custom submit button label */
+  submitLabel?: string;
 };
 
 type Ctx = {

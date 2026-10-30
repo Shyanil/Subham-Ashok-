@@ -78,6 +78,8 @@ export function Hero() {
           <LeadButton
             intent="reveal"
             source="hero_seal"
+            title="Reveal Price"
+            submitLabel="Reveal Price"
             className="seal enter group absolute z-10 hidden place-items-center rounded-full bg-brand text-white shadow-[0_24px_50px_-18px_rgb(20_8_6/0.75)] ring-[6px] ring-white xl:left-0 xl:top-[58%] xl:grid xl:size-[150px] xl:-translate-x-1/2"
             style={d(9)}
           >
@@ -97,7 +99,7 @@ export function Hero() {
         </div>
 
         {/* Text */}
-        <div className="hero-copy relative flex flex-col pb-10 pt-8 sm:pt-10 lg:order-1 lg:justify-start lg:pb-16 lg:pt-12">
+        <div className="hero-copy relative flex flex-col pb-10 pt-10 sm:pt-14 lg:order-1 lg:justify-start lg:pb-16 lg:pt-18 xl:pt-24">
           <p className="enter mb-5 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-terra sm:text-[14px]" style={d(0)}>
             <SparkIcon className="size-3 shrink-0" />
             <span>Subham Group presents</span>
@@ -116,6 +118,8 @@ export function Hero() {
             <LeadButton
               intent="brochure"
               source="hero"
+              title="Download The Brochure"
+              submitLabel="Download The Brochure"
               className="cta-shine group relative flex w-full items-center gap-3.5 overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-brand to-deep p-2.5 pr-3 text-left text-white shadow-[0_18px_36px_-16px_rgb(46_17_12/0.75)] ring-1 ring-gold/30 active:scale-[0.98] sm:w-auto lg:hidden"
             >
               <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-gold text-deep" aria-hidden="true">
@@ -131,13 +135,21 @@ export function Hero() {
                 <ArrowUpRight className="size-4" />
               </span>
             </LeadButton>
-            <LeadButton intent="brochure" source="hero" className="btn hidden w-fit lg:inline-flex">
+            <LeadButton intent="brochure" source="hero" title="Download The Brochure" submitLabel="Download The Brochure" className="btn hidden w-fit lg:inline-flex">
               {h.primaryCta} <ArrowUpRight className="arrow size-4" />
             </LeadButton>
-            <p className="flex items-center gap-2.5 py-2 text-[17px] font-medium leading-snug text-brand">
-              <PinIcon className="size-5 shrink-0 text-terra" />
-              <span className="border-b border-gold/70 pb-1">Beharbari <span className="px-1 text-terra" aria-hidden="true">·</span> Guwahati</span>
-            </p>
+            {/* Prominently Highlighted Location Badge */}
+            <div className="inline-flex items-center gap-2.5 rounded-2xl border border-terra/30 bg-cream/90 px-4 py-2.5 shadow-xs ring-1 ring-terra/10 backdrop-blur-xs transition-all hover:border-terra/50 hover:bg-cream">
+              <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-terra text-white shadow-xs" aria-hidden="true">
+                <PinIcon className="size-4.5 text-white" />
+              </span>
+              <div className="flex flex-col text-left leading-tight">
+                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-terra">Project Location</span>
+                <span className="mt-0.5 text-[15.5px] font-bold text-brand sm:text-[16.5px]">
+                  Beharbari <span className="text-terra/70">·</span> Guwahati
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="enter mt-9 w-full max-w-[31rem] lg:mt-12" style={d(7)}>

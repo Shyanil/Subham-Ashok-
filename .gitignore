@@ -5,3 +5,9 @@ out
 next-env.d.ts
 .env*.local
 .DS_Store
+
+# Local lead handlers and Supabase SQL
+lead.php
+/public/api/ashok-heights/index.php
+*supabase*.sql
+supabase/**/*.sql

@@ -13,8 +13,8 @@ export function Overview() {
   const o = site.overview;
   return (
     <section id="overview" aria-labelledby="overview-title" className="section relative overflow-hidden" data-track-section="overview">
-      <BrandChakra className="pointer-events-none absolute -left-24 top-5 size-[160px] -rotate-12 sm:-left-28 sm:top-12 sm:size-[380px]" />
-      <BrandChakra className="pointer-events-none absolute -right-24 top-[22rem] size-[160px] rotate-12 sm:-right-28 sm:top-40 sm:size-[400px]" />
+      <BrandChakra subtle className="pointer-events-none absolute -left-24 top-5 size-[160px] -rotate-12 sm:-left-28 sm:top-12 sm:size-[380px]" />
+      <BrandChakra subtle className="pointer-events-none absolute -right-24 top-[22rem] size-[160px] rotate-12 sm:-right-28 sm:top-40 sm:size-[400px]" />
       <div className="container-x relative">
         <div className="mx-auto max-w-4xl text-center">
         <p className="kicker" data-reveal>
@@ -43,7 +43,13 @@ export function Overview() {
           ))}
         </ul>
         <div className="mt-7 text-center" data-reveal>
-          <LeadButton intent="visit" source="overview" className="btn">
+          <LeadButton
+            intent="visit"
+            source="overview"
+            title="Book A Site Visit"
+            submitLabel="Book A Site Visit"
+            className="btn"
+          >
             {o.cta} <ArrowUpRight className="arrow size-4" />
           </LeadButton>
         </div>

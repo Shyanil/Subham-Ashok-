@@ -7,6 +7,7 @@ import { track } from '@/lib/analytics';
 import { project } from '@/content/site';
 import { projectConfig } from '@/src/config/project';
 import { useLead } from './LeadProvider';
+import { toTitleCase } from './LeadModal';
 
 export type LeadFormVariant = 'inline' | 'modal' | 'floating' | 'sticky';
 
@@ -29,6 +30,7 @@ type Values = { name: string; phone: string; email: string; configuration: strin
 type Errors = Partial<Record<keyof Values | 'form', string>>;
 
 export const BROCHURE_URL = '/brochure/subham-ashok-heights-brochure.pdf';
+export const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || 'https://subhamgroup.com/api/ashok-height/lead.php';
 
 const fieldError = (values: Values, key: keyof Values): string | undefined => {
   const shape = priorityLeadSchema.shape[key];
@@ -64,8 +66,10 @@ export function LeadForm({
   });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
-  const withBudget = fields === 'full';
+  const isModal = variant === 'modal';
   const priority = fields === 'priority';
+  const withBudget = fields === 'full' || (isModal && !priority);
+  const withEmail = priority || isModal;
   const row = variant === 'sticky';
   const floatingPriority = priority && variant === 'floating';
 
@@ -86,7 +90,7 @@ export function LeadForm({
       phone: values.phone,
       configuration: values.configuration,
       budget: withBudget ? values.budget || undefined : undefined,
-      email: priority ? values.email : undefined,
+      email: withEmail && values.email.trim() ? values.email.trim() : undefined,
       pincode: priority ? values.pincode : undefined,
       consent: values.consent as true,
     };
@@ -103,7 +107,7 @@ export function LeadForm({
     setStatus('sending');
     setErrors({});
     try {
-      const res = await fetch('/api/lead', {
+      const res = await fetch(LEAD_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -180,17 +184,29 @@ export function LeadForm({
       className={`relative ${tone === 'dark' ? 'form-dark' : ''} ${floatingPriority ? 'priority-float' : ''}`}
       aria-describedby={errors.form ? `${id}-form-err` : undefined}
     >
-      <div className={row ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start' : floatingPriority ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3' : priority ? `grid gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}` : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`}>
+      <div
+        className={
+          row
+            ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start'
+            : floatingPriority
+              ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3'
+            : priority
+              ? 'grid grid-cols-1 gap-3.5'
+              : isModal
+                ? 'grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3'
+                : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`
+        }
+      >
         <div className="field">
           <label htmlFor={nameId}>
-            Name <span className="text-terra" aria-hidden="true">*</span>
+            {isModal && !priority ? 'Full Name' : 'Name'} <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <input
             id={nameId}
             name="name"
             className="input"
             autoComplete="name"
-            placeholder="Your name"
+            placeholder={isModal && !priority ? 'Your Full Name' : 'Your name'}
             value={values.name}
             onChange={(e) => set('name', e.target.value)}
             onBlur={() => blur('name')}
@@ -203,7 +219,7 @@ export function LeadForm({
 
         <div className="field">
           <label htmlFor={phoneId}>
-            Phone <span className="text-terra" aria-hidden="true">*</span>
+            {isModal && !priority ? 'Mobile Number' : 'Phone'} <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <div className="phone-wrap">
             <span className="phone-prefix" aria-hidden="true">
@@ -215,7 +231,7 @@ export function LeadForm({
               type="tel"
               inputMode="numeric"
               autoComplete="tel-national"
-              placeholder="10-digit mobile"
+              placeholder={isModal && !priority ? '10-Digit Mobile Number' : '10-digit mobile'}
               maxLength={14}
               className="input tabular"
               value={values.phone}
@@ -234,17 +250,32 @@ export function LeadForm({
           {err('phone')}
         </div>
 
-        {priority && (
+        {withEmail && (
           <div className="field">
-            <label htmlFor={emailId}>Email <span className="text-terra" aria-hidden="true">*</span></label>
-            <input id={emailId} name="email" type="email" className="input" autoComplete="email" placeholder="you@example.com" value={values.email} onChange={(e) => set('email', e.target.value)} onBlur={() => blur('email')} aria-invalid={!!errors.email} aria-describedby={described('email')} required />
+            <label htmlFor={emailId}>
+              {isModal && !priority ? 'Email Address' : 'Email'} {priority ? <span className="text-terra" aria-hidden="true">*</span> : <span className="font-normal text-muted capitalize tracking-normal">(Optional)</span>}
+            </label>
+            <input
+              id={emailId}
+              name="email"
+              type="email"
+              className="input"
+              autoComplete="email"
+              placeholder={isModal && !priority ? 'Your Email Address' : 'you@example.com'}
+              value={values.email}
+              onChange={(e) => set('email', e.target.value)}
+              onBlur={() => blur('email')}
+              aria-invalid={!!errors.email}
+              aria-describedby={described('email')}
+              required={priority}
+            />
             {err('email')}
           </div>
         )}
 
         <div className="field">
           <label htmlFor={cfgId}>
-            Configuration <span className="text-terra" aria-hidden="true">*</span>
+            {isModal && !priority ? 'Select Configuration' : 'Configuration'} <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <select
             id={cfgId}
@@ -258,7 +289,7 @@ export function LeadForm({
             required
           >
             <option value="" disabled>
-              Select configuration
+              {isModal && !priority ? 'Select Configuration' : 'Select configuration'}
             </option>
             {projectConfig.CONFIGURATIONS.map((c) => (
               <option key={c} value={c}>
@@ -278,9 +309,9 @@ export function LeadForm({
         )}
 
         {withBudget && (
-          <div className="field">
+          <div className={`field ${isModal ? 'sm:col-span-2' : ''}`}>
             <label htmlFor={budgetId}>
-              Budget range <span className="font-medium normal-case tracking-normal">(optional)</span>
+              Budget Range <span className="font-normal text-muted capitalize tracking-normal">(Optional)</span>
             </label>
             <select
               id={budgetId}
@@ -291,7 +322,7 @@ export function LeadForm({
               aria-invalid={!!errors.budget}
               aria-describedby={described('budget')}
             >
-              <option value="">Select budget</option>
+              <option value="">Select Budget Range</option>
               {projectConfig.BUDGET_RANGES.map((b) => (
                 <option key={b} value={b}>
                   {b}
@@ -315,7 +346,7 @@ export function LeadForm({
         <input id={`${id}-website`} name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className={floatingPriority ? 'mt-1.5' : 'mt-3.5'}>
+      <div className={floatingPriority ? 'mt-1.5' : isModal ? 'mt-2' : 'mt-3.5'}>
         <label htmlFor={consentId} className="consent">
           <input
             id={consentId}
@@ -355,7 +386,7 @@ function SubmitButton({ sending, label }: { sending: boolean; label: string }) {
           <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" /> Sending…
         </>
       ) : (
-        label
+        toTitleCase(label)
       )}
       {!sending && (
         <span className="arrow" aria-hidden="true">

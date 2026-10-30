@@ -145,7 +145,13 @@ export function TowerViewer3D() {
         )}
       </div>
       <div className="mt-6 flex justify-center">
-        <LeadButton intent="brochure" source="tower_3d" className="btn">
+        <LeadButton
+          intent="brochure"
+          source="tower_3d"
+          title="Download The Brochure"
+          submitLabel="Download The Brochure"
+          className="btn"
+        >
           {t.cta} <ArrowUpRight className="arrow size-4" />
         </LeadButton>
       </div>

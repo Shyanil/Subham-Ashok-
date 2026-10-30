@@ -30,17 +30,17 @@ export function CtaBand({ source, title, body, kind = 'buttons' }: Props) {
                 <LeadForm variant="sticky" fields="quick" source={source} submitLabel="Download Brochure" />
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:hidden">
-                <LeadButton intent="visit" source={source} className="btn">
+                <LeadButton intent="visit" source={source} title="Book A Site Visit" submitLabel="Book A Site Visit" className="btn">
                   Book a Site Visit <ArrowUpRight className="arrow size-4" />
                 </LeadButton>
-                <LeadButton intent="brochure" source={source} className="btn btn--outline">
+                <LeadButton intent="brochure" source={source} title="Download The Brochure" submitLabel="Download The Brochure" className="btn btn--outline">
                   Download Brochure
                 </LeadButton>
               </div>
             </>
           ) : (
             <div className="flex shrink-0 lg:justify-end">
-              <LeadButton intent="brochure" source={source} className="btn w-full whitespace-nowrap sm:w-auto lg:min-h-[54px] lg:px-7">
+              <LeadButton intent="brochure" source={source} title="Download The Brochure" submitLabel="Download The Brochure" className="btn w-full whitespace-nowrap sm:w-auto lg:min-h-[54px] lg:px-7">
                 Download Brochure <ArrowUpRight className="arrow size-4" />
               </LeadButton>
             </div>

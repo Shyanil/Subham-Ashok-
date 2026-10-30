@@ -1,5 +1,6 @@
 import { site } from '@/content/site';
 import { NeighbourhoodCarousel } from './NeighbourhoodCarousel';
+import { BrandChakra } from './BrandChakra';
 import { Accent } from './Accent';
 import { ArrowUpRight, PinIcon } from './icons';
 
@@ -7,8 +8,10 @@ export function Location() {
   const l = site.location;
   const c = site.contact;
   return (
-    <section id="location" aria-labelledby="location-title" className="section bg-cream" data-track-section="location">
-      <div className="container-x">
+    <section id="location" aria-labelledby="location-title" className="section relative overflow-hidden bg-cream" data-track-section="location">
+      <BrandChakra subtle className="pointer-events-none absolute -right-24 top-10 size-[160px] rotate-12 sm:-right-32 sm:top-16 sm:size-[400px]" />
+      <BrandChakra subtle className="pointer-events-none absolute -left-24 bottom-12 size-[160px] -rotate-12 sm:-left-32 sm:bottom-20 sm:size-[380px]" />
+      <div className="container-x relative z-10">
         <div className="mb-8 flex flex-col gap-5 sm:mb-10 lg:flex-row lg:items-end lg:justify-between" data-reveal>
           <div>
             <p className="kicker"><PinIcon className="size-3.5" /> Project Location</p>

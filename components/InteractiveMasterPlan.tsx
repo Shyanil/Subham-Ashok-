@@ -117,7 +117,13 @@ export function InteractiveMasterPlan() {
             })}
           </ol>
         </div>
-        <LeadButton intent="visit" source="master_plan" className="btn w-full sm:w-fit sm:justify-self-end">
+        <LeadButton
+          intent="visit"
+          source="master_plan"
+          title="Book A Site Visit"
+          submitLabel="Book A Site Visit"
+          className="btn w-full sm:w-fit sm:justify-self-end"
+        >
           Book a Site Visit <ArrowUpRight className="arrow size-4" />
         </LeadButton>
       </div>

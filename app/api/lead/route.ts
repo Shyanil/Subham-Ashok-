@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
   const payload = {
     project: project.name,
     name: lead.name,
-    phone: `+91${lead.phone}`,
+    phone: lead.phone,
     email: lead.email ?? '',
     pincode: lead.pincode ?? '',
     configuration: lead.configuration,
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     timestamp: new Date().toISOString(),
   };
 
-  const endpoint = process.env.FORM_ENDPOINT;
+  const endpoint = process.env.FORM_ENDPOINT || 'https://subhamgroup.com/api/ashok-height/lead.php';
   const resendKey = process.env.RESEND_API_KEY;
   const mailTo = process.env.LEAD_EMAIL_TO;
   const jobs: Promise<boolean>[] = [];
