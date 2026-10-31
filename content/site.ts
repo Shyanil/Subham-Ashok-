@@ -74,8 +74,9 @@ export const site = {
     stats: [
       { value: '2', unit: 'blocks', label: 'Block A and Block B' },
       { value: '2 – 4', unit: 'BHK', label: 'Plus penthouses' },
-      { value: '635 – 1,680', unit: 'sq.ft', label: 'Carpet area' },
-      { value: '11', unit: 'floors', label: 'Block B, rising highest' },
+      { value: '983 – 2,501', unit: 'sqft', label: 'Saleable area (SUBA)', note: 'Terrace area: 344 sqft' },
+      { value: '79', unit: 'apartments', label: 'Across both blocks' },
+      { value: '6 and 11', unit: 'floors', label: 'Block A and Block B', note: 'Block A: 6 floors · Block B: 11 floors' },
     ],
     cta: 'Book a Site Visit',
   },

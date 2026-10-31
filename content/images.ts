@@ -31,13 +31,6 @@ export const imageMeta: Record<string, ImageMeta> = {
     mobileFocus: [0.5, 0.5],
     tags: ['outdoors', 'top'],
   },
-  'ashok-heights-at-golden-hour': {
-    title: 'Ashok Heights at Golden Hour',
-    alt: 'Full view of the Ashok Heights tower and entrance gate at golden hour, framed by palms and gardens',
-    focus: [0.59, 0.5],
-    mobileFocus: [0.55, 0.5],
-    tags: ['outdoors'],
-  },
   'gate-view': {
     title: 'An Arrival Worth the Wait',
     alt: 'Main entrance gate with a canopy, carved stone pillars and residents walking in at golden hour',

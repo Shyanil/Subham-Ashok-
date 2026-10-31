@@ -45,12 +45,17 @@ export function Developer() {
         </div>
 
         <div className="mt-16">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="kicker">Since 2007</p>
+          <div className="flex flex-col gap-6 rounded-[1.5rem] border border-line bg-white/60 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+              <div className="flex w-fit shrink-0 items-center rounded-2xl border border-gold/25 bg-brand px-5 py-5 shadow-[0_8px_30px_rgba(72,49,33,0.12)]">
+                <Image src="/brand/subham-group.webp" alt="Subham Group" width={220} height={74} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
+              </div>
+              <div className="sm:border-l sm:border-line sm:pl-8">
+              <p className="kicker">A legacy since 2007</p>
               <h3 className="h2 mt-3">The Subham Portfolio</h3>
+              </div>
             </div>
-            <p className="max-w-sm text-[14px] text-muted">Explore our ongoing and completed projects.</p>
+            <p className="max-w-xs text-[14px] leading-relaxed text-muted">Explore our ongoing and completed projects.</p>
           </div>
           <div className="mt-7 grid gap-3">
             {d.projects.map((g) => (

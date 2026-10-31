@@ -1,16 +1,12 @@
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { site } from '@/content/site';
-import { getImage, objectPosition } from '@/lib/media';
+import { getImage } from '@/lib/media';
 import { isSet, projectConfig } from '@/src/config/project';
 import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
-import { HeroDepthLayer } from './HeroDepthLayer';
 import { LeadButton } from './lead/LeadButton';
 import { ArrowUpRight, PinIcon, SparkIcon } from './icons';
-
-/** The desktop panel is taller than the 16:9 render, so it crops sideways: keep the whole tower and gate in frame. */
-const HERO_FOCUS: [number, number] = [0.59, 0.5];
 
 const d = (n: number) => ({ ['--d' as string]: n }) as CSSProperties;
 
@@ -21,7 +17,6 @@ const d = (n: number) => ({ ['--d' as string]: n }) as CSSProperties;
  */
 export function Hero() {
   const h = site.hero;
-  const img = getImage('ashok-heights-at-golden-hour');
   const mobileImg = getImage('road-elevation-view');
   const priced = isSet(projectConfig.STARTING_PRICE);
   const highlights = [
@@ -45,7 +40,7 @@ export function Hero() {
                 fill
                 preload
                 sizes="100vw"
-                quality={85}
+                quality={90}
                 className="object-cover"
               />
             </div>
@@ -54,16 +49,15 @@ export function Hero() {
             {/* No blur placeholder: swapping blur → sharp mid-animation is what flickered on reload. */}
             <div className="enter-media absolute inset-0">
               <Image
-                src={img.src}
-                alt={img.alt}
+                src="/images/exterior/road-elevation-view-1920.webp"
+                alt={mobileImg.alt}
                 fill
                 preload
-                sizes="1800px"
+                sizes="56vw"
                 quality={90}
                 className="object-cover"
-                style={{ objectPosition: objectPosition(HERO_FOCUS) }}
+                style={{ objectPosition: '50% 50%' }}
               />
-              <HeroDepthLayer src={img.src} depth="/images/exterior/ashok-heights-at-golden-hour-depth.webp" focus={HERO_FOCUS} />
             </div>
             <div className="absolute inset-0 hidden bg-gradient-to-t from-[#1f0b08]/65 via-transparent to-[#1f0b08]/5 lg:block" aria-hidden="true" />
 

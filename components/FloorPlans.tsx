@@ -146,9 +146,9 @@ export function FloorPlans() {
                           {u.penthouse ? 'Penthouse' : `Unit ${u.units.split(', ')[0]}${u.units.includes(',') ? ' series' : ''}`}
                         </span>
                         <span className="mt-1.5 font-serif text-[24px] leading-none sm:text-[28px]">{u.type}</span>
-                        <span className={`mt-2 text-[11px] sm:text-[12px] ${active ? 'text-white/70' : 'text-muted'}`}>Carpet area</span>
+                        <span className={`mt-2 text-[11px] sm:text-[12px] ${active ? 'text-white/70' : 'text-muted'}`}>SBUA</span>
                         <span className="mt-0.5 font-serif text-[18px] leading-none tabular sm:text-[22px]">
-                          {fmt(u.carpet)} <span className="font-sans text-[11px] sm:text-[13px]">sq.ft</span>
+                          {fmt(u.sbua)} <span className="font-sans text-[11px] sm:text-[13px]">sq.ft</span>
                         </span>
                       </button>
                     </li>

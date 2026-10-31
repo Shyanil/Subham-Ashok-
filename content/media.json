@@ -36,22 +36,6 @@
       "blurDataURL": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADwAwCdASoYAAgAPu1iqU2ppaOiMAgBMB2JQBOmUABr8FEdKxy7ILaAAP7aG/0pZknyMaarQAKtuDMp9lq5gEXuB5lF8ihHkQIkb90WXdf4Yrw0jELV/Yu4Iw5wAA=="
     },
     {
-      "slug": "ashok-heights-at-golden-hour",
-      "group": "exterior",
-      "file": "Ashok Heights at Golden Hour.webp",
-      "src": "/images/exterior/ashok-heights-at-golden-hour",
-      "depth": "/images/exterior/ashok-heights-at-golden-hour-depth.webp",
-      "widths": [
-        640,
-        1280,
-        1920
-      ],
-      "width": 1672,
-      "height": 940,
-      "color": "#5898d8",
-      "blurDataURL": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAAAwBACdASoYAA0APu1iqk4ppaQiMAgBMB2JbACdH8AC6oUOriMTRAMhbQAA/eKR6uKrzpch4tmLL0AvKWSOvcjMEnU4ZtOcvRQtquVsuLnKpq1OjUuEmabaB4h7mEE2zwAosspG9z2fH0q87zHa9+JGTzNMahmZxf04BweDRKTNU4tmgVhXnwHo1Ki6ImW62gXcg4AA"
-    },
-    {
       "slug": "gate-view",
       "group": "exterior",
       "file": "GATE VIEW.webp",
