@@ -8,7 +8,6 @@ export const INDIAN_MOBILE = /^[6-9]\d{9}$/;
 const configurations = projectConfig.CONFIGURATIONS as readonly string[];
 const budgets = projectConfig.BUDGET_RANGES as readonly string[];
 const max = (n: number) => z.optional(z.string().check(z.maxLength(n)));
-const email = z.string().check(z.trim(), z.maxLength(254, 'Email is too long'), z.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Enter a valid email address'));
 const pincode = z.string().check(z.regex(/^[1-9]\d{5}$/, 'Enter a valid 6-digit pincode'));
 
 /**
@@ -31,13 +30,12 @@ export const leadSchema = z.object({
       .check(z.refine((v: string) => INDIAN_MOBILE.test(v), 'Enter a valid 10-digit mobile number')),
   ),
   configuration: z.string().check(z.refine((v) => configurations.includes(v), 'Select what you are looking for')),
-  budget: z.optional(z.string().check(z.refine((v) => !v || budgets.includes(v), 'Select a budget range'))),
-  email: z.optional(email),
+  budget: z.string().check(z.refine((v) => budgets.includes(v), 'Select a budget range')),
   pincode: z.optional(pincode),
   consent: z.literal(true, { error: 'Please agree to be contacted' }),
 });
 
-export const priorityLeadSchema = z.extend(leadSchema, { email, pincode });
+export const priorityLeadSchema = z.extend(leadSchema, { pincode });
 
 /** Attribution sent with every lead. Never validated against the user. */
 export const metaSchema = z.object({
@@ -60,7 +58,7 @@ export const leadRequestSchema = z.extend(leadSchema, {
   website: max(200),
 });
 
-export const priorityLeadRequestSchema = z.extend(leadRequestSchema, { email, pincode });
+export const priorityLeadRequestSchema = z.extend(leadRequestSchema, { pincode });
 
 export type LeadInput = z.input<typeof leadSchema>;
 export type LeadRequest = z.input<typeof leadRequestSchema>;

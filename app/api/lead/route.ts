@@ -26,7 +26,7 @@ function rateLimited(ip: string) {
   return recent.length > MAX_PER_WINDOW;
 }
 
-/** Forms that require email and pincode (must match `fields="priority"` in the UI). */
+/** Forms that require pincode (must match `fields="priority"` in the UI). */
 const PRIORITY_SOURCES = new Set(['floating_priority', 'final_form']);
 
 const json = (body: unknown, status = 200) => Response.json(body, { status });
@@ -74,7 +74,6 @@ export async function POST(request: NextRequest) {
     project: project.name,
     name: lead.name,
     phone: lead.phone,
-    email: lead.email ?? '',
     pincode: lead.pincode ?? '',
     configuration: lead.configuration,
     budget: lead.budget ?? '',

@@ -11,10 +11,10 @@ export function FinalCta() {
   return (
     <section id="enquire" aria-labelledby="enquire-title" className="section on-dark relative isolate overflow-hidden bg-deep" data-track-section="final_cta">
       <BrandChakra subtle className="-bottom-12 -left-20 size-[160px] -rotate-12 sm:-bottom-24 sm:-left-40 sm:size-[420px]" />
-      <div className="container-x relative z-10 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
+      <div className="container-x relative z-10 grid gap-10 lg:grid-cols-[minmax(280px,1fr)_minmax(0,840px)] lg:items-start lg:gap-5">
         <div className="lg:pt-8">
           <p className="kicker !text-gold"><SparkIcon className="size-3" /> {f.eyebrow}</p>
-          <h2 id="enquire-title" className="h2 mt-5 !text-white sm:whitespace-nowrap"><Accent text={f.title} /></h2>
+          <h2 id="enquire-title" className="h2 mt-5 !text-white"><Accent text={f.title} /></h2>
           <p className="mt-6 max-w-md text-[16px] leading-relaxed text-white/75">{f.body}</p>
           <ul className="mt-8 grid gap-2 sm:grid-cols-2">
             {f.perks.map((p) => (
@@ -29,7 +29,7 @@ export function FinalCta() {
           </p>
         </div>
 
-        <div className="enquiry-card w-full max-w-[580px] justify-self-center rounded-[1.5rem] bg-white p-5 shadow-[var(--shadow-lift)] sm:p-6 lg:justify-self-end lg:p-7">
+        <div className="enquiry-card w-full min-w-0 max-w-[840px] justify-self-center rounded-[1.5rem] bg-white p-5 shadow-[var(--shadow-lift)] sm:p-6 lg:justify-self-end lg:p-7">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-terra">Private enquiry</p>
           <h3 className="mt-2 text-[28px] leading-tight text-ink sm:text-[32px]">Let Us Help You Find Your Home</h3>
           <div className="mt-5">

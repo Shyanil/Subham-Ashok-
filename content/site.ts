@@ -173,7 +173,7 @@ export const site = {
   developer: {
     eyebrow: 'The legacy since 2007',
     title: 'Time-Bound Projects and Timeless _Relationships_',
-    body: `Since 2007, ${P.developer} has been a premier real estate builder and developer based out of Guwahati. Known for innovation, time-bound projects and after-sale customer service, the team works with a passion to deliver the utmost value to residential and commercial property investors and end customers — keeping the promise of its motto: time-bound projects and timeless relationships.`,
+    body: `Building in Guwahati since 2007, ${P.developer} creates homes and commercial spaces with a focus on timely delivery, thoughtful design and lasting customer relationships.`,
     stats: [
       { value: 18, suffix: '', label: 'Completed projects' },
       { value: 34.5, suffix: ' Lac', label: 'Sq.ft constructed', decimals: 1 },
@@ -182,10 +182,9 @@ export const site = {
     ],
     note: {
       title: "Chairman's Note",
-      quote:
-        'Growing up, we all had the opportunity to enjoy nature at its best. Open fields, fresh air, and tons of playtime with our friends. That’s why we wanted to gift families a present that would be enjoyed by their loved ones for years to come — ample space, airy abodes, and a club where merry times become merrier.',
+      quote: 'Ample space, airy abodes, and a club where merry times become merrier.',
       name: 'Mr. Kailash Chandra Lohia',
-      role: 'Chairman',
+      role: 'Chair Person',
     },
     architect: {
       name: 'Banka and Associates',

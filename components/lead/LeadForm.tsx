@@ -13,7 +13,7 @@ export type LeadFormVariant = 'inline' | 'modal' | 'floating' | 'sticky';
 
 type Props = {
   variant: LeadFormVariant;
-  /** "quick" = name, mobile, looking-for + consent. "full" adds budget; "priority" adds email and pincode. */
+  /** All forms include name, mobile, configuration, required budget and consent; "priority" adds pincode. */
   fields?: 'quick' | 'full' | 'priority';
   source: string;
   unit?: string;
@@ -26,7 +26,7 @@ type Props = {
   onSuccess?: () => void;
 };
 
-type Values = { name: string; phone: string; email: string; configuration: string; pincode: string; budget: string; consent: boolean };
+type Values = { name: string; phone: string; configuration: string; pincode: string; budget: string; consent: boolean };
 type Errors = Partial<Record<keyof Values | 'form', string>>;
 
 export const BROCHURE_URL = '/brochure/subham-ashok-heights-brochure.pdf';
@@ -58,7 +58,6 @@ export function LeadForm({
   const [values, setValues] = useState<Values>({
     name: '',
     phone: '',
-    email: '',
     configuration: defaultConfiguration,
     pincode: '',
     budget: '',
@@ -68,8 +67,6 @@ export function LeadForm({
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
   const isModal = variant === 'modal';
   const priority = fields === 'priority';
-  const withBudget = fields === 'full' || (isModal && !priority);
-  const withEmail = priority || isModal;
   const row = variant === 'sticky';
   const floatingPriority = priority && variant === 'floating';
 
@@ -89,8 +86,7 @@ export function LeadForm({
       name: values.name,
       phone: values.phone,
       configuration: values.configuration,
-      budget: withBudget ? values.budget || undefined : undefined,
-      email: withEmail && values.email.trim() ? values.email.trim() : undefined,
+      budget: values.budget,
       pincode: priority ? values.pincode : undefined,
       consent: values.consent as true,
     };
@@ -164,7 +160,6 @@ export function LeadForm({
 
   const nameId = `${id}-name`;
   const phoneId = `${id}-phone`;
-  const emailId = `${id}-email`;
   const cfgId = `${id}-cfg`;
   const pincodeId = `${id}-pincode`;
   const budgetId = `${id}-budget`;
@@ -187,14 +182,14 @@ export function LeadForm({
       <div
         className={
           row
-            ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_auto] lg:items-start'
+            ? 'grid gap-3 lg:grid-cols-[1.1fr_1.1fr_1fr_1fr_auto] lg:items-start'
             : floatingPriority
               ? 'grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)_auto_auto] items-start gap-2 xl:gap-3'
             : priority
-              ? 'grid grid-cols-1 gap-3.5'
+              ? `grid grid-cols-1 gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}`
               : isModal
                 ? 'grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3'
-                : `grid gap-3.5 ${variant === 'inline' && withBudget ? 'sm:grid-cols-2' : ''}`
+                : `grid gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}`
         }
       >
         <div className="field">
@@ -250,29 +245,6 @@ export function LeadForm({
           {err('phone')}
         </div>
 
-        {withEmail && (
-          <div className="field">
-            <label htmlFor={emailId}>
-              {isModal && !priority ? 'Email Address' : 'Email'} {priority ? <span className="text-terra" aria-hidden="true">*</span> : <span className="font-normal text-muted capitalize tracking-normal">(Optional)</span>}
-            </label>
-            <input
-              id={emailId}
-              name="email"
-              type="email"
-              className="input"
-              autoComplete="email"
-              placeholder={isModal && !priority ? 'Your Email Address' : 'you@example.com'}
-              value={values.email}
-              onChange={(e) => set('email', e.target.value)}
-              onBlur={() => blur('email')}
-              aria-invalid={!!errors.email}
-              aria-describedby={described('email')}
-              required={priority}
-            />
-            {err('email')}
-          </div>
-        )}
-
         <div className="field">
           <label htmlFor={cfgId}>
             {isModal && !priority ? 'Select Configuration' : 'Configuration'} <span className="text-terra" aria-hidden="true">*</span>
@@ -301,17 +273,16 @@ export function LeadForm({
         </div>
 
         {priority && (
-          <div className={`field ${variant === 'inline' ? 'sm:col-span-2' : ''}`}>
+          <div className="field">
             <label htmlFor={pincodeId}>Pincode <span className="text-terra" aria-hidden="true">*</span></label>
             <input id={pincodeId} name="pincode" type="text" inputMode="numeric" autoComplete="postal-code" maxLength={6} className="input tabular" placeholder="6-digit pincode" value={values.pincode} onChange={(e) => set('pincode', e.target.value.replace(/\D/g, ''))} onBlur={() => blur('pincode')} aria-invalid={!!errors.pincode} aria-describedby={described('pincode')} required />
             {err('pincode')}
           </div>
         )}
 
-        {withBudget && (
-          <div className={`field ${isModal ? 'sm:col-span-2' : ''}`}>
+          <div className={`field ${priority && variant === 'inline' ? 'sm:col-span-2' : ''}`}>
             <label htmlFor={budgetId}>
-              Budget Range <span className="font-normal text-muted capitalize tracking-normal">(Optional)</span>
+              Budget Range <span className="text-terra" aria-hidden="true">*</span>
             </label>
             <select
               id={budgetId}
@@ -319,10 +290,12 @@ export function LeadForm({
               className="input"
               value={values.budget}
               onChange={(e) => set('budget', e.target.value)}
+              onBlur={() => blur('budget')}
               aria-invalid={!!errors.budget}
               aria-describedby={described('budget')}
+              required
             >
-              <option value="">Select Budget Range</option>
+              <option value="" disabled>Select Budget Range</option>
               {projectConfig.BUDGET_RANGES.map((b) => (
                 <option key={b} value={b}>
                   {b}
@@ -331,7 +304,6 @@ export function LeadForm({
             </select>
             {err('budget')}
           </div>
-        )}
 
         {(row || floatingPriority) && (
           <div className={floatingPriority ? 'pt-[17px]' : 'lg:pt-[27px]'}>

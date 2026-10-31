@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { project, site } from '@/content/site';
 import { Accent } from './Accent';
 import { Counter } from './Counter';
@@ -10,36 +11,34 @@ export function Developer() {
   return (
     <section id="developer" aria-labelledby="developer-title" className="section bg-cream" data-track-section="developer">
       <div className="container-x">
-        <div className="grid gap-6 border-b border-line pb-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-20">
+        <div className="grid gap-5 border-b border-line pb-7 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end lg:gap-8">
           <div>
             <p className="kicker"><SparkIcon className="size-3" /> {d.eyebrow}</p>
-            <h2 id="developer-title" className="h2 mt-5"><Accent text={d.title} /></h2>
+            <h2 id="developer-title" className="h2 mt-4 max-w-xl"><Accent text={d.title} /></h2>
           </div>
-          <p className="max-w-2xl text-[16px] leading-[1.8] text-muted lg:pb-1">{d.body}</p>
+          <div className="lg:px-4 lg:pb-1">
+            <p className="max-w-xl text-[15px] leading-relaxed text-muted">{d.body}</p>
+            <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.12em] text-terra">{project.developer}<span aria-hidden="true" className="mx-2">/</span>{project.developerTagline}</p>
+          </div>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
-          <div className="dark-card on-dark overflow-hidden rounded-[2rem] p-7 sm:rounded-[3rem] sm:p-10" data-reveal="3d">
-            <div className="flex flex-col">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/subham-logo-light.webp" width={328} height={311} alt={`${project.developer} — ${project.developerTagline}`} loading="lazy" decoding="async" className="h-24 w-auto self-start sm:h-28" />
-              <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.24em] text-gold">{d.note.title}</p>
-              <blockquote className="mt-4 max-w-2xl text-[16px] leading-[1.8] text-white/85">“{d.note.quote}”</blockquote>
-              <div className="mt-8 border-t border-white/15 pt-5">
-                <p className="font-semibold text-white">{d.note.name}</p>
-                <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.18em] text-white/60">{d.note.role}</p>
+        <div className="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-center lg:gap-8">
+          <div className="dark-card on-dark flex flex-col gap-5 overflow-hidden rounded-3xl p-5 sm:flex-row sm:items-center sm:gap-7 sm:p-7">
+            <Image src="/images/kailash-lohia-chairperson.webp" alt="Mr. Kailash Chandra Lohia, Chair Person of Subham Group" width={361} height={477} unoptimized className="h-36 w-28 shrink-0 self-start rounded-2xl object-cover object-top sm:h-48 sm:w-36 sm:self-center" />
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">A vision for better living</p>
+              <blockquote className="mt-3 font-serif text-[21px] leading-relaxed text-white sm:text-[23px]">&ldquo;{d.note.quote}&rdquo;</blockquote>
+              <div className="mt-5 border-t border-white/15 pt-4">
+                <p className="text-[14px] font-semibold text-white">{d.note.name}</p>
+                <p className="mt-1 text-[11px] text-white/60">{d.note.role}</p>
               </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 content-start gap-2 lg:self-center">
-            {d.stats.map((s, i) => (
-              <div key={s.label} className={`flex min-h-[140px] flex-col gap-3 rounded-2xl p-4 ${i === 0 ? 'bg-brand text-white' : 'bg-white text-ink'}`}>
-                <span className={`text-[11px] font-bold uppercase tracking-[0.16em] ${i === 0 ? 'text-white/65' : 'text-terra'}`}>0{i + 1}</span>
-                <div>
-                  <p className="font-serif text-[38px] italic leading-none sm:text-[45px]"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals} /></p>
-                  <p className={`mt-2 text-[12px] font-semibold leading-snug ${i === 0 ? 'text-white/80' : 'text-muted'}`}>{s.label}</p>
-                </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-7 px-2 py-3 sm:px-4">
+            {d.stats.map((s) => (
+              <div key={s.label} className="border-l-2 border-terra/25 pl-4">
+                <p className="font-serif text-[32px] leading-none text-brand sm:text-[40px]"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals} /></p>
+                <p className="mt-2 text-[12px] font-medium text-muted">{s.label}</p>
               </div>
             ))}
           </div>

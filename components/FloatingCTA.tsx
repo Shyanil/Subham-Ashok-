@@ -6,6 +6,7 @@ import { projectConfig } from '@/src/config/project';
 import { LeadForm } from './lead/LeadForm';
 import { useLead } from './lead/LeadProvider';
 import { CheckIcon, CloseIcon } from './icons';
+import { DESKTOP_ENQUIRY_QUERY } from '@/lib/breakpoints';
 
 /**
  * Desktop priority form as a full-height left side panel covering the header and left side completely.
@@ -23,16 +24,22 @@ export function FloatingCTA() {
     const enquire = document.getElementById('enquire');
     let pastHero = false;
     let formInView = false;
+    const desktop = window.matchMedia(DESKTOP_ENQUIRY_QUERY);
+    const updateVisibility = () => setVisible(desktop.matches && pastHero && !formInView);
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.target === hero) pastHero = !entry.isIntersecting;
         if (entry.target === enquire) formInView = entry.isIntersecting;
       }
-      setVisible(pastHero && !formInView);
+      updateVisibility();
     });
     if (hero) observer.observe(hero);
     if (enquire) observer.observe(enquire);
-    return () => observer.disconnect();
+    desktop.addEventListener('change', updateVisibility);
+    return () => {
+      observer.disconnect();
+      desktop.removeEventListener('change', updateVisibility);
+    };
   }, []);
 
   // Slide in once on the first scroll past the hero; after closing it stays a tab.
@@ -43,15 +50,13 @@ export function FloatingCTA() {
 
   // Lock body scroll while open
   useEffect(() => {
-    if (open) {
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.documentElement.style.overflow = '';
-    }
+    if (!open || !visible) return;
+    const previous = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
     return () => {
-      document.documentElement.style.overflow = '';
+      document.documentElement.style.overflow = previous;
     };
-  }, [open]);
+  }, [open, visible]);
 
   useEffect(() => {
     if (!open) return;

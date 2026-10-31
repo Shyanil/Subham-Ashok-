@@ -1,5 +1,16 @@
 @import 'tailwindcss';
 
+@keyframes mobile-menu-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-menu[open] .mobile-menu-panel {
+    animation: mobile-menu-in 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
 /* ── First-visit intro (see ThreeDPreloader). Exit starts at 2.3s = --intro-delay. ── */
 @property --pct {
   syntax: '<integer>';
@@ -315,7 +326,7 @@
     --sticky-h: 0px;
     color-scheme: light;
   }
-  @media (max-width: 1023px) {
+  @media (max-width: 1023px), (hover: none), (pointer: coarse) {
     :root {
       --sticky-h: calc(84px + env(safe-area-inset-bottom));
     }

@@ -34,7 +34,7 @@ export function Location() {
             </div>
           </div>
           <div className="min-w-0 bg-white">
-            <iframe title="Subham Ashok Heights location — Sonkuchi Path, Guwahati" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.7488664727616!2d91.7719754!3d26.1071153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5ebf33930b25%3A0xa404824650859840!2sSonkuchi%20Path%2C%20Guwahati%2C%20Assam%20781029!5e0!3m2!1sen!2sin!4v1793202092069!5m2!1sen!2sin" width="600" height="450" className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+            <iframe title="Subham Ashok Heights location — Sonkuchi Path, Guwahati" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11464.796372712837!2d91.7719754!3d26.1071153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5ebf33930b25%3A0xa404824650859840!2sSonkuchi%20Path%2C%20Guwahati%2C%20Assam%20781029!5e0!3m2!1sen!2sin!4v1793202092069!5m2!1sen!2sin" width="600" height="450" className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
           </div>
         </div>
         <NeighbourhoodCarousel />
