@@ -1,3 +1,6 @@
+'use client';
+
+import { useRef, useState } from 'react';
 import { site } from '@/content/site';
 import { NeighbourhoodCarousel } from './NeighbourhoodCarousel';
 import { BrandChakra } from './BrandChakra';
@@ -5,6 +8,14 @@ import { Accent } from './Accent';
 import { ArrowUpRight, PinIcon } from './icons';
 
 export function Location() {
+  const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
+  const [addressOpen, setAddressOpen] = useState(false);
+  const map = useRef<HTMLDivElement>(null);
+  const showNearbyPlace = (name: string) => {
+    setSelectedPlace(name);
+    setAddressOpen(false);
+    map.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
+  };
   const l = site.location;
   const c = site.contact;
   return (
@@ -33,11 +44,22 @@ export function Location() {
               <a href={l.mapLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 text-[12px] font-semibold text-white/80 underline decoration-white/30 underline-offset-4 hover:text-white">Open in Google Maps <ArrowUpRight className="size-3.5" /></a>
             </div>
           </div>
-          <div className="min-w-0 bg-white">
-            <iframe title="Subham Ashok Heights location — Sonkuchi Path, Guwahati" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11464.796372712837!2d91.7719754!3d26.1071153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5ebf33930b25%3A0xa404824650859840!2sSonkuchi%20Path%2C%20Guwahati%2C%20Assam%20781029!5e0!3m2!1sen!2sin!4v1793202092069!5m2!1sen!2sin" width="600" height="450" className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+          <div ref={map} id="neighbourhood-map" className="relative min-w-0 scroll-mt-24 bg-white">
+            <iframe title={selectedPlace ? selectedPlace + " location in Guwahati" : "Subham Ashok Heights location, Sonkuchi Path, Guwahati"} src={selectedPlace ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ", Guwahati, Assam")}&output=embed` : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11464.796372712837!2d91.7719754!3d26.1071153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5ebf33930b25%3A0xa404824650859840!2sSonkuchi%20Path%2C%20Guwahati%2C%20Assam%20781029!5e0!3m2!1sen!2sin!4v1793202092069!5m2!1sen!2sin"} width="600" height="450" className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+            {addressOpen && (
+              <div id="project-map-address" role="region" aria-label="Project address" className="absolute left-4 right-4 top-4 rounded-2xl border border-line bg-white p-5 pr-12 shadow-xl sm:right-auto sm:max-w-[320px]">
+                <button type="button" aria-label="Close address popup" onClick={() => setAddressOpen(false)} className="absolute right-2 top-2 grid size-9 place-items-center rounded-full text-brand hover:bg-cream">&#215;</button>
+                <h3 className="font-serif text-[23px] text-brand">Subham Ashok Heights</h3>
+                <address className="mt-2 text-[14px] not-italic leading-relaxed text-muted">{c.siteAddress[0]}<br />{c.siteAddress[1]}</address>
+                <a href={l.directionsLink} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-2 text-[13px] font-semibold text-terra underline underline-offset-4">Get Directions <ArrowUpRight className="size-4" /></a>
+              </div>
+            )}
+            <button type="button" aria-expanded={addressOpen} aria-controls="project-map-address" onClick={() => { setSelectedPlace(null); setAddressOpen(selectedPlace !== null || !addressOpen); }} className="absolute bottom-8 left-4 inline-flex min-h-11 max-w-[calc(100%-2rem)] items-center gap-2 rounded-full bg-brand px-4 py-3 text-left text-[13px] font-semibold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <PinIcon className="size-5 shrink-0" /> Subham Ashok Heights
+            </button>
           </div>
         </div>
-        <NeighbourhoodCarousel />
+        <NeighbourhoodCarousel onSelectPlace={showNearbyPlace} selectedPlace={selectedPlace} />
       </div>
     </section>
   );

@@ -19,7 +19,7 @@ const P = project;
 
 export const site = {
   title: `${P.name}, ${P.area} — 2, 3 and 4 BHK residences in ${P.city}`,
-  description: `${P.name} in ${P.area}, ${P.city}: 2, 3 and 4 BHK residences and penthouses with a clubhouse, swimming pool, gym and landscaped lawns. A ${P.developer} project.`,
+  description: `${P.name} in ${P.area}, ${P.city}: 2, 3 and 4 BHK residences and penthouses with a Club House, swimming pool, gym and landscaped lawns. A ${P.developer} project.`,
 
   nav: [
     { label: 'Amenities', href: '#amenities' },
@@ -47,7 +47,7 @@ export const site = {
   marquee: [
     '2, 3 and 4 BHK residences',
     'Infinity-edge pool',
-    'Clubhouse and banquet hall',
+    'Club House and banquet hall',
     'Green lawn and amphitheatre',
     'RERA registered',
     'Since 2007',
@@ -67,14 +67,14 @@ export const site = {
     title: 'A Greener Way to Live in _Beharbari_',
     body: `${P.area}'s first thoughtfully designed, health-centric community. Children play in sight of home, evenings are spent by the water, and schools, hospitals and markets are minutes away.`,
     personas: [
-      { kicker: 'For families', title: 'Celebrate', body: 'A clubhouse and banquet hall, an amphitheatre under the sky and a grand lift lobby to welcome guests home.', tone: 'dark' },
+      { kicker: 'For families', title: 'Celebrate', body: 'A Club House and banquet hall, an amphitheatre under the sky and a grand lift lobby to welcome guests home.', tone: 'dark' },
       { kicker: 'For children', title: 'Play', body: "A safe, landscaped play area and an open green lawn — always in view of home.", tone: 'image', image: 'kids-play-day' },
       { kicker: 'For wellness', title: 'Unwind', body: 'An infinity-edge pool, a garden-facing gym and an open-air workout zone, steps from your door.', tone: 'terra' },
     ],
     stats: [
       { value: '2', unit: 'blocks', label: 'Block A and Block B' },
       { value: '2 – 4', unit: 'BHK', label: 'Plus penthouses' },
-      { value: '983 – 2,501', unit: 'sqft', label: 'Saleable area (SUBA)', note: 'Terrace area: 344 sqft' },
+      { value: '983 – 2,501', unit: 'sqft', label: 'Saleable area (SBUA)' },
       { value: '79', unit: 'apartments', label: 'Across both blocks' },
       { value: '6 and 11', unit: 'floors', label: 'Block A and Block B', note: 'Block A: 6 floors · Block B: 11 floors' },
     ],
@@ -91,21 +91,21 @@ export const site = {
   amenities: {
     eyebrow: 'Amenities',
     title: 'Every Day, _Well Spent_',
-    body: 'A clubhouse for celebrations, a pool for slow evenings, and open lawns where children grow up outdoors.',
+    body: 'A Club House for celebrations, a pool for slow evenings, and open lawns where children grow up outdoors.',
     groups: [
       {
         title: 'Lifestyle',
         items: [
           { icon: 'pool', name: 'Swimming pool', note: 'Infinity edge with sun deck' },
           { icon: 'gym', name: 'Gymnasium', note: 'Garden-facing fitness centre' },
-          { icon: 'club', name: 'Clubhouse', note: 'Community and banquet hall' },
+          { icon: 'club', name: 'Club House', note: 'Community and banquet hall' },
           { icon: 'games', name: 'Indoor games', note: 'Billiards, table tennis, chess' },
           { icon: 'kids', name: "Kids' play area", note: 'Safe, landscaped and in view' },
           { icon: 'lawn', name: 'Green lawn', note: 'Stepping stones and planters' },
           { icon: 'opengym', name: 'Open gym', note: 'Workouts in fresh air' },
           { icon: 'amphi', name: 'Amphitheatre', note: 'Gatherings under the sky' },
           { icon: 'lobby', name: 'Grand lift lobby', note: 'OTIS / KONE / Schindler lifts' },
-          { icon: 'parking', name: 'Parking', note: 'Drop-off and open parking' },
+          { icon: 'parking', name: 'Parking', note: 'Basement, Ground and Open parking' },
         ],
       },
       {
@@ -113,7 +113,7 @@ export const site = {
         items: [
           { icon: 'security', name: '24×7 manned security', note: 'Guarded entry and exit' },
           { icon: 'power', name: '24×7 power backup', note: 'For common areas and homes' },
-          { icon: 'cctv', name: 'CCTV surveillance', note: 'Across common areas' },
+          { icon: 'cctv', name: 'CCTV surveillance', note: 'For common areas only' },
           { icon: 'rain', name: 'Rainwater harvesting', note: 'Built for the monsoon' },
           { icon: 'stp', name: 'Sewage treatment plant', note: 'On-site STP' },
           { icon: 'fire', name: 'Fire safety', note: 'As per fire safety norms' },
@@ -194,10 +194,12 @@ export const site = {
     projects: [
       {
         title: 'Ongoing',
-        items: ['Subham Park, Bongaigaon', 'Subham Ashray, near Guwahati Airport', 'Subham Park, Sonarigaon', 'The Peak, Guwahati', 'Subham Kishori Heights, Dibrugarh'],
+        total: 6,
+        items: ['Subham Park, Bongaigaon', 'Subham Ashray, near Guwahati Airport', 'Subham Park, Sonarigaon', 'The Peak, Guwahati', 'Subham Kishori Heights, Dibrugarh', 'Subham Ashok Heights, Beharbari'],
       },
       {
         title: 'Completed',
+        total: 18,
         items: [
           'Subham Heights, Kahilipara',
           'Subham Enclave, Hatigaon',

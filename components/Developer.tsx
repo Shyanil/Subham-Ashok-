@@ -48,7 +48,7 @@ export function Developer() {
           <div className="flex flex-col gap-6 rounded-[1.5rem] border border-line bg-white/60 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
               <div className="flex w-fit shrink-0 items-center rounded-2xl border border-gold/25 bg-brand px-5 py-5 shadow-[0_8px_30px_rgba(72,49,33,0.12)]">
-                <Image src="/brand/subham-group.webp" alt="Subham Group" width={220} height={74} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
+                <Image src="/brand/subham-group-logo4.webp" alt="Subham — A unit of Lohia group" width={640} height={329} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
               </div>
               <div className="sm:border-l sm:border-line sm:pl-8">
               <p className="kicker">A legacy since 2007</p>
@@ -61,10 +61,11 @@ export function Developer() {
             {d.projects.map((g) => (
               <details key={g.title} className="group rounded-[1.5rem] border border-line bg-white open:bg-cream/50" open={g.title === 'Ongoing'}>
                 <summary className="flex min-h-[76px] cursor-pointer list-none items-center justify-between gap-4 px-5 sm:px-7">
-                  <span className="font-serif text-[27px] leading-none sm:text-[32px]">{g.title} <span className="ml-2 font-sans text-[12px] font-bold text-terra">{g.items.length}</span></span>
+                  <span className="font-serif text-[27px] leading-none sm:text-[32px]">{g.title} <span className="ml-2 font-sans text-[12px] font-bold text-terra">{g.total}</span></span>
                   <span className="grid size-9 shrink-0 place-items-center rounded-full border border-line text-brand transition-transform group-open:rotate-45" aria-hidden="true">+</span>
                 </summary>
-                <ul className="grid gap-x-8 gap-y-3 border-t border-line px-5 py-6 sm:grid-cols-2 sm:px-7 lg:grid-cols-3">
+                {g.total > g.items.length && <p className="border-t border-line px-5 pt-5 text-[12px] text-muted sm:px-7">Selected completed projects</p>}
+                <ul className={`grid gap-x-8 gap-y-3 px-5 py-6 sm:grid-cols-2 sm:px-7 lg:grid-cols-3 ${g.total === g.items.length ? 'border-t border-line' : ''}`}>
                   {g.items.map((item) => <li key={item} className="border-l-2 border-terra/40 pl-3 text-[14px] text-ink/80">{item}</li>)}
                 </ul>
               </details>

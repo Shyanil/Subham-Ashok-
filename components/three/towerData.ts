@@ -22,17 +22,22 @@ export const HOTSPOT_ZOOM = 1.75;
 export const ZOOM_MIN = 1;
 export const ZOOM_MAX = 2.4;
 
-export type Hotspot = { id: string; icon: string; name: string; note: string; day: UV; night: UV };
+export type Hotspot = { marker: string; plan: 'master' | 'block-b'; id: string; icon: string; name: string; note: string; day: UV; night: UV; nightVisible?: boolean };
 
+/** Outdoor anchors checked against the brochure master plan; indoor anchors use the Block B first-floor plan.
+ * Hidden courtyard features are not labelled through Block A in the reverse night render.
+ * Outdoor marker numbers match brochure page 14. Indoor letter markers reference page 16. */
 export const HOTSPOTS: Hotspot[] = [
-  { id: 'gate', icon: 'security', name: 'Entry gate and security', note: '24×7 manned entry and exit on the 9 m road', day: [0.7, 0.83], night: [0.35, 0.87] },
-  { id: 'lobby', icon: 'lobby', name: 'Block A lift lobby', note: 'Grand lobby with OTIS / KONE / Schindler lifts', day: [0.595, 0.58], night: [0.405, 0.66] },
-  { id: 'lawn', icon: 'lawn', name: 'Green lawn', note: 'Stepping stones and planters', day: [0.497, 0.6], night: [0.47, 0.52] },
-  { id: 'kids', icon: 'kids', name: "Kids' play area", note: 'Safe, landscaped and in view', day: [0.475, 0.545], night: [0.437, 0.56] },
-  { id: 'amphi', icon: 'amphi', name: 'Amphitheatre', note: 'Gatherings under the sky', day: [0.518, 0.625], night: [0.383, 0.82] },
-  { id: 'opengym', icon: 'opengym', name: 'Open gym', note: 'Workouts in fresh air', day: [0.455, 0.615], night: [0.47, 0.59] },
-  { id: 'pool', icon: 'pool', name: 'Swimming pool', note: 'Infinity edge with sun deck, on the Block B podium', day: [0.5, 0.47], night: [0.508, 0.478] },
-  { id: 'club', icon: 'club', name: 'Clubhouse and indoor games', note: 'Banquet hall, billiards, table tennis, chess', day: [0.543, 0.73], night: [0.54, 0.555] },
-  { id: 'gym', icon: 'gym', name: 'Gymnasium', note: 'Garden-facing fitness centre, Block B 1st floor', day: [0.43, 0.57], night: [0.565, 0.6] },
-  { id: 'parking', icon: 'parking', name: 'Parking and drop-off', note: 'Drop-off areas and open parking', day: [0.344, 0.6], night: [0.617, 0.62] },
+  { marker: '1', plan: 'master', id: 'gate', icon: 'security', name: 'Entry gate and security', note: '24×7 manned entry and exit on the 9 m road', day: [0.699, 0.856], night: [0.347, 0.843] },
+  { marker: 'L', plan: 'master', id: 'lobby', icon: 'lobby', name: 'Block A lift lobby', note: 'Grand lobby with OTIS / KONE / Schindler lifts', day: [0.648, 0.824], night: [0.434, 0.751] },
+  { marker: '5', plan: 'master', id: 'lawn', icon: 'lawn', name: 'Green lawn', note: 'Landscaped courtyard beside the play area', day: [0.495, 0.615], night: [0.473, 0.554], nightVisible: false },
+  { marker: '6', plan: 'master', id: 'kids', icon: 'kids', name: "Kids' play area", note: 'Play area beside the green lawn', day: [0.471, 0.622], night: [0.459, 0.542], nightVisible: false },
+  { marker: '8', plan: 'master', id: 'amphi', icon: 'amphi', name: 'Amphitheatre', note: 'Gatherings under the sky', day: [0.514, 0.607], night: [0.47, 0.586] },
+  { marker: '7', plan: 'master', id: 'opengym', icon: 'opengym', name: 'Open gym', note: 'Workouts in fresh air', day: [0.517, 0.562], night: [0.482, 0.535], nightVisible: false },
+  { marker: 'P', plan: 'block-b', id: 'pool', icon: 'pool', name: 'Swimming pool', note: 'Infinity edge with sun deck, on the Block B podium', day: [0.5, 0.476], night: [0.509, 0.482] },
+  { marker: 'CH', plan: 'block-b', id: 'club', icon: 'club', name: 'Club House and indoor games', note: "Block B, 1st floor: Club House and indoor play area", day: [0.461, 0.515], night: [0.552, 0.535] },
+  { marker: 'G', plan: 'block-b', id: 'gym', icon: 'gym', name: 'Gymnasium', note: "Block B, 1st floor, beside the swimming pool", day: [0.535, 0.45], night: [0.48, 0.463] },
+  { marker: '4', plan: 'master', id: 'parking', icon: 'parking', name: 'Basement, Ground and Open parking', note: 'Parking across basement, ground and open areas', day: [0.664, 0.85], night: [0.384, 0.808] },
+  { marker: '10', plan: 'master', id: 'stones', icon: 'lawn', name: 'Stepping stones', note: 'Landscaped path beside the green lawn', day: [0.493, 0.585], night: [0.476, 0.537] },
+  { marker: '9', plan: 'master', id: 'openparking', icon: 'parking', name: 'Open parking', note: 'Parking bays along the side of Block B', day: [0.332, 0.584], night: [0.637, 0.621] },
 ];

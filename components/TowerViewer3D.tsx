@@ -10,6 +10,12 @@ import { hasWebGL } from '@/lib/capable';
 import { HOTSPOTS, HOTSPOT_ZOOM, VIEWS, ZOOM_MAX, ZOOM_MIN, type ViewId } from './three/towerData';
 import { LeadButton } from './lead/LeadButton';
 import { ArrowUpRight, CloseIcon, SparkIcon } from './icons';
+import { Lightbox } from './Lightbox';
+
+const BROCHURE_PLANS = [
+  { slug: 'tour-master-plan', src: '/brochure/master-plan.webp', alt: 'Brochure page 14: outdoor amenities and numbered locations', title: 'Master plan — brochure page 14' },
+  { slug: 'tour-block-b', src: '/brochure/floor-16.webp', alt: 'Brochure page 16: Block B first-floor Club House, indoor games, swimming pool and gym', title: 'Block B, first floor — brochure page 16' },
+];
 
 // Three.js + R3F live in their own chunk, fetched on demand.
 const TowerScene = dynamic(() => import('./three/TowerScene'), {
@@ -37,6 +43,7 @@ export function TowerViewer3D() {
   const [night, setNight] = useState(false);
   const [view, setView] = useState<ViewId>('aerial');
   const [spot, setSpot] = useState<string | null>(null);
+  const [planIndex, setPlanIndex] = useState<number | null>(null);
   const [zoom, setZoom] = useState(VIEWS[0].zoom);
   const poster = getImage(night ? 'aerial-night-view' : 'aerial-day-view');
 
@@ -106,7 +113,7 @@ export function TowerViewer3D() {
         {gl !== false && (
           <div role="group" aria-label="Lighting" className="absolute inset-x-0 bottom-4 z-10 mx-auto flex w-fit rounded-full bg-black/65 p-1.5 shadow-lg ring-1 ring-white/20 backdrop-blur-md sm:bottom-6">
             <button type="button" className={seg + ' min-h-11 min-w-20'} aria-pressed={!night} onClick={() => setNight(false)}>Day</button>
-            <button type="button" className={seg + ' min-h-11 min-w-20'} aria-pressed={night} onClick={() => setNight(true)}>Night</button>
+            <button type="button" className={seg + ' min-h-11 min-w-20'} aria-pressed={night} onClick={() => { if (active?.nightVisible === false) selectSpot(null); setNight(true); }}>Night</button>
           </div>
         )}
         {started && (
@@ -119,9 +126,10 @@ export function TowerViewer3D() {
                 <button type="button" onClick={() => selectSpot(null)} className="absolute right-2 top-2 grid size-8 place-items-center rounded-full text-muted hover:bg-sand hover:text-ink" aria-label="Close and zoom out">
                   <CloseIcon className="size-4" />
                 </button>
-                <p className="text-[12px] font-black uppercase tracking-[0.2em] text-terra">Amenity</p>
+                <p className="text-[12px] font-black uppercase tracking-[0.2em] text-terra">{active.plan === 'block-b' ? 'Block B · First floor' : `Site amenity · ${active.marker}`}</p>
                 <p className="mt-1 font-serif text-[24px] leading-none">{active.name}</p>
                 <p className="mt-1.5 text-[13px] text-muted">{active.note}</p>
+                <button type="button" onClick={() => setPlanIndex(active.plan === 'block-b' ? 1 : 0)} className="mt-2 block min-h-9 text-[12px] font-semibold text-terra underline underline-offset-4">View in brochure plan</button>
                 <button type="button" onClick={resetView} className="mt-3 text-[12px] font-bold uppercase tracking-[0.14em] text-terra underline-offset-4 hover:underline">
                   ← Back to full view
                 </button>
@@ -156,6 +164,7 @@ export function TowerViewer3D() {
         </LeadButton>
       </div>
       </div>
+      <Lightbox items={BROCHURE_PLANS} index={planIndex} onIndex={setPlanIndex} onClose={() => setPlanIndex(null)} />
     </section>
   );
 }

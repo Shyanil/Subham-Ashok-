@@ -60,8 +60,8 @@ export const imageMeta: Record<string, ImageMeta> = {
     tags: ['outdoors', 'living'],
   },
   'club-house': {
-    title: 'A Clubhouse for Every Celebration',
-    alt: 'Clubhouse banquet hall with round dining tables, cove lighting and floor-to-ceiling windows',
+    title: 'A Club House for Every Celebration',
+    alt: 'Club House banquet hall with round dining tables, cove lighting and floor-to-ceiling windows',
     focus: [0.5, 0.55],
     mobileFocus: [0.48, 0.55],
     tags: ['interiors', 'living'],

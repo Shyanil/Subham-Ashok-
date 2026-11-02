@@ -20,7 +20,7 @@ type Props = {
 
 const LABELS: { title: string; note: string; day: UV; night: UV }[] = [
   { title: 'Block B', note: '11 floors · 2 towers', day: [0.5, 0.2], night: [0.52, 0.17] },
-  { title: 'Block A', note: '6 floors · penthouses', day: [0.63, 0.47], night: [0.4, 0.44] },
+  { title: 'Block A', note: '6 floors · penthouses', day: [0.61, 0.62], night: [0.4, 0.56] },
 ];
 
 /** Shared between the R3F frame loop and the DOM overlay without re-rendering React. */
@@ -67,13 +67,13 @@ function Scene({ live, onFrame }: { live: React.RefObject<Live>; onFrame: (cover
 }
 
 /**
- * Depth-photo site model: the real aerial renders move in 2.5D as you drag. Day / Night
+ * Site tour: dragging pans the aerial renders and their markers together. Day / Night
  * cross-dissolves between the two renders; views and amenities glide the frame to a point.
  */
 export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, paused = false }: Props) {
   const v = VIEWS[0];
   const live = useRef<Live>({
-    state: { center: [v.day, v.night], zoom, pointer: [0, 0], mix: night ? 1 : 0, strength: 0.05 },
+    state: { center: [v.day, v.night], zoom, pointer: [0, 0], mix: night ? 1 : 0, strength: 0 },
     goal: { center: [v.day, v.night], zoom: v.zoom, mix: night ? 1 : 0 },
     drag: [0, 0],
     hover: [0, 0],
@@ -83,7 +83,8 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
   const box = useRef<HTMLDivElement>(null);
   const markers = useRef<(HTMLElement | null)[]>([]);
   const labels = useRef<(HTMLElement | null)[]>([]);
-  const dragFrom = useRef<{ x: number; y: number; drag: [number, number] } | null>(null);
+  const coversRef = useRef<[number, number][]>([[1, 1], [1, 1]]);
+  const dragFrom = useRef<{ x: number; y: number; centers: [UV, UV] } | null>(null);
 
   useEffect(() => {
     const h = HOTSPOTS.find((x) => x.id === spot);
@@ -114,6 +115,7 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
 
   // Project image UVs to screen % so the DOM markers ride on the scene.
   const onFrame = (covers: [number, number][]) => {
+    coversRef.current = covers;
     const s = live.current.state;
     const which = s.mix > 0.5 ? 1 : 0;
     const fade = Math.abs(s.mix - 0.5) * 2;
@@ -130,13 +132,15 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
       el.style.top = `${y * 100}%`;
       el.style.opacity = inside ? String(fade) : '0';
       el.style.visibility = inside && fade > 0.05 ? 'visible' : 'hidden';
+      if (el instanceof HTMLButtonElement) el.tabIndex = inside && fade > 0.05 ? 0 : -1;
     };
     HOTSPOTS.forEach((h, i) => {
       const marker = markers.current[i];
       place(marker, which ? h.night : h.day);
-      if (marker && s.zoom < 1.3) {
+      if (marker && (s.zoom < 1.3 || (which === 1 && h.nightVisible === false))) {
         marker.style.opacity = '0';
         marker.style.visibility = 'hidden';
+        marker.tabIndex = -1;
       }
     });
     LABELS.forEach((lb, i) => place(labels.current[i], which ? lb.night : lb.day, true));
@@ -144,7 +148,7 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest('button')) return;
-    dragFrom.current = { x: e.clientX, y: e.clientY, drag: live.current.drag };
+    dragFrom.current = { x: e.clientX, y: e.clientY, centers: live.current.state.center.map((c) => [...c]) as [UV, UV] };
     live.current.dragging = true;
     live.current.lastInput = performance.now();
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -156,8 +160,10 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
     l.lastInput = performance.now();
     const from = dragFrom.current;
     if (from) {
-      const clamp = (n: number) => Math.max(-1, Math.min(1, n));
-      l.drag = [clamp(from.drag[0] + ((e.clientX - from.x) / r.width) * 2.4), clamp(from.drag[1] + ((e.clientY - from.y) / r.height) * 2.4)];
+      l.goal.center = from.centers.map((center, i) => clampCenter([
+        center[0] - ((e.clientX - from.x) / r.width) * coversRef.current[i][0] / l.state.zoom,
+        center[1] - ((e.clientY - from.y) / r.height) * coversRef.current[i][1] / l.state.zoom,
+      ], coversRef.current[i], l.state.zoom)) as [UV, UV];
     } else if (e.pointerType === 'mouse') {
       l.hover = [((e.clientX - r.left) / r.width - 0.5) * 2, ((e.clientY - r.top) / r.height - 0.5) * 2];
     }
@@ -206,7 +212,7 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
           ref={(el) => { markers.current[i] = el; }}
           type="button"
           tabIndex={-1}
-          aria-hidden="true"
+          aria-label={`${h.marker}: ${h.name}`}
           title={h.name}
           onClick={() => onSpot(spot === h.id ? null : h.id)}
           className={`absolute grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 text-[11px] sm:text-[12px] font-bold opacity-0 shadow-[0_6px_18px_rgba(0,0,0,.35)] transition-[transform,background-color,opacity] duration-300 hover:scale-110 sm:size-9 ${
@@ -214,7 +220,7 @@ export default function TowerScene({ night, view, spot, zoom, onSpot, onZoom, pa
           }`}
         >
           {spot === h.id && <span className="absolute inset-0 animate-pulse-ring rounded-full bg-white" aria-hidden="true" />}
-          <span className="relative">{i + 1}</span>
+          <span className="relative">{h.marker}</span>
         </button>
       ))}
     </div>

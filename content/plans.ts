@@ -39,7 +39,7 @@ export type Floor = { id: string; block: 'A' | 'B'; title: string; note?: string
 export const floors: Floor[] = [
   { id: 'fa-1', block: 'A', title: '1st – 5th floor', note: '2 and 3 BHK', image: 'floor-15-l' },
   { id: 'fa-6', block: 'A', title: '6th floor', note: 'Penthouses', image: 'floor-15-r' },
-  { id: 'fb-1', block: 'B', title: '1st floor', note: 'Clubhouse, pool and gym', image: 'floor-16' },
+  { id: 'fb-1', block: 'B', title: '1st floor', note: 'Club House, pool and gym', image: 'floor-16' },
   { id: 'fb-2-t1', block: 'B', title: '2nd floor', note: 'Tower 1', image: 'floor-17-l' },
   { id: 'fb-2-t2', block: 'B', title: '2nd floor', note: 'Tower 2', image: 'floor-17-r' },
   { id: 'fb-3-t1', block: 'B', title: '3rd, 4th, 5th, 6th, 8th and 10th', note: 'Tower 1', image: 'floor-18-l' },
@@ -54,7 +54,7 @@ export const masterPlanLegend = [
   'Entry / Exit',
   'Security room',
   'Driveway',
-  'Drop-off area',
+  'Basement, Ground and Open parking',
   'Green lawn',
   "Kids' play area",
   'Open gym',

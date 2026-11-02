@@ -22,7 +22,7 @@ export function Hero() {
   const highlights = [
     { icon: 'lawn', label: 'Landscaped lawns' },
     { icon: 'pool', label: 'Infinity-edge pool' },
-    { icon: 'club', label: 'Clubhouse' },
+    { icon: 'club', label: 'Club House' },
   ];
   const sealText = priced ? `Starting ₹${projectConfig.STARTING_PRICE}* · Price list · ` : 'Reveal price · Launch offer · Price list · ';
 
