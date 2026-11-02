@@ -9,16 +9,11 @@ const CATEGORIES = [
   ...keyDistances.filter((category) => ['Education', 'Hospitals', 'Shopping and markets', 'Banks'].includes(category.group)),
   {
     group: 'Transport',
-    // Approximate driving routes calculated with OSRM / OpenStreetMap on 2026-10-29.
-    // Origin: 91.7719754,26.1071153 (the site map pin). Destination coordinates
-    // from Photon: airport 91.5830728,26.1113723; GHY 91.7507423,26.1821371;
-    // KYQ 91.6920689,26.1572797; ISBT 91.7218831,26.1163561.
-    // https://router.project-osrm.org/route/v1/driving/{origin};{destination}?overview=false
+    // Approximate road distances supplied for the project.
     items: [
-      ['Lokpriya Gopinath Bordoloi International Airport', '30.5 km'],
-      ['Guwahati Railway Station', '12 km'],
-      ['Kamakhya Junction Railway Station', '14.9 km'],
-      ['ISBT Betkuchi', '5.8 km'],
+      ['Lokpriya Gopinath Bordoloi International Airport', '25 km'],
+      ['Guwahati Railway Station', '13 km'],
+      ['ISBT Betkuchi', '5.4 km'],
     ],
   },
 ];
