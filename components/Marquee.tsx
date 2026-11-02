@@ -1,4 +1,5 @@
 import { site } from '@/content/site';
+import { BrochureMotif } from './BrochureMotif';
 import { SparkIcon } from './icons';
 
 /** Dark band with an endlessly scrolling line of gold caps (CSS only; stops under reduced motion). */
@@ -15,8 +16,9 @@ export function Marquee() {
     </ul>
   );
   return (
-    <div className="mt-3 overflow-hidden border-y border-gold/20 bg-deep py-4 sm:mt-4 lg:mt-0" aria-label="Project highlights">
-      <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+    <div className="brochure-marquee relative mt-3 overflow-hidden border-y border-gold/20 bg-deep py-6 sm:mt-4 lg:mt-0" aria-label="Project highlights">
+      <BrochureMotif kind="woven" className="brochure-marquee-border" />
+      <div className="relative flex w-max animate-marquee hover:[animation-play-state:paused]">
         {row(false)}
         {row(true)}
       </div>

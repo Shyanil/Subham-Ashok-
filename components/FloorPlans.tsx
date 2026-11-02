@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import { StartingPrices } from './StartingPrices';
+import { BrochureMotif } from './BrochureMotif';
 import { useState } from 'react';
 import { site } from '@/content/site';
 import { floors, planSize, unitConfiguration, unitLabel, units, type Unit } from '@/content/plans';
@@ -11,7 +13,7 @@ import { Lightbox } from './Lightbox';
 
 import { LeadButton } from './lead/LeadButton';
 import { useLead } from './lead/LeadProvider';
-import { ArrowUpRight, SparkIcon } from './icons';
+import { ArrowUpRight } from './icons';
 
 type Tab = 'master' | 'A' | 'B';
 const TABS: { id: Tab; label: string; note: string }[] = [
@@ -74,11 +76,12 @@ export function FloorPlans() {
     <section id="floor-plans" aria-labelledby="floor-plans-title" className="section relative overflow-hidden bg-cream" data-track-section="floor_plans">
 
       <div className="container-x">
+        <StartingPrices />
         {/* Section Heading: Left title and Right description aligned at top, with compact gap to tabs */}
         <div className="mb-3 flex flex-col gap-5 sm:mb-4 md:flex-row md:items-start md:justify-between">
           <div data-reveal className="max-w-xl">
             <p className="kicker">
-              <SparkIcon className="size-3" /> {f.eyebrow}
+              <BrochureMotif kind="crown" className="brochure-symbol" /> {f.eyebrow}
             </p>
             <h2 id="floor-plans-title" className="h2 mt-4 lg:whitespace-nowrap">
               <Accent text={f.title} />

@@ -265,7 +265,7 @@ export function LeadForm({
             </option>
             {projectConfig.CONFIGURATIONS.map((c) => (
               <option key={c} value={c}>
-                {c}
+                {projectConfig.CONFIGURATION_PRICES[c] ? `${c} — Starting at ${projectConfig.CONFIGURATION_PRICES[c]}` : c}
               </option>
             ))}
           </select>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { BrochureMotif } from './BrochureMotif';
 import { site } from '@/content/site';
 import { NeighbourhoodCarousel } from './NeighbourhoodCarousel';
 import { BrandChakra } from './BrandChakra';
@@ -20,6 +21,7 @@ export function Location() {
   const c = site.contact;
   return (
     <section id="location" aria-labelledby="location-title" className="section relative overflow-hidden bg-cream" data-track-section="location">
+      <BrochureMotif kind="corner" className="brochure-location-corner" />
       <BrandChakra subtle className="pointer-events-none absolute -right-24 top-10 size-[160px] rotate-12 sm:-right-32 sm:top-16 sm:size-[400px]" />
       <BrandChakra subtle className="pointer-events-none absolute -left-24 bottom-12 size-[160px] -rotate-12 sm:-left-32 sm:bottom-20 sm:size-[380px]" />
       <div className="container-x relative z-10">
@@ -34,7 +36,7 @@ export function Location() {
         </div>
 
         <div className="grid overflow-hidden rounded-[2rem] bg-deep lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)]">
-          <div className="on-dark flex flex-col justify-center p-6 text-white sm:p-9 lg:p-10">
+          <div className="brochure-address-panel on-dark flex flex-col justify-center p-6 text-white sm:p-9 lg:p-10">
             <span className="grid size-11 place-items-center rounded-full border border-gold/30 text-gold" aria-hidden="true"><PinIcon className="size-5" /></span>
             <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Your address</p>
             <h3 className="mt-3 font-serif text-[30px] leading-tight !text-white sm:text-[36px]">Subham Ashok Heights</h3>

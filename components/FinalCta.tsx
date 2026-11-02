@@ -1,4 +1,6 @@
 ﻿import { site } from '@/content/site';
+import { StartingPrices } from './StartingPrices';
+import { BrochureMotif } from './BrochureMotif';
 import { Accent } from './Accent';
 import { LeadForm } from './lead/LeadForm';
 import { CheckIcon, PinIcon, ShieldIcon, SparkIcon } from './icons';
@@ -12,11 +14,14 @@ export function FinalCta() {
       <div className="container-x">
         <div className="enquiry-shell">
           <div className="enquiry-story on-dark">
+            <BrochureMotif kind="woven" className="brochure-enquiry-border" />
+            <BrochureMotif kind="corner" className="brochure-enquiry-corner" />
             <BrandChakra subtle className="-bottom-20 -right-24 size-[340px]" />
             <div className="relative z-10">
               <p className="enquiry-eyebrow"><SparkIcon className="size-3.5" /> Exclusive enquiry</p>
               <h2 id="enquire-title" className="enquiry-heading"><Accent text={f.title} /></h2>
               <p className="enquiry-description">{f.body}</p>
+              <StartingPrices />
               <ul className="enquiry-perks">
                 {f.perks.map((perk) => (
                   <li key={perk}><CheckIcon className="size-4 shrink-0" />{perk}</li>

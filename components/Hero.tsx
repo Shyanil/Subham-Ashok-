@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { StartingPrices } from './StartingPrices';
 import type { CSSProperties } from 'react';
 import { site } from '@/content/site';
 import { getImage } from '@/lib/media';
@@ -155,6 +156,7 @@ export function Hero() {
                 <p className="mt-2 text-[15px] leading-relaxed text-muted sm:text-[16px]">With penthouse options for a different perspective.</p>
               </div>
             </div>
+            <StartingPrices />
             <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
               {highlights.map((item) => (
                 <li key={item.icon} className="flex items-center gap-2 text-leaf">

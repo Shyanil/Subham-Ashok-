@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import { BrochureMotif } from './BrochureMotif';
 import { site } from '@/content/site';
 import { getImage } from '@/lib/media';
 import { Accent } from './Accent';
 import { LeadButton } from './lead/LeadButton';
 import { AmenityIcon } from './AmenityIcon';
-import { ArrowUpRight, PinIcon } from './icons';
+import { ArrowUpRight } from './icons';
 import { BrandChakra } from './BrandChakra';
 
 const PERSONA_ICON = ['club', 'kids', 'pool'];
@@ -12,13 +13,14 @@ const PERSONA_ICON = ['club', 'kids', 'pool'];
 export function Overview() {
   const o = site.overview;
   return (
-    <section id="overview" aria-labelledby="overview-title" className="section relative overflow-hidden" data-track-section="overview">
+    <section id="overview" aria-labelledby="overview-title" className="section brochure-waves-section relative overflow-hidden" data-track-section="overview">
+      <BrochureMotif kind="waves" className="brochure-section-waves" />
       <BrandChakra subtle className="pointer-events-none absolute -left-24 top-5 size-[160px] -rotate-12 sm:-left-28 sm:top-12 sm:size-[380px]" />
       <BrandChakra subtle className="pointer-events-none absolute -right-24 top-[22rem] size-[160px] rotate-12 sm:-right-28 sm:top-40 sm:size-[400px]" />
       <div className="container-x relative">
         <div className="mx-auto max-w-4xl text-center">
         <p className="kicker" data-reveal>
-          <PinIcon className="size-3.5" /> {o.eyebrow}
+          <BrochureMotif kind="root" className="brochure-symbol" /> {o.eyebrow}
         </p>
         <h2 id="overview-title" className="h2 mx-auto mt-5 max-w-3xl !text-[36px] sm:!text-[48px] xl:!text-[58px]" data-reveal>
           <Accent text={o.title} />

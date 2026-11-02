@@ -1,7 +1,7 @@
 ﻿import { site } from '@/content/site';
+import { BrochureMotif } from './BrochureMotif';
 import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
-import { SparkIcon } from './icons';
 import { BrandChakra } from './BrandChakra';
 
 /** Icon-led amenities beneath the section introduction. */
@@ -14,7 +14,7 @@ export function Amenities() {
       <div className="container-x relative">
         <div className="mb-9 grid gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-12" data-reveal>
           <div>
-            <p className="kicker"><SparkIcon className="size-3" /> {a.eyebrow}</p>
+            <p className="kicker"><BrochureMotif kind="heart" className="brochure-symbol" /> {a.eyebrow}</p>
             <h2 id="amenities-title" className="h2 mt-5"><Accent text={a.title} /></h2>
           </div>
           <p className="max-w-lg text-[16px] leading-relaxed text-muted">{a.body}</p>

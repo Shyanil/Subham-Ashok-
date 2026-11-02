@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { BrochureMotif } from './BrochureMotif';
 import { useMemo, useRef, useState } from 'react';
 import { site, type FilterId } from '@/content/site';
 import { media, isNight, objectPosition, type MediaItem } from '@/lib/media';
@@ -26,6 +27,7 @@ export function Gallery() {
 
   return (
     <section id="gallery" aria-labelledby="gallery-title" className="section relative isolate overflow-hidden bg-sand" data-track-section="gallery">
+      <BrochureMotif kind="corner" className="brochure-gallery-corner" />
       <BrandChakra subtle className="-right-24 top-5 size-[140px] rotate-12 sm:-right-32 sm:top-8 sm:size-[300px]" />
       <div className="container-x relative z-10">
         <SectionHeading id="gallery-title" eyebrow={g.eyebrow} title={g.title} body={`${media.length} views of Subham Ashok Heights — striking architecture, green open spaces and thoughtful interiors.`} />

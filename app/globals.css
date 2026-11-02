@@ -1300,3 +1300,116 @@
   .enquiry-panel-heading h3 { font-size: 31px; }
   .enquiry-security { letter-spacing: 0.08em; }
 }
+
+/* Brochure originals: woven textiles, flowing lines, chakra seals and mandala corners. */
+.brochure-motif {
+  display: block;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+.brochure-motif--woven { mask-image: url('/brand/motifs/woven-border.webp'); }
+.brochure-motif--waves { mask-image: url('/brand/motifs/flowing-waves.webp'); }
+.brochure-motif--corner { mask-image: url('/brand/motifs/mandala-corner.webp'); }
+.brochure-motif--root { mask-image: url('/brand/motifs/chakra-root.webp'); }
+.brochure-motif--heart { mask-image: url('/brand/motifs/chakra-heart.webp'); }
+.brochure-motif--crown { mask-image: url('/brand/motifs/chakra-crown.webp'); }
+.brochure-symbol { width: 38px; height: 38px; margin-right: 4px; color: var(--color-terra); }
+.brochure-section-waves {
+  position: absolute;
+  bottom: 6px;
+  inset-inline: 0;
+  height: 28px;
+  mask-repeat: repeat-x;
+  mask-size: 132px 28px;
+  color: var(--color-terra);
+  opacity: 0.35;
+}
+.brochure-waves-section { padding-bottom: 76px; }
+.brochure-cta-band { padding-bottom: 72px; }
+.brochure-cta-band .brochure-section-waves { opacity: 0.24; }
+.brochure-gallery-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(140px, 23vw, 310px);
+  aspect-ratio: 1;
+  color: var(--color-terra);
+  opacity: 0.12;
+}
+.brochure-location-corner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: clamp(160px, 24vw, 360px);
+  aspect-ratio: 1;
+  transform: rotate(180deg);
+  color: var(--color-terra);
+  opacity: 0.13;
+}
+.brochure-address-panel { position: relative; isolation: isolate; overflow: hidden; }
+.brochure-address-panel::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 12px;
+  background: #dcc0a0;
+  mask: url('/brand/motifs/woven-border-vertical.webp') left center / 28px 104px repeat-y;
+  opacity: 0.26;
+  pointer-events: none;
+}
+.brochure-enquiry-border {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 19px;
+  mask-repeat: repeat-x;
+  mask-size: 156px 42px;
+  mask-position: center top;
+  color: #dcc0a0;
+  opacity: 0.45;
+}
+.brochure-enquiry-corner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 170px;
+  aspect-ratio: 1;
+  transform: scaleY(-1);
+  color: #dcc0a0;
+  opacity: 0.11;
+}
+.brochure-marquee-border {
+  position: absolute;
+  inset: 0;
+  mask-size: 156px 42px;
+  mask-repeat: repeat-x;
+  mask-position: center;
+  color: #dcc0a0;
+  opacity: 0.1;
+}
+@media (max-width: 639px) {
+  .brochure-symbol { width: 32px; height: 32px; }
+  .brochure-waves-section { padding-bottom: 72px; }
+  .brochure-section-waves { height: 21px; mask-size: 100px 21px; opacity: 0.3; }
+  .brochure-gallery-corner { opacity: 0.08; }
+  .brochure-enquiry-corner { width: 125px; opacity: 0.08; }
+}
+@media (forced-colors: active) {
+  .brochure-motif, .brochure-address-panel::before { display: none; }
+}
+.starting-prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-block: 24px; padding-block: 20px; border-block: 1px solid var(--color-line); }
+.starting-prices li + li { border-left: 1px solid var(--color-line); padding-left: 20px; }
+.starting-prices-label { display: block; font-size: 12px; font-weight: 700; color: var(--color-terra); }
+.starting-prices-label span { display: block; margin-top: 5px; font-size: 10px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+.starting-prices strong { display: block; margin-top: 5px; font-family: var(--font-serif); font-size: clamp(22px, 2.2vw, 30px); font-weight: 400; color: var(--color-ink); }
+#floor-plans > .container-x > .starting-prices { max-width: 520px; margin-top: 0; margin-bottom: 28px; }
+.enquiry-story .starting-prices { border-color: rgb(220 192 160 / 0.25); }
+.enquiry-story .starting-prices li + li { border-color: rgb(220 192 160 / 0.25); }
+.enquiry-story .starting-prices-label, .enquiry-story .starting-prices strong { color: #dcc0a0; }
+.enquiry-story .starting-prices-label span { color: rgb(255 255 255 / 0.65); }
