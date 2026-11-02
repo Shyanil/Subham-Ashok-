@@ -3,6 +3,7 @@ import { project, site } from '@/content/site';
 import { Accent } from './Accent';
 import { Counter } from './Counter';
 import { SparkIcon } from './icons';
+import { BrandChakra } from './BrandChakra';
 
 /** Developer story, chairman's note, proof points, and an expandable portfolio. */
 export function Developer() {
@@ -45,8 +46,9 @@ export function Developer() {
         </div>
 
         <div className="mt-16">
-          <div className="flex flex-col gap-6 rounded-[1.5rem] border border-line bg-white/60 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <div className="relative isolate flex flex-col gap-6 overflow-hidden rounded-[1.5rem] border border-line bg-white/60 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <BrandChakra wheel className="-right-24 -top-12 size-[240px] sm:-right-28 sm:-top-24 sm:size-[360px]" />
+            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
               <div className="flex w-fit shrink-0 items-center rounded-2xl border border-gold/25 bg-brand px-5 py-5 shadow-[0_8px_30px_rgba(72,49,33,0.12)]">
                 <Image src="/brand/subham-group-logo4.webp" alt="Subham — A unit of Lohia group" width={640} height={329} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
               </div>
@@ -55,7 +57,7 @@ export function Developer() {
               <h3 className="h2 mt-3">The Subham Portfolio</h3>
               </div>
             </div>
-            <p className="max-w-xs text-[14px] leading-relaxed text-muted">Explore our ongoing and completed projects.</p>
+            <p className="relative max-w-xs text-[14px] leading-relaxed text-muted">Explore our ongoing and completed projects.</p>
           </div>
           <div className="mt-7 grid gap-3">
             {d.projects.map((g) => (

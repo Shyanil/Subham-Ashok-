@@ -161,6 +161,7 @@ export function NeighbourhoodCarousel({ onSelectPlace, selectedPlace }: { onSele
         {/* Right active category panel */}
         <div id="nearby-category-panel" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${CATEGORIES.length}: ${category.group}`} aria-live={playing ? 'off' : 'polite'} className="relative min-w-0 px-5 py-6 sm:px-7 sm:py-7 min-h-[460px] sm:min-h-[380px] overflow-hidden">
           <BrandChakra subtle className="pointer-events-none absolute -bottom-16 -right-16 size-[200px] rotate-12 sm:-bottom-24 sm:-right-24 sm:size-[340px]" />
+          <BrandChakra wheel className="-left-28 -top-24 size-[240px] sm:-left-36 sm:-top-36 sm:size-[360px]" />
           <div className="relative z-10">
             {/* Header: Bold standout category title with icon and distance pill */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-5">

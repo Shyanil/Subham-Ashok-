@@ -27,6 +27,14 @@ export function Overview() {
           {o.body}
         </p>
 
+        <div aria-hidden="true" className="mx-auto mt-7 flex w-44 items-center gap-4 text-terra/25">
+          <span className="h-px flex-1 bg-current" />
+          <span className="relative size-11 shrink-0">
+            <Image src="/brand/brochure-chakra-wheel.webp" alt="" fill sizes="44px" className="object-contain opacity-65" />
+          </span>
+          <span className="h-px flex-1 bg-current" />
+        </div>
+
         </div>
         <ul className="mx-auto mt-10 grid max-w-6xl grid-cols-2 gap-y-8 border-y border-line py-8 sm:mt-12 lg:grid-cols-5 lg:py-10" data-reveal-group>
           {o.stats.map((s) => (
