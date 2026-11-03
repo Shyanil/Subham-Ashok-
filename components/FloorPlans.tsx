@@ -17,9 +17,9 @@ import { ArrowUpRight } from './icons';
 
 type Tab = 'master' | 'A' | 'B';
 const TABS: { id: Tab; label: string; note: string }[] = [
+  { id: 'master', label: 'Master plan', note: 'Site layout' },
   { id: 'A', label: 'Block A', note: 'G + 6' },
   { id: 'B', label: 'Block B', note: 'B + G + 11' },
-  { id: 'master', label: 'Master plan', note: 'Site layout' },
 ];
 const CONFIGURATIONS = ['2 BHK', '3 BHK', '4 BHK', 'Penthouse'];
 const flatOptions = (list: Unit[]) => list.flatMap((unit) =>
@@ -48,7 +48,7 @@ function Plan({ image, alt }: { image: string; alt: string }) {
 /** Brochure master plan and unit drawings with a unit configurator per block. */
 export function FloorPlans() {
   const f = site.floorPlans;
-  const [tab, setTab] = useState<Tab>('A');
+  const [tab, setTab] = useState<Tab>('master');
   const [sel, setSel] = useState<Record<'A' | 'B', string>>({ A: 'a-102', B: 'b-101' });
   const [configuration, setConfiguration] = useState<Record<'A' | 'B', string>>({ A: '2 BHK', B: '3 BHK' });
   const [flat, setFlat] = useState<Record<'A' | 'B', string>>({ A: '102', B: '101' });
