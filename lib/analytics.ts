@@ -1,6 +1,6 @@
 'use client';
 
-export type TrackEvent = 'form_open' | 'form_submit' | 'form_error' | 'call_click' | 'tour_start' | 'chat_open' | 'chat_message';
+export type TrackEvent = 'form_open' | 'form_submit' | 'form_error' | 'call_click' | 'tour_start' | 'chat_open' | 'chat_message' | 'thank_you_view' | 'generate_lead';
 
 type Params = Record<string, string | number | boolean | undefined>;
 

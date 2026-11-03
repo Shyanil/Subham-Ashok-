@@ -49,11 +49,13 @@ export const projectConfig = {
    */
   FORM_ENDPOINT_ENV: 'FORM_ENDPOINT',
 
-  /**
-   * ⚠ PLACEHOLDER — budget ranges shown in the form. Adjust to the real price
-   * ladder once pricing is approved.
-   */
-  BUDGET_RANGES: ['Under ₹60 Lakh', '₹60 – 80 Lakh', '₹80 Lakh – 1 Cr', '₹1 – 1.5 Cr', 'Above ₹1.5 Cr'],
+  /** Show only the selected configuration's starting price in the budget field. */
+  CONFIGURATION_BUDGET_RANGES: {
+    '2 BHK': ['Starting at ₹62 Lakh'],
+    '3 BHK': ['Starting at ₹91 Lakh'],
+    '4 BHK': ['Starting at ₹1.26 Crore'],
+    Penthouse: ['Starting at ₹1.15 Crore'],
+  } as Record<string, string[]>,
 
   /**
    * ⚠ CONFIRM — buyer perks shown beside the forms. Not in the brochure; keep

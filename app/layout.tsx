@@ -43,7 +43,11 @@ const PIXEL = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+      <head>
+        <script id="google-tag-manager" dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());(function(w,d,s,l,i){w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NS9GJ7VZ');` }} />
+      </head>
       <body>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NS9GJ7VZ" height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} title="Google Tag Manager" /></noscript>
         {/* Runs before first paint so return visits never flash the preloader (see ThreeDPreloader). */}
         <script
           dangerouslySetInnerHTML={{
@@ -62,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4}`} strategy="lazyOnload" />
             <Script id="ga4" strategy="lazyOnload">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA4}');`}
+              {`window.gtag('config','${GA4}');`}
             </Script>
           </>
         )}

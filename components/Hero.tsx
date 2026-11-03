@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { StartingPrices } from './StartingPrices';
 import type { CSSProperties } from 'react';
 import { site } from '@/content/site';
 import { getImage } from '@/lib/media';
@@ -7,7 +6,7 @@ import { isSet, projectConfig } from '@/src/config/project';
 import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
 import { LeadButton } from './lead/LeadButton';
-import { ArrowUpRight, PinIcon, SparkIcon } from './icons';
+import { ArrowUpRight, PinIcon } from './icons';
 
 const d = (n: number) => ({ ['--d' as string]: n }) as CSSProperties;
 
@@ -19,6 +18,7 @@ const d = (n: number) => ({ ['--d' as string]: n }) as CSSProperties;
 export function Hero() {
   const h = site.hero;
   const mobileImg = getImage('road-elevation-view');
+  const desktopImg = getImage('aerial-day-view');
   const priced = isSet(projectConfig.STARTING_PRICE);
   const highlights = [
     { icon: 'lawn', label: 'Landscaped lawns' },
@@ -46,21 +46,21 @@ export function Hero() {
               />
             </div>
           </div>
-          <div className="hero-media relative isolate hidden overflow-hidden bg-tan lg:absolute lg:inset-0 lg:block lg:rounded-bl-[200px]">
+          <div className="hero-media relative isolate hidden overflow-hidden bg-tan lg:absolute lg:inset-0 lg:block lg:rounded-bl-[80px]">
             {/* No blur placeholder: swapping blur → sharp mid-animation is what flickered on reload. */}
             <div className="enter-media absolute inset-0">
               <Image
-                src="/images/exterior/road-elevation-view-1920.webp"
-                alt={mobileImg.alt}
+                src={desktopImg.src}
+                alt={desktopImg.alt}
                 fill
                 preload
+                unoptimized
                 sizes="56vw"
-                quality={90}
                 className="object-cover"
-                style={{ objectPosition: '50% 50%' }}
+                style={{ objectPosition: '55% 50%' }}
               />
             </div>
-            <div className="absolute inset-0 hidden bg-gradient-to-t from-[#1f0b08]/65 via-transparent to-[#1f0b08]/5 lg:block" aria-hidden="true" />
+            <div className="absolute inset-0 hidden bg-gradient-to-t from-[#1f0b08]/30 via-transparent to-transparent lg:block" aria-hidden="true" />
 
             <div className="absolute bottom-10 right-10 hidden lg:block">
               <p className="enter mb-1 text-right font-serif text-[30px] italic leading-tight text-white" style={d(7)}>
@@ -95,10 +95,6 @@ export function Hero() {
 
         {/* Text */}
         <div className="hero-copy relative flex flex-col pb-10 pt-10 sm:pt-14 lg:order-1 lg:justify-start lg:pb-16 lg:pt-18 xl:pt-24">
-          <p className="enter mb-5 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-terra sm:text-[14px]" style={d(0)}>
-            <SparkIcon className="size-3 shrink-0" />
-            <span>Subham Group presents</span>
-          </p>
           <h1 id="hero-title" className="hero-title h2 tracking-[-0.01em]">
             <span className="line-mask"><span className="line" style={d(1)}>Come Home to</span></span>
             <span className="line-mask"><span className="line" style={d(2)}><Accent text="a _Greener Everyday_" /></span></span>
@@ -156,7 +152,6 @@ export function Hero() {
                 <p className="mt-2 text-[15px] leading-relaxed text-muted sm:text-[16px]">With penthouse options for a different perspective.</p>
               </div>
             </div>
-            <StartingPrices />
             <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
               {highlights.map((item) => (
                 <li key={item.icon} className="flex items-center gap-2 text-leaf">

@@ -1,6 +1,8 @@
 'use client';
 
 import { useId, useState, type FormEvent, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { rememberLeadSuccess } from '@/lib/lead-success';
 import { leadSchema, priorityLeadSchema, type LeadInput } from '@/lib/lead';
 import { getAttribution } from '@/lib/attribution';
 import { track } from '@/lib/analytics';
@@ -54,6 +56,7 @@ export function LeadForm({
   onSuccess,
 }: Props) {
   const id = useId();
+  const router = useRouter();
   const { markSubmitted } = useLead();
   const [values, setValues] = useState<Values>({
     name: '',
@@ -69,9 +72,11 @@ export function LeadForm({
   const priority = fields === 'priority';
   const row = variant === 'sticky';
   const floatingPriority = priority && variant === 'floating';
+  const budgetRanges = projectConfig.CONFIGURATION_BUDGET_RANGES[values.configuration] ?? [];
 
   const set = <K extends keyof Values>(k: K, v: Values[K]) => {
-    setValues((s) => ({ ...s, [k]: v }));
+    setValues((s) => ({ ...s, [k]: v, ...(k === 'configuration' ? { budget: '' } : {}) }));
+    if (k === 'configuration') setErrors((e) => ({ ...e, budget: undefined }));
     if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
   };
   const blur = (k: keyof Values) => {
@@ -129,6 +134,8 @@ export function LeadForm({
         form_variant: variant,
       });
       onSuccess?.();
+      rememberLeadSuccess({ source, configuration: parsed.data.configuration, budget: parsed.data.budget, form_variant: variant });
+      router.push('/thank-you');
     } catch {
       setErrors({ form: 'Network error. Please check your connection, then try again.' });
       setStatus('idle');
@@ -247,7 +254,7 @@ export function LeadForm({
 
         <div className="field">
           <label htmlFor={cfgId}>
-            {isModal && !priority ? 'Select Configuration' : 'Configuration'} <span className="text-terra" aria-hidden="true">*</span>
+            Select Configuration <span className="text-terra" aria-hidden="true">*</span>
           </label>
           <select
             id={cfgId}
@@ -261,11 +268,11 @@ export function LeadForm({
             required
           >
             <option value="" disabled>
-              {isModal && !priority ? 'Select Configuration' : 'Select configuration'}
+              Select Configuration
             </option>
             {projectConfig.CONFIGURATIONS.map((c) => (
               <option key={c} value={c}>
-                {projectConfig.CONFIGURATION_PRICES[c] ? `${c} — Starting at ${projectConfig.CONFIGURATION_PRICES[c]}` : c}
+                {c}
               </option>
             ))}
           </select>
@@ -287,6 +294,7 @@ export function LeadForm({
             <select
               id={budgetId}
               name="budget"
+              disabled={!values.configuration}
               className="input"
               value={values.budget}
               onChange={(e) => set('budget', e.target.value)}
@@ -295,8 +303,8 @@ export function LeadForm({
               aria-describedby={described('budget')}
               required
             >
-              <option value="" disabled>Select Budget Range</option>
-              {projectConfig.BUDGET_RANGES.map((b) => (
+              <option value="" disabled>{values.configuration ? 'Select Budget Range' : 'Select Configuration First'}</option>
+              {budgetRanges.map((b) => (
                 <option key={b} value={b}>
                   {b}
                 </option>

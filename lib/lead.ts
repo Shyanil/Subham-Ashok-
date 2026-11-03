@@ -6,7 +6,7 @@ export const normalisePhone = (raw: string) => raw.replace(/\D/g, '').replace(/^
 export const INDIAN_MOBILE = /^[6-9]\d{9}$/;
 
 const configurations = projectConfig.CONFIGURATIONS as readonly string[];
-const budgets = projectConfig.BUDGET_RANGES as readonly string[];
+const budgets = Object.values(projectConfig.CONFIGURATION_BUDGET_RANGES).flat();
 const max = (n: number) => z.optional(z.string().check(z.maxLength(n)));
 const pincode = z.string().check(z.regex(/^[1-9]\d{5}$/, 'Enter a valid 6-digit pincode'));
 

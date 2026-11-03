@@ -50,7 +50,6 @@ export const site = {
     'Club House and banquet hall',
     'Green lawn and amphitheatre',
     'RERA registered',
-    'Since 2007',
     '24×7 security and power backup',
     'Minutes from schools and hospitals',
   ],
@@ -65,7 +64,7 @@ export const site = {
   overview: {
     eyebrow: `${P.area} · ${P.city}`,
     title: 'A Greener Way to Live in _Beharbari_',
-    body: `${P.area}'s first thoughtfully designed, health-centric community. Children play in sight of home, evenings are spent by the water, and schools, hospitals and markets are minutes away.`,
+    body: `${P.area}'s first thoughtfully designed, health-centric community. Children play in sight of home, evenings are spent by the water, and schools, hospitals & markets are minutes away.`,
     personas: [
       { kicker: 'For families', title: 'Celebrate', body: 'A Club House and banquet hall, an amphitheatre under the sky and a grand lift lobby to welcome guests home.', tone: 'dark' },
       { kicker: 'For children', title: 'Play', body: "A safe, landscaped play area and an open green lawn — always in view of home.", tone: 'image', image: 'kids-play-day' },

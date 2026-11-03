@@ -66,6 +66,7 @@ export function LeadProvider({ children }: { children: ReactNode }) {
   const markSubmitted = useCallback(() => {
     safeSet(window.localStorage, LOCAL_SUBMITTED, '1');
     setSubmitted(true);
+    setRequest(null);
   }, []);
 
   useEffect(() => {

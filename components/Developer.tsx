@@ -50,7 +50,7 @@ export function Developer() {
             <BrandChakra wheel className="-right-24 -top-12 size-[240px] sm:-right-28 sm:-top-24 sm:size-[360px]" />
             <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
               <div className="flex w-fit shrink-0 items-center rounded-2xl border border-gold/25 bg-brand px-5 py-5 shadow-[0_8px_30px_rgba(72,49,33,0.12)]">
-                <Image src="/brand/subham-group-logo4.webp" alt="Subham — A unit of Lohia group" width={640} height={329} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
+                <Image src="/brand/subham-portfolio-logo.webp" alt="Subham — A unit of Lohia group" width={1018} height={351} unoptimized className="h-auto w-[176px] sm:w-[198px]" />
               </div>
               <div className="sm:border-l sm:border-line sm:pl-8">
               <p className="kicker">A legacy since 2007</p>
