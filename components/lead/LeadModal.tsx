@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { project } from '@/content/site';
 import { getImage, objectPosition } from '@/lib/media';
-import { possessionLabel, priceLabel, projectConfig } from '@/src/config/project';
+import { projectConfig } from '@/src/config/project';
 import { LeadForm } from './LeadForm';
 import type { LeadRequestOptions } from './LeadProvider';
-import { CheckIcon, CloseIcon, ShieldIcon } from '../icons';
+import { CloseIcon, ShieldIcon } from '../icons';
 
 const COPY: Record<LeadRequestOptions['intent'], { title: string; sub: string; submit: string; kicker: string }> = {
   price: {
@@ -18,14 +18,14 @@ const COPY: Record<LeadRequestOptions['intent'], { title: string; sub: string; s
   },
   reveal: {
     kicker: 'Property Enquiry',
-    title: 'Reveal Price',
-    sub: 'We will share the current price, carpet area, and availability for this home.',
-    submit: 'Reveal Price',
+    title: 'Download Brochure',
+    sub: 'Explore the floor plans, amenities and specifications in our brochure.',
+    submit: 'Download Brochure',
   },
   brochure: {
     kicker: 'Project Brochure',
     title: 'Download The Brochure',
-    sub: 'Get the full e-brochure with floor plans, master layout and specifications.',
+    sub: 'Leave your details to download the brochure.',
     submit: 'Download The Brochure',
   },
   visit: {
@@ -101,7 +101,6 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
   // Dynamically adapt heading and submit button based on the clicked CTA (in Title Case)
   const modalTitle = request?.title ? toTitleCase(request.title) : fallback.title;
   const modalSubmit = request?.submitLabel ? toTitleCase(request.submitLabel) : fallback.submit;
-  const modalKicker = toTitleCase(fallback.kicker);
 
   // Original full-resolution night aerial render, served without another lossy encode.
   const img = getImage('aerial-night-view');
@@ -120,7 +119,7 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
       onClick={(e) => e.target === ref.current && handleClose()}
     >
       {request && (
-        <div className="lead-dialog__panel relative grid w-full max-h-[96dvh] rounded-t-[1.75rem] bg-white shadow-2xl md:grid-cols-[0.8fr_1.2fr] md:overflow-hidden md:rounded-[2rem]">
+        <div className="lead-dialog__panel relative grid w-full max-h-[92dvh] overflow-y-auto rounded-t-[1.75rem] bg-white shadow-2xl md:grid-cols-[0.75fr_1.25fr] md:rounded-[2rem]">
           {/* Left: High Definition Tower Render */}
           <div className="relative hidden md:block">
             <Image
@@ -136,9 +135,6 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
             <div className="absolute inset-0 bg-gradient-to-t from-[#1c0907] via-[#1c0907]/45 to-transparent" aria-hidden="true" />
             <div className="absolute inset-x-0 bottom-0 p-6 text-white">
               <p className="font-serif text-[28px] italic leading-none">{project.name}</p>
-              <p className="mt-1.5 text-[13px] text-white/80">
-                {priceLabel} · {possessionLabel}
-              </p>
               <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] ring-1 ring-white/20">
                 <ShieldIcon className="size-3.5" /> RERA: {projectConfig.RERA}
               </p>
@@ -146,7 +142,7 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
           </div>
 
           {/* Right: Form Panel (Capitalized Headings & Fits in One View) */}
-          <div className="relative flex flex-col justify-center p-5 pb-6 sm:p-6 md:px-7 md:py-6 overflow-y-auto md:overflow-visible">
+          <div className="relative min-w-0 p-6 pt-12 sm:p-8 sm:pt-12 md:p-9 md:pt-12">
             <div className="mx-auto mb-2 h-1.5 w-10 rounded-full bg-line md:hidden" aria-hidden="true" />
             <button
               type="button"
@@ -158,19 +154,16 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
             </button>
 
             <div>
-              <p className="kicker !text-terra !mb-1 text-[11px] font-bold uppercase tracking-[0.18em]">
-                {modalKicker}
-              </p>
-              <h2 id="lead-dialog-title" className="pr-8 font-serif text-[24px] font-bold leading-tight text-ink sm:text-[28px]">
+              <h2 id="lead-dialog-title" className="pr-4 font-serif text-[30px] leading-tight text-ink sm:text-[34px]">
                 {modalTitle}
               </h2>
-              <p className="mt-1 text-[13.5px] leading-snug text-muted">
-                {request.unit ? <strong className="font-semibold text-ink">{request.unit}. </strong> : null}
+              <p className="mt-2 text-[14px] leading-relaxed text-muted">
                 {fallback.sub}
               </p>
+              {request.unit && <p className="mt-3 rounded-lg bg-cream px-3 py-2 text-[12px] leading-relaxed text-muted">{request.unit}</p>}
             </div>
 
-            <div className="mt-3.5">
+            <div className="mt-6">
               <LeadForm
                 key={`${request.intent}-${request.source}-${request.unit ?? ''}-${modalTitle}`}
                 variant="modal"
@@ -181,13 +174,6 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
               />
             </div>
 
-            <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-2 text-[12px] text-muted">
-              {projectConfig.PERKS.slice(0, 3).map((p) => (
-                <li key={p} className="inline-flex items-center gap-1">
-                  <CheckIcon className="size-3 text-terra shrink-0" /> <span>{toTitleCase(p)}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       )}

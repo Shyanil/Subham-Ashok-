@@ -1204,7 +1204,7 @@
 }
 .enquiry-shell {
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid rgb(74 43 29 / 0.08);
   border-radius: 36px;
@@ -1216,9 +1216,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 48px;
+  gap: 24px;
   overflow: hidden;
-  padding: clamp(32px, 4.5vw, 68px);
+  padding: clamp(28px, 3vw, 44px);
   color: #fff;
   background: radial-gradient(ellipse at 100% 0, #70442d 0, transparent 65%), #2e110c;
 }
@@ -1234,8 +1234,8 @@
 }
 .enquiry-heading {
   max-width: 360px;
-  margin-top: 30px;
-  font-size: clamp(42px, 4.6vw, 66px);
+  margin-top: 20px;
+  font-size: clamp(36px, 3.3vw, 46px);
   line-height: 1.06;
   letter-spacing: -0.035em;
   color: #fff;
@@ -1244,12 +1244,12 @@
 .enquiry-heading .accent { display: block; margin-top: 8px; }
 .enquiry-description {
   max-width: 340px;
-  margin-top: 26px;
-  font-size: 15px;
-  line-height: 1.85;
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.65;
   color: rgb(255 255 255 / 0.72);
 }
-.enquiry-perks { display: grid; gap: 15px; margin-top: 32px; }
+.enquiry-perks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
 .enquiry-perks li { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #eee1d4; }
 .enquiry-perks svg { color: #dcc0a0; }
 .enquiry-location {
@@ -1263,7 +1263,7 @@
 .enquiry-location-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: #dcc0a0; background: rgb(220 192 160 / 0.1); }
 .enquiry-location-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #dcc0a0; }
 .enquiry-location p { margin-top: 4px; font-size: 14px; }
-.enquiry-panel { min-width: 0; padding: clamp(28px, 4vw, 60px); }
+.enquiry-panel { min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: clamp(28px, 3vw, 44px); }
 .enquiry-panel-heading { margin-bottom: 30px; }
 .enquiry-panel-heading .enquiry-eyebrow { color: #7a4a35; font-size: 9px; letter-spacing: 0.18em; }
 .enquiry-panel-heading h3 { margin-top: 14px; font-size: clamp(30px, 3vw, 42px); line-height: 1.12; letter-spacing: -0.025em; color: var(--color-ink); }

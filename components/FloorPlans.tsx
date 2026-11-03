@@ -72,14 +72,14 @@ export function FloorPlans() {
     pick(first.unit.id);
   };
 
-  const reveal = (u: Unit) =>
+  const downloadBrochure = (u: Unit) =>
     openLead({
-      intent: 'reveal',
+      intent: 'brochure',
       source: 'floor_plans',
       unit: `${unitLabel(u)} · Flat ${tab === 'master' ? '' : flat[tab]}`,
       configuration: unitConfiguration(u),
-      title: 'Reveal Price',
-      submitLabel: 'Reveal Price',
+      title: 'Download Brochure',
+      submitLabel: 'Download Brochure',
     });
 
   const onTabKey = (e: React.KeyboardEvent, i: number) => {
@@ -201,8 +201,8 @@ export function FloorPlans() {
                           </div>
                         ))}
                       </dl>
-                      <button type="button" className="btn btn--block mt-5" aria-haspopup="dialog" onClick={() => reveal(unit)}>
-                        Reveal Price <ArrowUpRight className="arrow size-4" />
+                      <button type="button" className="btn btn--block mt-5" aria-haspopup="dialog" onClick={() => downloadBrochure(unit)}>
+                        Download Brochure <ArrowUpRight className="arrow size-4" />
                       </button>
                     </div>
                   )}

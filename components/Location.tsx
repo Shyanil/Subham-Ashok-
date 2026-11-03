@@ -8,6 +8,11 @@ import { BrandChakra } from './BrandChakra';
 import { Accent } from './Accent';
 import { ArrowUpRight, PinIcon } from './icons';
 
+// Use the supplied project place ID in standard map mode. Widen the viewport
+// to approximately 70% of the supplied scale without shrinking the iframe.
+const PROJECT_MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6297.673281384113!2d91.7727819!3d26.109481499999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f00669e8a27%3A0x32b1d7ab340fd50f!2sSUBHAM%20ASHOK%20HEIGHTS!5e0!3m2!1sen!2sin!4v1793706680995!5m2!1sen!2sin';
+const GALAXY_CITY_MAP = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2204.1656418101124!2d91.7697823!3d26.1105426!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f25510b3585%3A0xba391a4cf437b51a!2sGALAXY%20CITY%20-%20GUWAHATI!5e1!3m2!1sen!2sin!4v1793701122451!5m2!1sen!2sin';
+
 export function Location() {
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const [addressOpen, setAddressOpen] = useState(false);
@@ -19,6 +24,11 @@ export function Location() {
   };
   const l = site.location;
   const c = site.contact;
+  const mapSrc = selectedPlace === 'Galaxy City'
+    ? GALAXY_CITY_MAP
+    : selectedPlace
+      ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ', Guwahati, Assam')}&output=embed`
+      : PROJECT_MAP;
   return (
     <section id="location" aria-labelledby="location-title" className="section relative overflow-hidden bg-cream" data-track-section="location">
       <BrochureMotif kind="corner" className="brochure-location-corner" />
@@ -48,11 +58,12 @@ export function Location() {
           </div>
           <div ref={map} id="neighbourhood-map" className="relative min-w-0 scroll-mt-24 bg-white">
             <iframe
-              title={selectedPlace ? selectedPlace + " location in Guwahati" : "Project location map, Guwahati"}
-              src={selectedPlace && selectedPlace !== 'Galaxy City' ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ", Guwahati, Assam")}&output=embed` : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2204.1656418101124!2d91.7697823!3d26.1105426!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f25510b3585%3A0xba391a4cf437b51a!2sGALAXY%20CITY%20-%20GUWAHATI!5e1!3m2!1sen!2sin!4v1793701122451!5m2!1sen!2sin"}
+              title={selectedPlace ? selectedPlace + " location in Guwahati" : "Subham Ashok Heights location in Guwahati"}
+              src={mapSrc}
               width="600"
               height="450"
               className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]"
+              style={{ colorScheme: 'light' }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"

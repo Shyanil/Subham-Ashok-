@@ -69,10 +69,10 @@ export function Hero() {
 
           {/* Rotating price seal on the seam between text and image */}
           <LeadButton
-            intent="reveal"
+            intent="brochure"
             source="hero_seal"
-            title="Reveal Price"
-            submitLabel="Reveal Price"
+            title="Download Brochure"
+            submitLabel="Download Brochure"
             className="seal enter group absolute z-10 hidden place-items-center rounded-full bg-brand text-white shadow-[0_24px_50px_-18px_rgb(20_8_6/0.75)] ring-[6px] ring-white xl:left-0 xl:top-[58%] xl:grid xl:size-[150px] xl:-translate-x-1/2"
             style={d(9)}
           >
@@ -88,7 +88,7 @@ export function Hero() {
               <span className="text-[9px] font-semibold uppercase tracking-wider">From</span>
               <span className="font-serif text-[24px]">₹62L</span>
             </span>
-            <span className="sr-only">Starting at: 2 BHK ₹62 Lakh, 3 BHK ₹91 Lakh, 4 BHK ₹1.26 Crore, Penthouse ₹1.15 Crore. Get the price list.</span>
+            <span className="sr-only">Starting at: 2 BHK ₹62 Lakh, 3 BHK ₹91 Lakh, 4 BHK ₹1.26 Crore, Penthouse ₹1.15 Crore. Download Brochure.</span>
           </LeadButton>
         </div>
 

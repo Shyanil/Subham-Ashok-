@@ -83,7 +83,7 @@ export const site = {
   floorPlans: {
     eyebrow: 'Floor plans and price',
     title: 'Homes Planned for _Light and Air_',
-    body: 'Choose your block, then your home configuration and flat unit to explore its floor plan. Areas are in square feet. Tap “Reveal price” to enquire about your selected home.',
+    body: 'Choose your block, then your home configuration and flat unit to explore its floor plan. Areas are in square feet. Download the brochure for more details.',
     specsTitle: 'Specifications',
   },
 
@@ -166,7 +166,7 @@ export const site = {
   finalCta: {
     eyebrow: 'Enquire',
     title: 'Book Your _Site Visit_',
-    body: 'Share your details and our team will send the price list and brochure, and fix a site visit at a time that suits your family.',
+    body: 'Explore the brochure and plan a site visit at a time that suits your family.',
     perks: projectConfig.PERKS,
   },
 

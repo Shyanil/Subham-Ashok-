@@ -195,7 +195,7 @@ export function LeadForm({
             : priority
               ? `grid grid-cols-1 gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}`
               : isModal
-                ? 'grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3'
+                ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-5'
                 : `grid gap-3.5 ${variant === 'inline' ? 'sm:grid-cols-2' : ''}`
         }
       >
