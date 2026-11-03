@@ -2,7 +2,6 @@ import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { site } from '@/content/site';
 import { getImage } from '@/lib/media';
-import { isSet, projectConfig } from '@/src/config/project';
 import { Accent } from './Accent';
 import { AmenityIcon } from './AmenityIcon';
 import { LeadButton } from './lead/LeadButton';
@@ -19,13 +18,12 @@ export function Hero() {
   const h = site.hero;
   const mobileImg = getImage('road-elevation-view');
   const desktopImg = getImage('aerial-day-view');
-  const priced = isSet(projectConfig.STARTING_PRICE);
   const highlights = [
     { icon: 'lawn', label: 'Landscaped lawns' },
     { icon: 'pool', label: 'Infinity-edge pool' },
     { icon: 'club', label: 'Club House' },
   ];
-  const sealText = priced ? `Starting ₹${projectConfig.STARTING_PRICE}* · Price list · ` : 'Reveal price · Launch offer · Price list · ';
+  const sealText = 'Starting at · 2 BHK ₹62L · 3 BHK ₹91L · 4 BHK ₹1.26Cr · Penthouse ₹1.15Cr · ';
 
   return (
     <section id="top" aria-labelledby="hero-title" className="hero relative overflow-hidden bg-white" data-track-section="hero">
@@ -82,14 +80,15 @@ export function Hero() {
               <defs>
                 <path id="seal-path" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0" />
               </defs>
-              <text className="fill-gold text-[15.5px] font-bold uppercase" style={{ letterSpacing: '0.22em' }}>
-                <textPath href="#seal-path">{sealText}</textPath>
+              <text className="fill-gold text-[12px] font-bold uppercase">
+                <textPath href="#seal-path" textLength="455" lengthAdjust="spacingAndGlyphs">{sealText}</textPath>
               </text>
             </svg>
-            <span className="relative grid size-12 place-items-center rounded-full bg-white font-serif text-[28px] leading-none text-brand transition-transform duration-300 group-hover:scale-110 lg:size-14 lg:text-[32px]" aria-hidden="true">
-              ₹
+            <span className="relative grid size-14 content-center justify-items-center gap-1 rounded-full bg-white leading-none text-brand transition-transform duration-300 group-hover:scale-110 lg:size-16" aria-hidden="true">
+              <span className="text-[9px] font-semibold uppercase tracking-wider">From</span>
+              <span className="font-serif text-[24px]">₹62L</span>
             </span>
-            <span className="sr-only">{priced ? `Starting price ₹${projectConfig.STARTING_PRICE}. Get the price list` : 'Reveal the price'}</span>
+            <span className="sr-only">Starting at: 2 BHK ₹62 Lakh, 3 BHK ₹91 Lakh, 4 BHK ₹1.26 Crore, Penthouse ₹1.15 Crore. Get the price list.</span>
           </LeadButton>
         </div>
 
@@ -148,8 +147,7 @@ export function Hero() {
               <span className="h-16 w-0.5 shrink-0 bg-terra/50" aria-hidden="true" />
               <div>
                 <p className="text-[13px] font-bold uppercase tracking-[0.18em] text-terra sm:text-[14px]">Find your space</p>
-                <p className="mt-2 font-serif text-[38px] leading-tight text-ink sm:text-[44px]">2, 3 and 4 <span className="text-[25px] italic sm:text-[30px]">BHK Homes</span></p>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted sm:text-[16px]">With penthouse options for a different perspective.</p>
+                <p className="mt-2 whitespace-nowrap font-serif text-[clamp(15px,4.3vw,24px)] leading-tight text-ink sm:text-[28px] lg:text-[clamp(20px,2.05vw,30px)]">2, 3 and 4 BHK Homes and Penthouses</p>
               </div>
             </div>
             <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">

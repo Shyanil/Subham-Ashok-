@@ -75,7 +75,7 @@ export const site = {
       { value: '2 – 4', unit: 'BHK', label: 'Plus penthouses' },
       { value: '983 – 2,501', unit: 'sqft', label: 'Saleable area (SBUA)' },
       { value: '79', unit: 'apartments', label: 'Across both blocks' },
-      { value: '6 and 11', unit: 'floors', label: 'Block A and Block B', note: 'Block A: 6 floors · Block B: 11 floors' },
+      { value: '', unit: '', label: 'Block floor details', lines: ['Block A : G + 6', 'Block B : B + G + 11'] },
     ],
     cta: 'Book a Site Visit',
   },
@@ -83,7 +83,7 @@ export const site = {
   floorPlans: {
     eyebrow: 'Floor plans and price',
     title: 'Homes Planned for _Light and Air_',
-    body: 'The master plan and every unit type across Block A and Block B. Areas are in square feet. Tap “Reveal price” for the current price of any unit.',
+    body: 'Choose your block, then your home configuration and flat unit to explore its floor plan. Areas are in square feet. Tap “Reveal price” to enquire about your selected home.',
     specsTitle: 'Specifications',
   },
 

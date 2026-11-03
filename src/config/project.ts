@@ -67,7 +67,7 @@ export const projectConfig = {
   CONFIGURATIONS: ['2 BHK', '3 BHK', '4 BHK', 'Penthouse'],
 
   /** Configuration starting prices supplied by the sales team. */
-  CONFIGURATION_PRICES: { '3 BHK': '₹91 Lakh', '4 BHK': '₹1.26 Crore' } as Record<string, string>,
+  CONFIGURATION_PRICES: { '2 BHK': '₹62 Lakh', '3 BHK': '₹91 Lakh', '4 BHK': '₹1.26 Crore', Penthouse: '₹1.15 Crore' } as Record<string, string>,
 
   /** Auto-popup timing (ms / fraction of page). */
   POPUP_DELAY_MS: 12_000,

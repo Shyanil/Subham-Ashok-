@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ThankYouTracking } from '@/components/ThankYouTracking';
 import { project } from '@/content/site';
-import { projectConfig, telHref } from '@/src/config/project';
 
 export const metadata: Metadata = {
   title: `Thank you | ${project.name}`,
@@ -30,9 +29,7 @@ export default function ThankYouPage() {
             <p className="mt-6 max-w-md text-[16px] leading-relaxed text-muted">We’ve received your enquiry for {project.name}. Our team will call you shortly to share the details and help plan your visit.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="/brochure/subham-ashok-heights-brochure.pdf" download className="btn">Download Brochure <span aria-hidden="true">↓</span></a>
-              <a href={telHref} className="btn btn--outline" data-source="thank_you">Call Our Team</a>
             </div>
-            <p className="mt-6 text-[13px] text-muted">Prefer to speak now? <a href={telHref} className="font-semibold text-brand" data-source="thank_you">+91 {projectConfig.PHONE}</a></p>
             <div className="mt-10 border-t border-line pt-6"><Link href="/" className="text-[13px] font-semibold text-terra">← Back to {project.name}</Link></div>
           </div>
           <div className="relative min-h-[300px] bg-brand lg:min-h-full">

@@ -103,8 +103,8 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
   const modalSubmit = request?.submitLabel ? toTitleCase(request.submitLabel) : fallback.submit;
   const modalKicker = toTitleCase(fallback.kicker);
 
-  // High-resolution architectural elevation render (2560x1440)
-  const img = getImage('road-elevation-view');
+  // Original full-resolution night aerial render, served without another lossy encode.
+  const img = getImage('aerial-night-view');
 
   return (
     <dialog
@@ -127,9 +127,9 @@ export function LeadModal({ request, onClose }: { request: LeadRequestOptions | 
               src={img.src}
               alt={img.alt}
               fill
-              priority
+              preload
+              unoptimized
               sizes="(min-width: 768px) 480px, 100vw"
-              quality={95}
               className="object-cover"
               style={{ objectPosition: objectPosition(img.focus) }}
             />

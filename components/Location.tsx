@@ -47,7 +47,22 @@ export function Location() {
             </div>
           </div>
           <div ref={map} id="neighbourhood-map" className="relative min-w-0 scroll-mt-24 bg-white">
-            <iframe title={selectedPlace ? selectedPlace + " location in Guwahati" : "Subham Ashok Heights location, Sonkuchi Path, Guwahati"} src={selectedPlace ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ", Guwahati, Assam")}&output=embed` : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11464.796372712837!2d91.7719754!3d26.1071153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5ebf33930b25%3A0xa404824650859840!2sSonkuchi%20Path%2C%20Guwahati%2C%20Assam%20781029!5e0!3m2!1sen!2sin!4v1793202092069!5m2!1sen!2sin"} width="600" height="450" className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+            <iframe
+              title={selectedPlace ? selectedPlace + " location in Guwahati" : "Project location map, Guwahati"}
+              src={selectedPlace && selectedPlace !== 'Galaxy City' ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ", Guwahati, Assam")}&output=embed` : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2204.1656418101124!2d91.7697823!3d26.1105426!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f25510b3585%3A0xba391a4cf437b51a!2sGALAXY%20CITY%20-%20GUWAHATI!5e1!3m2!1sen!2sin!4v1793701122451!5m2!1sen!2sin"}
+              width="600"
+              height="450"
+              className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+            {selectedPlace === 'Galaxy City' && (
+              <div role="status" className="absolute left-4 right-4 top-4 rounded-2xl border border-line bg-white px-4 py-3 shadow-lg sm:right-auto">
+                <p className="text-[15px] font-semibold text-brand">Galaxy City</p>
+                <p className="mt-1 text-[13px] text-muted">600 m from Ashok Heights</p>
+              </div>
+            )}
             {addressOpen && (
               <div id="project-map-address" role="region" aria-label="Project address" className="absolute left-4 right-4 top-4 rounded-2xl border border-line bg-white p-5 pr-12 shadow-xl sm:right-auto sm:max-w-[320px]">
                 <button type="button" aria-label="Close address popup" onClick={() => setAddressOpen(false)} className="absolute right-2 top-2 grid size-9 place-items-center rounded-full text-brand hover:bg-cream">&#215;</button>

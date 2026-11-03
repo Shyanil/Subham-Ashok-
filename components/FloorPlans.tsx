@@ -17,10 +17,14 @@ import { ArrowUpRight } from './icons';
 
 type Tab = 'master' | 'A' | 'B';
 const TABS: { id: Tab; label: string; note: string }[] = [
+  { id: 'A', label: 'Block A', note: 'G + 6' },
+  { id: 'B', label: 'Block B', note: 'B + G + 11' },
   { id: 'master', label: 'Master plan', note: 'Site layout' },
-  { id: 'A', label: 'Block A', note: '5 unit types' },
-  { id: 'B', label: 'Block B', note: '8 unit types' },
 ];
+const CONFIGURATIONS = ['2 BHK', '3 BHK', '4 BHK', 'Penthouse'];
+const flatOptions = (list: Unit[]) => list.flatMap((unit) =>
+  unit.units.split(',').map((number) => ({ number: number.trim(), unit })),
+).sort((a, b) => Number(a.number) - Number(b.number));
 
 const fmt = (n?: number) => (n ? n.toLocaleString('en-IN') : '—');
 
@@ -44,8 +48,10 @@ function Plan({ image, alt }: { image: string; alt: string }) {
 /** Brochure master plan and unit drawings with a unit configurator per block. */
 export function FloorPlans() {
   const f = site.floorPlans;
-  const [tab, setTab] = useState<Tab>('master');
-  const [sel, setSel] = useState<Record<'A' | 'B', string>>({ A: 'a-101', B: 'b-101' });
+  const [tab, setTab] = useState<Tab>('A');
+  const [sel, setSel] = useState<Record<'A' | 'B', string>>({ A: 'a-102', B: 'b-101' });
+  const [configuration, setConfiguration] = useState<Record<'A' | 'B', string>>({ A: '2 BHK', B: '3 BHK' });
+  const [flat, setFlat] = useState<Record<'A' | 'B', string>>({ A: '102', B: '101' });
   const { openLead } = useLead();
 
   const blockUnits = tab === 'master' ? [] : units.filter((u) => u.block === tab);
@@ -54,12 +60,23 @@ export function FloorPlans() {
   const unit = blockUnits.find((u) => u.id === selectedId);
   const floor = blockFloors.find((x) => x.id === selectedId);
   const pick = (id: string) => tab !== 'master' && setSel((s) => ({ ...s, [tab]: id }));
+  const configurations = CONFIGURATIONS.filter((c) => blockUnits.some((u) => unitConfiguration(u) === c));
+  const currentConfiguration = tab === 'master' ? '' : configuration[tab];
+  const flats = flatOptions(blockUnits.filter((u) => unitConfiguration(u) === currentConfiguration));
+  const chooseConfiguration = (value: string) => {
+    if (tab === 'master') return;
+    const first = flatOptions(blockUnits.filter((u) => unitConfiguration(u) === value))[0];
+    if (!first) return;
+    setConfiguration((s) => ({ ...s, [tab]: value }));
+    setFlat((s) => ({ ...s, [tab]: first.number }));
+    pick(first.unit.id);
+  };
 
   const reveal = (u: Unit) =>
     openLead({
       intent: 'reveal',
       source: 'floor_plans',
-      unit: unitLabel(u),
+      unit: `${unitLabel(u)} · Flat ${tab === 'master' ? '' : flat[tab]}`,
       configuration: unitConfiguration(u),
       title: 'Reveal Price',
       submitLabel: 'Reveal Price',
@@ -105,7 +122,7 @@ export function FloorPlans() {
           </div>
         </div>
 
-        {/* Segmented tabs */}
+        <p className="mb-3 text-[12px] font-bold uppercase tracking-[0.12em] text-terra">1. Choose your block</p>
         <div role="tablist" aria-label="Plans" className="mb-5 grid w-full grid-cols-3 gap-2 border-b border-line sm:mx-auto sm:mb-7 sm:flex sm:w-fit sm:justify-center sm:gap-5">
           {TABS.map((t, i) => (
             <button
@@ -132,37 +149,32 @@ export function FloorPlans() {
           </div>
           {tab !== 'master' && (
             <>
-              {/* Unit configurator: compact 2-up grid on phones, horizontal snap rail from sm up */}
-              <ul className="grid grid-cols-2 gap-2 pb-2 [&>li:last-child:nth-child(odd)]:col-span-2 sm:flex sm:snap-x sm:snap-mandatory sm:gap-3 sm:overflow-x-auto sm:pb-4 sm:[scrollbar-width:thin]" aria-label={`Block ${tab} unit types`}>
-                {blockUnits.map((u) => {
-                  const active = u.id === selectedId;
-                  return (
-                    <li key={u.id} className="min-w-0 sm:w-[180px] sm:shrink-0 sm:snap-start">
-                      <button
-                        type="button"
-                        aria-pressed={active}
-                        data-tilt
-                        onClick={() => pick(u.id)}
-                        className={`flex h-full w-full flex-col rounded-xl p-3 text-left transition-all duration-300 sm:rounded-2xl sm:p-3.5 ${active ? 'bg-brand text-white shadow-[var(--shadow-lift)]' : 'bg-white text-ink shadow-[var(--shadow-soft)] hover:-translate-y-1'}`}
-                      >
-                        <span className={`truncate text-[10px] font-bold uppercase tracking-[0.08em] sm:text-[11px] ${active ? 'text-gold' : 'text-terra'}`}>
-                          {u.penthouse ? 'Penthouse' : `Unit ${u.units.split(', ')[0]}${u.units.includes(',') ? ' series' : ''}`}
-                        </span>
-                        <span className="mt-1.5 font-serif text-[24px] leading-none sm:text-[28px]">{u.type}</span>
-                        <span className={`mt-2 text-[11px] sm:text-[12px] ${active ? 'text-white/70' : 'text-muted'}`}>SBUA</span>
-                        <span className="mt-0.5 font-serif text-[18px] leading-none tabular sm:text-[22px]">
-                          {fmt(u.sbua)} <span className="font-sans text-[11px] sm:text-[13px]">sq.ft</span>
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+              <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
+                <p id="plan-configuration-label" className="text-[12px] font-bold uppercase tracking-[0.12em] text-terra">2. Choose your home</p>
+                <div role="group" aria-labelledby="plan-configuration-label" className="mt-3 flex flex-wrap gap-2">
+                  {configurations.map((c) => (
+                    <button key={c} type="button" aria-pressed={currentConfiguration === c} onClick={() => chooseConfiguration(c)} className={`min-h-11 rounded-xl border px-5 py-3 text-[14px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra ${currentConfiguration === c ? 'border-brand bg-brand text-white' : 'border-line bg-cream text-brand hover:border-terra'}`}>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-5 border-t border-line pt-5">
+                  <label htmlFor="plan-flat-unit" className="mb-3 block text-[12px] font-bold uppercase tracking-[0.12em] text-terra">3. Choose your flat unit</label>
+                  <select id="plan-flat-unit" className="input w-full sm:max-w-md" value={flat[tab]} onChange={(e) => {
+                    const choice = flats.find((x) => x.number === e.target.value);
+                    if (!choice) return;
+                    setFlat((s) => ({ ...s, [tab]: choice.number }));
+                    pick(choice.unit.id);
+                  }}>
+                    {flats.map(({ number, unit: u }) => <option key={number} value={number}>Flat {number} · {u.type}{u.penthouse ? ' Penthouse' : ''} · {fmt(u.sbua)} sq.ft SBUA</option>)}
+                  </select>
+                </div>
+              </div>
 
               <div className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-3 sm:mt-2 sm:gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                 {/* Re-keyed per selection so each unit / floor swings in on a 3D hinge (.plan-flip). */}
                 <div key={`plan-${selectedId}`} className="plan-flip rounded-[1.75rem] bg-white p-2 sm:rounded-[2rem] sm:p-3 shadow-[var(--shadow-soft)]">
-                  {unit && <Plan image={unit.image} alt={`Unit plan, ${unitLabel(unit)}, units ${unit.units}`} />}
+                  {unit && <Plan image={unit.image} alt={`Flat ${flat[tab]}, ${unitLabel(unit)}`} />}
                   {floor && <Plan image={floor.image} alt={`Floor plan, Block ${floor.block}, ${floor.title}${floor.note ? `, ${floor.note}` : ''}`} />}
                 </div>
 
@@ -170,7 +182,7 @@ export function FloorPlans() {
                   {unit && (
                     <div key={`unit-${unit.id}`} className="plan-flip plan-flip--late rounded-[1.75rem] bg-white p-5 sm:rounded-[2rem] sm:p-6 shadow-[var(--shadow-soft)]" aria-live="polite">
                       <p className="kicker">
-                        Block {unit.block} · {unit.baths} baths
+                        Block {unit.block} · Flat {flat[tab]} · {unit.baths} baths
                       </p>
                       <p className="mt-3 font-serif text-[38px] leading-none text-ink sm:text-[44px]">
                         <Accent text={`${unit.type}${unit.penthouse ? ' _penthouse_' : ''}`} />
@@ -189,7 +201,6 @@ export function FloorPlans() {
                           </div>
                         ))}
                       </dl>
-                      <p className="mt-4 text-[13px] text-muted">Units {unit.units}</p>
                       <button type="button" className="btn btn--block mt-5" aria-haspopup="dialog" onClick={() => reveal(unit)}>
                         Reveal Price <ArrowUpRight className="arrow size-4" />
                       </button>

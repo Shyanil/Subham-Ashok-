@@ -45,11 +45,16 @@ export function Overview() {
                 data-reveal
                 className="min-w-0 px-3 text-center even:border-l even:border-line max-lg:last:col-span-2 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-line"
               >
-                <p className="font-serif text-[28px] italic leading-none text-terra sm:text-[36px]">
+                  {s.lines ? (
+                    <div className="space-y-2 font-serif text-[19px] leading-snug text-terra sm:text-[22px]">
+                      {s.lines.map((line) => <p key={line}>{line}</p>)}
+                    </div>
+                  ) : <>
+                  <p className="font-serif text-[28px] italic leading-none text-terra sm:text-[36px]">
                   {s.value} <span className="text-[18px]">{s.unit}</span>
                 </p>
                 <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-muted sm:text-[11px]">{s.label}</p>
-                {'note' in s && <p className="mt-2 text-[11px] leading-relaxed text-muted">{s.note}</p>}
+                  </>}
               </li>
           ))}
         </ul>

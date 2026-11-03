@@ -99,7 +99,7 @@ export const keyDistances = [
   { group: 'Education', items: [['International School Guwahati', '1.1 km'], ['NPS International School', '3.8 km'], ['Royal Global University', '5.3 km'], ['Delhi Public School', '6.3 km']] },
   { group: 'Hospitals', items: [['Critical Care Hospital', '2.3 km'], ['Health City Hospital', '5.1 km'], ['Ayursundra Superspeciality Hospital', '6.2 km'], ['Boragaon ESIS Dispensary', '8.6 km'], ['Excel Care Hospital', '9.9 km']] },
   { group: 'Sports and leisure', items: [['Hockey Stadium', '1.3 km'], ['Indira Gandhi Athletic Stadium', '2.1 km'], ['Sarusajai Sports Complex', '2.1 km']] },
-  { group: 'Shopping and markets', items: [['Reliance Smart Bazaar', '1.0 km'], ['Zudio', '3.0 km'], ['Unity Mall', '5.2 km']] },
+  { group: 'Shopping and markets', items: [['Galaxy City', '600 m'], ['Reliance Smart Bazaar', '1.0 km'], ['Zudio', '3.0 km'], ['Unity Mall', '5.2 km']] },
   { group: 'Showrooms', items: [['Mercedes-Benz Axom Motors', '1.0 km'], ['Audi Guwahati', '1.0 km'], ['Royal Enfield Showroom', '1.4 km'], ['Tata Motors', '1.6 km'], ['Gargya Toyota', '4.3 km'], ['BMW Titanium Motorrad', '4.7 km']] },
   { group: 'Banks', items: [['HDFC Bank', '2.5 km'], ['SBI Bank', '2.9 km'], ['Central Bank of India', '3.2 km']] },
   { group: 'Civic', items: [['Basistha Police Station', '2.5 km'], ['Basistha Post Office', '3.0 km'], ['Dist. Transport Office, Kamrup', '4.3 km'], ['Garchuk Police Station', '6.6 km'], ['High Court', '12 km']] },
