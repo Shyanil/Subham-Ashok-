@@ -39,15 +39,15 @@ export type Floor = { id: string; block: 'A' | 'B'; title: string; note?: string
 export const floors: Floor[] = [
   { id: 'fa-1', block: 'A', title: '1st – 5th floor', note: '2 and 3 BHK', image: 'floor-15-l' },
   { id: 'fa-6', block: 'A', title: '6th floor', note: 'Penthouses', image: 'floor-15-r' },
-  { id: 'fb-1', block: 'B', title: '1st floor', note: 'Club House, pool and gym', image: 'floor-16' },
-  { id: 'fb-2-t1', block: 'B', title: '2nd floor', note: 'Tower 1', image: 'floor-17-l' },
-  { id: 'fb-2-t2', block: 'B', title: '2nd floor', note: 'Tower 2', image: 'floor-17-r' },
-  { id: 'fb-3-t1', block: 'B', title: '3rd, 4th, 5th, 6th, 8th and 10th', note: 'Tower 1', image: 'floor-18-l' },
-  { id: 'fb-3-t2', block: 'B', title: '3rd, 4th, 5th, 6th, 8th and 10th', note: 'Tower 2', image: 'floor-18-r' },
-  { id: 'fb-7-t1', block: 'B', title: '7th and 9th floor', note: 'Tower 1', image: 'floor-19-l' },
-  { id: 'fb-7-t2', block: 'B', title: '7th and 9th floor', note: 'Tower 2', image: 'floor-19-r' },
-  { id: 'fb-11-t1', block: 'B', title: '11th floor', note: 'Tower 1', image: 'floor-20-l' },
-  { id: 'fb-11-t2', block: 'B', title: '11th floor', note: 'Tower 2 · Penthouses', image: 'floor-20-r' },
+  { id: 'fb-1', block: 'B', title: '1st Floor', note: 'Club House, Pool, Gym and Indoor Play Area', image: 'floor-16' },
+  { id: 'fb-2-t1', block: 'B', title: 'Tower 1 - 2nd Floor', image: 'floor-17-l' },
+  { id: 'fb-2-t2', block: 'B', title: 'Tower 2 - 2nd Floor', image: 'floor-17-r' },
+  { id: 'fb-3-t1', block: 'B', title: 'Tower 1 - 3rd, 4th, 5th, 6th, 8th and 10th Floor', image: 'floor-18-l' },
+  { id: 'fb-3-t2', block: 'B', title: 'Tower 2 - 3rd, 4th, 5th, 6th, 8th and 10th Floor', image: 'floor-18-r' },
+  { id: 'fb-7-t1', block: 'B', title: 'Tower 1 - 7th and 9th Floor', image: 'floor-19-l' },
+  { id: 'fb-7-t2', block: 'B', title: 'Tower 2 - 7th and 9th Floor', image: 'floor-19-r' },
+  { id: 'fb-11-t1', block: 'B', title: 'Tower 1 - 11th Floor', image: 'floor-20-l' },
+  { id: 'fb-11-t2', block: 'B', title: 'Tower 2 - 11th Floor', note: 'Penthouses', image: 'floor-20-r' },
 ];
 
 export const masterPlanLegend = [

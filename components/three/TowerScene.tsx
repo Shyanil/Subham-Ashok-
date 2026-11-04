@@ -19,8 +19,8 @@ type Props = {
 };
 
 const LABELS: { title: string; note: string; day: UV; night: UV }[] = [
-  { title: 'Block B', note: '11 floors · 2 towers', day: [0.5, 0.2], night: [0.52, 0.17] },
-  { title: 'Block A', note: '6 floors · penthouses', day: [0.61, 0.62], night: [0.4, 0.56] },
+  { title: 'Block B', note: 'B + G + 11', day: [0.5, 0.2], night: [0.52, 0.17] },
+  { title: 'Block A', note: 'G + 6', day: [0.61, 0.62], night: [0.4, 0.56] },
 ];
 
 /** Shared between the R3F frame loop and the DOM overlay without re-rendering React. */
