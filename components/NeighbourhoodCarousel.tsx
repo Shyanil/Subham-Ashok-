@@ -66,7 +66,7 @@ function CategoryIcon({ group, className = 'size-5' }: { group: string; classNam
   );
 }
 
-export function NeighbourhoodCarousel({ onSelectPlace, selectedPlace }: { onSelectPlace: (name: string) => void; selectedPlace: string | null }) {
+export function NeighbourhoodCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -183,8 +183,8 @@ export function NeighbourhoodCarousel({ onSelectPlace, selectedPlace }: { onSele
                 <li
                   key={name}
                 >
-                  <button type="button" onClick={() => onSelectPlace(name)} aria-label={`Show ${name} on the map`} aria-pressed={selectedPlace === name} aria-controls="neighbourhood-map"
-                  className="group flex w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra aria-pressed:border-terra aria-pressed:bg-cream min-h-[76px] min-w-0 items-center justify-between gap-4 rounded-2xl border border-line/70 bg-cream/35 p-3.5 sm:p-4 transition-all duration-200 hover:border-terra/40 hover:bg-cream hover:shadow-xs"
+                  <div
+                  className="group flex w-full text-left min-h-[76px] min-w-0 items-center justify-between gap-4 rounded-2xl border border-line/70 bg-cream/35 p-3.5 sm:p-4 transition-all duration-200 hover:border-terra/40 hover:bg-cream hover:shadow-xs"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white text-terra shadow-2xs ring-1 ring-terra/15 group-hover:bg-terra group-hover:text-white transition-colors" aria-hidden="true">
@@ -199,7 +199,7 @@ export function NeighbourhoodCarousel({ onSelectPlace, selectedPlace }: { onSele
                       {distance}
                     </span>
                   </div>
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>

@@ -145,8 +145,8 @@ export const site = {
     eyebrow: 'Location',
     title: 'Close to _Everything That Matters_',
     body: 'Sonkuchi Path, Beharbari, Lalmati. Schools, hospitals, showrooms and markets are minutes from home.',
-    mapLink: 'https://www.google.com/maps/search/?api=1&query=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
-    directionsLink: 'https://www.google.com/maps/dir/?api=1&destination=Sonkuchi+Path+Beharbari+Lalmati+Guwahati+781029',
+    mapLink: 'https://maps.app.goo.gl/gmj5PjsPCHMekE2p8',
+    directionsLink: 'https://maps.app.goo.gl/gmj5PjsPCHMekE2p8',
   },
 
   contact: {

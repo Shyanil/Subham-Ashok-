@@ -46,8 +46,16 @@ export function Overview() {
                 className="min-w-0 px-3 text-center even:border-l even:border-line max-lg:last:col-span-2 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-line"
               >
                   {s.lines ? (
-                    <div className="space-y-2 font-serif text-[19px] leading-snug text-terra sm:text-[22px]">
-                      {s.lines.map((line) => <p key={line}>{line}</p>)}
+                    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:flex-col">
+                      {s.lines.map((line) => {
+                        const [block, floors] = line.split(' : ');
+                        return (
+                          <p key={line} className="flex items-baseline justify-center gap-2 whitespace-nowrap">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted sm:text-[11px]">{block}:</span>
+                            <span className="font-serif text-[24px] italic leading-none text-terra sm:text-[28px]">{floors}</span>
+                          </p>
+                        );
+                      })}
                     </div>
                   ) : <>
                   <p className="font-serif text-[28px] italic leading-none text-terra sm:text-[36px]">

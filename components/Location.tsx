@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef, useState } from 'react';
 import { BrochureMotif } from './BrochureMotif';
 import { site } from '@/content/site';
 import { NeighbourhoodCarousel } from './NeighbourhoodCarousel';
@@ -8,27 +7,11 @@ import { BrandChakra } from './BrandChakra';
 import { Accent } from './Accent';
 import { ArrowUpRight, PinIcon } from './icons';
 
-// Use the supplied project place ID in standard map mode. Widen the viewport
-// to approximately 70% of the supplied scale without shrinking the iframe.
-const PROJECT_MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6297.673281384113!2d91.7727819!3d26.109481499999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f00669e8a27%3A0x32b1d7ab340fd50f!2sSUBHAM%20ASHOK%20HEIGHTS!5e0!3m2!1sen!2sin!4v1793706680995!5m2!1sen!2sin';
-const GALAXY_CITY_MAP = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2204.1656418101124!2d91.7697823!3d26.1105426!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f25510b3585%3A0xba391a4cf437b51a!2sGALAXY%20CITY%20-%20GUWAHATI!5e1!3m2!1sen!2sin!4v1793701122451!5m2!1sen!2sin';
+const PROJECT_MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4898.190329965421!2d91.7727819!3d26.109481499999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a5f00669e8a27%3A0x32b1d7ab340fd50f!2sSUBHAM%20ASHOK%20HEIGHTS!5e0!3m2!1sen!2sin!4v1794293160476!5m2!1sen!2sin';
 
 export function Location() {
-  const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
-  const [addressOpen, setAddressOpen] = useState(false);
-  const map = useRef<HTMLDivElement>(null);
-  const showNearbyPlace = (name: string) => {
-    setSelectedPlace(name);
-    setAddressOpen(false);
-    map.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
-  };
   const l = site.location;
   const c = site.contact;
-  const mapSrc = selectedPlace === 'Galaxy City'
-    ? GALAXY_CITY_MAP
-    : selectedPlace
-      ? `https://www.google.com/maps?q=${encodeURIComponent(selectedPlace + ', Guwahati, Assam')}&output=embed`
-      : PROJECT_MAP;
   return (
     <section id="location" aria-labelledby="location-title" className="section relative overflow-hidden bg-cream" data-track-section="location">
       <BrochureMotif kind="corner" className="brochure-location-corner" />
@@ -56,10 +39,10 @@ export function Location() {
               <a href={l.mapLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 text-[12px] font-semibold text-white/80 underline decoration-white/30 underline-offset-4 hover:text-white">Open in Google Maps <ArrowUpRight className="size-3.5" /></a>
             </div>
           </div>
-          <div ref={map} id="neighbourhood-map" className="relative min-w-0 scroll-mt-24 bg-white">
+          <div id="neighbourhood-map" className="relative min-w-0 scroll-mt-24 bg-white">
             <iframe
-              title={selectedPlace ? selectedPlace + " location in Guwahati" : "Subham Ashok Heights location in Guwahati"}
-              src={mapSrc}
+              title="Subham Ashok Heights location in Guwahati"
+              src={PROJECT_MAP}
               width="600"
               height="450"
               className="block h-[360px] w-full border-0 lg:h-full lg:min-h-[450px]"
@@ -68,26 +51,12 @@ export function Location() {
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
             />
-            {selectedPlace === 'Galaxy City' && (
-              <div role="status" className="absolute left-4 right-4 top-4 rounded-2xl border border-line bg-white px-4 py-3 shadow-lg sm:right-auto">
-                <p className="text-[15px] font-semibold text-brand">Galaxy City</p>
-                <p className="mt-1 text-[13px] text-muted">600 m from Ashok Heights</p>
-              </div>
-            )}
-            {addressOpen && (
-              <div id="project-map-address" role="region" aria-label="Project address" className="absolute left-4 right-4 top-4 rounded-2xl border border-line bg-white p-5 pr-12 shadow-xl sm:right-auto sm:max-w-[320px]">
-                <button type="button" aria-label="Close address popup" onClick={() => setAddressOpen(false)} className="absolute right-2 top-2 grid size-9 place-items-center rounded-full text-brand hover:bg-cream">&#215;</button>
-                <h3 className="font-serif text-[23px] text-brand">Subham Ashok Heights</h3>
-                <address className="mt-2 text-[14px] not-italic leading-relaxed text-muted">{c.siteAddress[0]}<br />{c.siteAddress[1]}</address>
-                <a href={l.directionsLink} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-2 text-[13px] font-semibold text-terra underline underline-offset-4">Get Directions <ArrowUpRight className="size-4" /></a>
-              </div>
-            )}
-            <button type="button" aria-expanded={addressOpen} aria-controls="project-map-address" onClick={() => { setSelectedPlace(null); setAddressOpen(selectedPlace !== null || !addressOpen); }} className="absolute bottom-8 left-4 inline-flex min-h-11 max-w-[calc(100%-2rem)] items-center gap-2 rounded-full bg-brand px-4 py-3 text-left text-[13px] font-semibold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
-              <PinIcon className="size-5 shrink-0" /> Subham Ashok Heights
-            </button>
+            <a href={l.mapLink} target="_blank" rel="noopener noreferrer" className="absolute bottom-8 left-4 inline-flex min-h-11 max-w-[calc(100%-2rem)] items-center gap-2 rounded-full bg-brand px-4 py-3 text-left text-[13px] font-semibold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terra">
+              <PinIcon className="size-5 shrink-0" /> Subham Ashok Heights <ArrowUpRight className="size-4 shrink-0" />
+            </a>
           </div>
         </div>
-        <NeighbourhoodCarousel onSelectPlace={showNearbyPlace} selectedPlace={selectedPlace} />
+        <NeighbourhoodCarousel />
       </div>
     </section>
   );
